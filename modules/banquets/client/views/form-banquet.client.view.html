@@ -1,0 +1,79 @@
+<section>
+  <div class="page-header">
+    <h1>{{vm.banquet._id ? 'Edit Banquet' : 'New Banquet'}}</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="vm.form.banquetForm" class="form-horizontal" ng-submit="vm.save(vm.form.banquetForm.$valid)" novalidate>
+      <fieldset>
+        <!-- Name -->
+        <div class="form-group" show-errors>
+          <label class="control-label" for="name">Name</label>
+          <input name="name" type="text" ng-model="vm.banquet.name" id="name" class="form-control" placeholder="Name" required>
+          <div ng-messages="vm.form.banquetForm.name.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Banquet name is required.</p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label class="control-label" for="description">Description</label>
+          <textarea name="description" placeholder="Description of the banquet(Required)" ng-model="vm.banquet.description" id="description" class="form-control"></textarea>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+          <label class="control-label" for="location">Location</label>
+          <textarea name="location" placeholder="Location of the banquet(Not required)" ng-model="vm.banquet.location" id="location" class="form-control"></textarea>
+        </div>
+
+        <!-- Capacity -->
+        <div class="form-group">
+          <label class="control-label" for="capacity">Capacity</label>
+          <textarea name="capacity" placeholder="Capacity of the banquet(Not required)" ng-model="vm.banquet.capacity" id="capacity" class="form-control"></textarea>
+        </div>
+
+        <!-- Date -->
+        <div ng-controller="dateCtrler" class="form-group">
+          <label class="control-label" for="date">Choose date for banquet</label>
+          <p class="input-group" >
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          <input datepicker-localdate type="text" class="form-control" datepicker-popup="{{format}}" placeholder="Choose date (XXXX-XX-XX)" is-open="opened" ng-required="true" ng-model="vm.banquet.date" />
+          </p>
+        </div>
+
+        <!-- Start time  -->
+        <div class="form-group" show-errors>
+		      <label for="selectStartTime">Start time</label><br>
+          <input type="time" id="exampleInput" name="input" ng-model="vm.banquet.starttime" placeholder="HH:mm:ss" />
+      	  <div role="alert">
+      		  <span class="error" ng-show="myForm.input.$error.required">Required</span>
+			      <span class="error" ng-show="myForm.input.$error.time">Not a valid start time!</span>
+          </div>
+        </div>
+
+        <!-- End time -->
+        <div class="form-group" show-errors>
+          <label for="selectStartTime">End time</label><br>
+          <input type="time" id="exampleInput" name="input" ng-model="vm.banquet.endtime" placeholder="HH:mm:ss"/>
+          <div role="alert">
+            <span class="error" ng-show="myForm.input.$error.required">Required</span>
+            <span class="error" ng-show="myForm.input.$error.time">Not a valid start time!</span>
+          </div>
+        </div>
+
+
+
+
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-default">{{vm.banquet._id ? 'Update' : 'Create'}}</button>
+        </div>
+        <div ng-show="vm.error" class="text-danger">
+          <strong ng-bind="vm.error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>

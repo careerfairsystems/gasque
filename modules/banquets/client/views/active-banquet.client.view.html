@@ -1,0 +1,43 @@
+<section>
+  <div class="page-header">
+    <h1>Choose an active banquet</h1>
+  </div>
+
+    <!-- Selected Banquet-->
+    <div class="banquet list-group-item" >
+      <div ng-show="banquet">
+        <h4 class="list-group-item-heading" data-ng-bind="banquet.name"></h4>
+        <br>
+        <h5><strong>Description:</strong></h5>
+        <span data-ng-bind="banquet.description"></span>
+        <h5 class><strong>Location:</strong></h5>
+        <span data-ng-bind="banquet.location"></span>
+        <h5><strong>Capacity:</strong></h5>
+        <span data-ng-bind="banquet.capacity"></span>
+        <h5><strong>Date:</strong></h5>
+        <span data-ng-bind="banquet.date | date:'mediumDate'"></span>
+        <h5><strong>Start time:</strong></h5>
+        <span data-ng-bind="banquet.starttime | date:'HH:mm'"></span>
+        <h5><strong>End time:</strong></h5>
+        <span data-ng-bind="banquet.endtime | date:'HH:mm'"></span>
+        <h5><strong>Active status:</strong></h5>
+        <span data-ng-bind="banquet.active"></span>
+        <a class="btn btn-primary pull-right" ng-click="setActive(banquet)">Set as active</a>
+        <br>
+        <br>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="banquets list-group">
+        <a data-ng-repeat="banquet in vm.banquets"
+          ng-click="viewBanquet(banquet)"
+          class="list-group-item">
+          <h4 class="list-group-item-heading" data-ng-bind="banquet.name"></h4>
+        </a>
+      </div>
+      <div class="alert alert-warning text-center" data-ng-if="vm.banquets.$resolved && !vm.banquets.length">
+        No Banquets yet, why don't you <a data-ui-sref="banquets.create">create one</a>?
+      </div>
+    </div>
+</section>

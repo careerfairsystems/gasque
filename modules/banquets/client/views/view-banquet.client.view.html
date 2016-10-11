@@ -1,0 +1,69 @@
+<section>
+  <div class="page-header">
+    <h1 data-ng-bind="vm.banquet.name"></h1>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-3"><strong>Name:</strong></div>
+        <div class="col-md-6" ng-bind="vm.banquet.name"></div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="col-md-3"><strong>Description:</strong></div>
+        <div class="col-md-6" ng-bind="vm.banquet.description"></div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="col-md-3"><strong>Location:</strong></div>
+        <div class="col-md-6" ng-bind="vm.banquet.location"></div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="col-md-3"><strong>Capacity:</strong></div>
+        <div class="col-md-6" ng-bind="vm.banquet.capacity"></div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="col-md-3"><strong>Date:</strong></div>
+        <div class="col-md-6" ng-bind="vm.banquet.date | date:'yyyy-MM-dd'"></div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="col-md-3"><strong>Start time:</strong></div>
+        <div class="col-md-6" ng-bind="vm.banquet.starttime | date:'HH:mm'"></div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="col-md-3"><strong>End time:</strong></div>
+        <div class="col-md-6" ng-bind="vm.banquet.endtime | date:'HH:mm'"></div>
+      </div>
+      <hr/>
+    </div>
+  </div>
+
+
+  <div class="pull-right"
+       data-ng-show="vm.banquet.isCurrentUserOwner">
+    <a class="btn btn-primary"
+       data-ui-sref="banquets.edit({ banquetId: vm.banquet._id })">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" data-ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Posted on
+      <span data-ng-bind="vm.banquet.created | date:'mediumDate'"></span>
+      by
+      <span data-ng-if="vm.banquet.user"
+            data-ng-bind="vm.banquet.user.displayName"></span>
+      <span data-ng-if="!vm.banquet.user">Deleted User</span>
+    </em>
+  </small>
+  <p class="lead" data-ng-bind="vm.banquet.content"></p>
+</section>

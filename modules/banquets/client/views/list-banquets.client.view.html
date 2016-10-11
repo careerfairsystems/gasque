@@ -1,0 +1,32 @@
+<section>
+  <div class="page-header">
+    <h1>Banquets</h1>
+  </div>
+  <div class="list-group">
+    <a data-ng-repeat="banquet in vm.banquets"
+       data-ui-sref="banquets.view({ banquetId: banquet._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="banquet.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-if="banquet.user" data-ng-bind="banquet.user.displayName"></span>
+        <span data-ng-if="!banquet.user">Deleted User</span>
+      </small>
+      <h3 class="list-group-item-heading" data-ng-bind="banquet.name"></h3>
+      <h4>Description:</h4>
+      <span class="list-group-item-heading" data-ng-bind="banquet.description"></span>
+      <h4>Location:</h4>
+      <span class="list-group-item-heading" data-ng-bind="banquet.location"></span>
+      <h4>Capacity:</h4>
+      <span class="list-group-item-heading" data-ng-bind="banquet.capacity"></span>
+      <h4>Date:</h4>
+      <span class="list-group-item-heading" data-ng-bind="banquet.date | date:'mediumDate'"></span>
+
+
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.banquets.$resolved && !vm.banquets.length">
+    No Banquets yet, why don't you <a data-ui-sref="banquets.create">create one</a>?
+  </div>
+</section>

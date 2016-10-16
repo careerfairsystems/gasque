@@ -13,6 +13,45 @@ var path = require('path'),
  * Create a Reservation
  */
 exports.create = function(req, res) {
+  var nonpayingtitles = [
+    ["Host Arkad", 0],
+    ["Coordinator Arkad", 0],
+    ["PG Arkad", 0],
+    ["Other invited", 0],
+    ["Student member of TLTH", 500]
+  ];
+
+  var payingtitles = [
+    ["Not member of TLTH", 790]
+  ];
+
+  var payingdrinkpackages = [
+    ["Non Alcoholic beverages", 0],
+    ["Alcoholic beverages", 0]
+  ];
+
+
+  var nonpayingdrinkpackages = [
+    ["Non Alcoholic beverages", 0],
+    ["Alcoholic beverages", 135]
+  ];
+  var title = req.body.title;
+  var drinkpackage = req.body.drinkpackage;
+  var price = 0;
+
+
+  function containTitle(t) {
+    return title === t.title;
+  }
+  var paying = payingtitles.filter(containTitle);
+  var nonpaying = nonpayingtitles.filter(containTitle);
+
+  if(paying.length > 0)
+    price += paying[1];
+
+
+
+
   var reservation = new Reservation(req.body);
   reservation.user = req.user;
 
@@ -80,7 +119,7 @@ exports.delete = function(req, res) {
 /**
  * List of Reservations
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
   Reservation.find().sort('-created').populate('user', 'displayName').exec(function(err, reservations) {
     if (err) {
       return res.status(400).send({

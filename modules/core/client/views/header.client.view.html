@@ -21,9 +21,9 @@
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right" ng-hide="authentication.user">
-      <li ui-sref-active="active">
+      <!--li ui-sref-active="active">
         <a ui-sref="authentication.signup">Sign Up</a>
-      </li>
+      </li-->
       <li class="divider-vertical"></li>
       <li ui-sref-active="active">
         <a ui-sref="authentication.signin">Sign In</a>
@@ -36,7 +36,7 @@
           <span ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
         </a>
         <ul class="dropdown-menu" role="menu">
-          <li ui-sref-active="active">
+          <!--li ui-sref-active="active">
             <a ui-sref="settings.profile">Edit Profile</a>
           </li>
           <li ui-sref-active="active">
@@ -48,7 +48,7 @@
           <li ui-sref-active="active">
             <a ui-sref="settings.accounts">Manage Social Accounts</a>
           </li>
-          <li class="divider"></li>
+          <li class="divider"></li-->
           <li>
             <a href="/api/auth/signout" target="_self">Signout</a>
           </li>

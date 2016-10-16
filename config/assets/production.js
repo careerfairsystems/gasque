@@ -16,7 +16,16 @@ module.exports = {
         'public/lib/angular-ui-utils/ui-utils.min.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
         'public/lib/angular-file-upload/angular-file-upload.min.js',
-        'public/lib/owasp-password-strength-test/owasp-password-strength-test.js'
+        'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
+        'public/lib/jquery/dist/jquery.min.js',
+        'public/lib/datatables.net/js/jquery.dataTables.min.js',
+        'public/lib/datatables.net-bs/js/dataTables.bootstrap.min.js',
+        'public/lib/datatables.net-buttons/js/dataTables.buttons.min.js',
+        'public/lib/datatables.net-buttons/js/buttons.html5.min.js',
+        'public/lib/datatables.net-buttons/js/buttons.colVis.min.js',
+        'public/lib/datatables.net-buttons/js/buttons.flash.min.js',
+        'public/lib/datatables.net-buttons/js/buttons.print.min.js',
+        'public/lib/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'
       ]
     },
     css: 'public/dist/application.min.css',

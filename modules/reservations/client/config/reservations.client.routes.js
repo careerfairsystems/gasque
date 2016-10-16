@@ -23,8 +23,8 @@
           pageTitle: 'Reservations List'
         }
       })
-      .state('reservations.create', {
-        url: '/create',
+      .state('reservations.nonpaying', {
+        url: '/nonpaying',
         templateUrl: 'modules/reservations/client/views/form-reservation.client.view.html',
         controller: 'ReservationsController',
         controllerAs: 'vm',
@@ -33,7 +33,24 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle : 'Reservations Create'
+          pageTitle : 'Make a Reservation',
+          isPaying: false,
+          creating: true
+        }
+      })
+      .state('reservations.paying', {
+        url: '/paying',
+        templateUrl: 'modules/reservations/client/views/form-reservation.client.view.html',
+        controller: 'ReservationsController',
+        controllerAs: 'vm',
+        resolve: {
+          reservationResolve: newReservation
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Make a Reservation',
+          isPaying: true,
+          creating: true
         }
       })
       .state('reservations.edit', {
@@ -46,7 +63,8 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'Edit Reservation {{ reservationResolve.name }}'
+          pageTitle: 'Edit Reservation {{ reservationResolve.name }}',
+          creating: false
         }
       })
       .state('reservations.view', {
@@ -58,7 +76,8 @@
           reservationResolve: getReservation
         },
         data:{
-          pageTitle: 'Reservation {{ articleResolve.name }}'
+          pageTitle: 'Reservation {{ articleResolve.name }}',
+          creating: false
         }
       });
   }

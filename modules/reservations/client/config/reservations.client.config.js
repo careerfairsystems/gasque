@@ -13,20 +13,21 @@
       title: 'Reservations',
       state: 'reservations',
       type: 'dropdown',
-      roles: ['*']
+      roles: ['admin']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'reservations', {
       title: 'List Reservations',
-      state: 'reservations.list'
+      state: 'reservations.list',
+      roles: ['admin']
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'reservations', {
       title: 'Create Reservation',
-      state: 'reservations.create',
-      roles: ['user']
+      state: 'reservations.paying',
+      roles: ['admin']
     });
   }
 })();

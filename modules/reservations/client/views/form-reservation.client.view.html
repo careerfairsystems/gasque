@@ -1,24 +1,183 @@
 <section>
-  <div class="page-header">
-    <h1>{{vm.reservation._id ? 'Edit Reservation' : 'New Reservation'}}</h1>
-  </div>
-  <div class="col-md-12">
-    <form name="vm.form.reservationForm" class="form-horizontal" ng-submit="vm.save(vm.form.reservationForm.$valid)" novalidate>
-      <fieldset>
-        <div class="form-group" show-errors>
-          <label class="control-label" for="name">Name</label>
-          <input name="name" type="text" ng-model="vm.reservation.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.reservationForm.name.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Reservation name is required.</p>
+
+  <div ng-switch="moduleState">
+    <div ng-switch-when="form">
+      <div class="page-header">
+        <h1>{{vm.reservation._id ? 'Edit a Reservation' : 'Make a Reservation'}}</h1>
+      </div>
+      <div class="col-md-12">
+        <form name="vm.form.reservationForm" class="form-horizontal" ng-submit="checkValidity(vm.form.reservationForm.$valid)" novalidate>
+          <fieldset>
+            <!-- Name -->
+            <div class="form-group" show-errors>
+              <label class="control-label" for="name">Name</label>
+              <input name="name" type="text" ng-model="vm.reservation.name" id="name" class="form-control" required>
+              <div ng-messages="vm.form.reservationForm.name.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Reservation name is required.</p>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group" show-errors>
+              <label class="control-label" for="email">E-mail</label>
+              <input name="email" type="email" ng-model="vm.reservation.email" id="name" class="form-control" required>
+              <div ng-messages="vm.form.reservationForm.email.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Reservation email is required.</p>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group" show-errors>
+              <label class="control-label" for="phone">Phone</label>
+              <input name="phone" type="text" ng-model="vm.reservation.phone" id="name" class="form-control" required>
+              <div ng-messages="vm.form.reservationForm.phone.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Reservation phone is required.</p>
+              </div>
+            </div>
+
+            <!-- Program -->
+            <div class="form-group" show-errors>
+              <label class="control-label" for="program">Program</label>
+              <div>
+                  <select class="form-control" name="program" ng-model="vm.reservation.program" ng-options="program for program in vm.programs" required>
+                  </select>
+              </div>
+              <div ng-messages="vm.form.reservationForm.program.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Program is required.</p>
+              </div>
+            </div>
+
+            <!-- Clothing -->
+            <div class="form-group" show-errors>
+              <label class="control-label" for="clothing">Clothing</label>
+              <div>
+                  <select class="form-control" name="clothing" ng-model="vm.reservation.clothing" ng-options="clothing for clothing in vm.clothings" required>
+                  </select>
+              </div>
+              <div ng-messages="vm.form.reservationForm.clothing.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Clothing choice is required.</p>
+              </div>
+            </div>
+
+            <!-- Titles -->
+            <div class="form-group" show-errors>
+              <label class="control-label" for="title">Title</label>
+              <div>
+                  <select class="form-control" name="title" ng-model="vm.chosenTitle" ng-change="titleChanged()" ng-options="title as (title[0] + ', ' + title[1] + 'kr') for title in vm.titles" required>
+                  </select>
+              </div>
+              <div ng-messages="vm.form.reservationForm.title.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Title is required.</p>
+              </div>
+            </div>
+
+            <!-- Drink Package -->
+            <div class="form-group" show-errors>
+              <label class="control-label" for="drinkpackage">Drink package</label>
+              <div ng-if="vm.isMember === undefined" >
+                <select class="form-control" ng-disabled="true" name="drinkpackage" ng-options="drinkpackage as (drinkpackage + ', ' + drinkpackage[1] + 'kr') for drinkpackage in vm.memberdrinkpackages" required>
+                </select>
+              </div>
+              <div ng-if="vm.isMember === true">
+                  <select class="form-control" name="drinkpackage" ng-model="vm.chosenDrinkPackage" ng-options="drinkpackage as (drinkpackage[0] + ', ' + drinkpackage[1] + 'kr') for drinkpackage in vm.memberdrinkpackages" required>
+                  </select>
+              </div>
+              <div ng-if="vm.isMember === false">
+                  <select class="form-control" name="drinkpackage" ng-model="vm.chosenDrinkPackage" ng-options="drinkpackage as (drinkpackage[0] + ', ' + drinkpackage[1] + 'kr') for drinkpackage in vm.nonmemberdrinkpackages" required>
+                  </select>
+              </div>
+
+              <div ng-messages="vm.form.reservationForm.drinkpackage.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Drink package is required.</p>
+              </div>
+            </div>
+
+            <!-- Foodpref -->
+            <div class="form-group" show-errors>
+            <label class="control-label" for="foodpref">Matpreferens / Food preference</label>
+            <br />
+            <!-- Choices -->
+            <input type="checkbox" ng-model="vm.laktos" /> Laktos
+            <input type="checkbox" ng-model="vm.vegetarian" /> Vegetarian
+            <input type="checkbox" ng-model="vm.vegan" /> Vegan
+            <input type="checkbox" ng-model="vm.gluten" /> Gluten
+            <!-- Other -->
+            <input name="foodpref" type="text" ng-model="vm.other" id="other" placeholder="Other..." class="form-control">
           </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-default">Overview</button>
+            </div>
+            <div ng-show="vm.error" class="text-danger">
+              <strong ng-bind="vm.error"></strong>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+    <div ng-switch-when="overview">
+      <h2>You have chosen the following alternatives:</h2>
+      <hr/>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-5"><strong>Name:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.name"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5"><strong>Email:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.email"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5"><strong>Phone:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.phone"></div>
+          </div>
+
+          <div class="row" ng-show="vm.reservation.program">
+            <div class="col-md-5"><strong>Program:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.program"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5"><strong>Title:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.title"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5"><strong>Drink package:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.drinkpackage"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5"><strong>Food preferences:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.foodpref"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5"><strong>Other food preferences:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.other"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5"><strong>Clothing:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.clothing"></div>
+          </div>
+
         </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.reservation._id ? 'Update' : 'Create'}}</button>
-        </div>
-        <div ng-show="vm.error" class="text-danger">
-          <strong ng-bind="vm.error"></strong>
-        </div>
-      </fieldset>
-    </form>
+      </div>
+      <hr/>
+      <h3>You will be asked to pay the following price: <strong>{{vm.reservation.price}} kr</strong></h3>
+      <hr/>
+      <div class="form-group">
+        <button class="btn btn-default" ng-click="showForm()">Back</button>
+        <button class="btn btn-default" ng-click="submitForm()">Confirm</button>
+      </div>
+      <div ng-show="vm.error" class="text-danger">
+        <strong ng-bind="vm.error"></strong>
+      </div>
+
+    </div>
   </div>
 </section>

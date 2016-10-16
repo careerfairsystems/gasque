@@ -2,6 +2,88 @@
   <div class="page-header">
     <h1 data-ng-bind="vm.reservation.name"></h1>
   </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-5"><strong>Name:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.name"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Email:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.email"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Phone:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.phone"></div>
+      </div>
+
+      <div class="row" ng-show="vm.reservation.program">
+        <div class="col-md-5"><strong>Program:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.program"></div>
+      </div>
+
+      <div class="row" ng-show="vm.reservation.company">
+        <div class="col-md-5"><strong>Company:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.company"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Title:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.title"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Drink package:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.drinkpackage"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Food preferences:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.foodpref"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Other food preferences:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.other"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Clothing:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.clothing"></div>
+      </div>
+
+      <div class="row" ng-show="vm.reservation.desiredPrograms.length > 0">
+        <div class="col-md-5"><strong>Desired Programs:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.desiredPrograms"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Price:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.price"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Has Payed:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.payed"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Confirmed:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.confirmed"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-5"><strong>Honorary table:</strong></div>
+        <div class="col-md-6" ng-bind="vm.reservation.honorary"></div>
+      </div>
+
+    </div>
+  </div>
+
+
   <div class="pull-right"
        data-ng-show="vm.reservation.isCurrentUserOwner">
     <a class="btn btn-primary"

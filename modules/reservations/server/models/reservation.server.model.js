@@ -13,8 +13,57 @@ var ReservationSchema = new Schema({
   name: {
     type: String,
     default: '',
-    required: 'Please fill Reservation name',
+    required: 'Please fill in your name',
     trim: true
+  },
+  email: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
+  program: {
+    type: String,
+  },
+  company: {
+    type: String,
+  },
+  title: {
+    type: String,
+    required: 'Title has to be chosen'
+  },
+  drinkpackage: {
+    type: String,
+    required: 'Drink package has to be chosen'
+  },
+  foodpref: [{
+    type: String
+  }],
+  other: {
+    type: String
+  },
+  clothing: {
+    type: String,
+    required: 'Please fill in your clothing'
+  },
+  desiredPrograms: [{
+    type: String
+  }],
+  price: {
+    type: Number,
+    default: 0
+  },
+  payed: {
+    type: Boolean,
+    default: false
+  },
+  confirmed: {
+    type: Boolean,
+    default: false
+  },
+  honorary: {
+    type: Boolean,
+    default: false
   },
   created: {
     type: Date,

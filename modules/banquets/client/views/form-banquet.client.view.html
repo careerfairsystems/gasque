@@ -32,6 +32,24 @@
           <textarea name="capacity" placeholder="Capacity of the banquet(Not required)" ng-model="vm.banquet.capacity" id="capacity" class="form-control"></textarea>
         </div>
 
+        <!-- Company Representatives.
+          This information is needed to sync our application
+          with the one used in Jexpo for company representatives.
+        -->
+        <div class="form-group">
+          <label class="control-label" for="capacity">Company Representatives</label>
+          <textarea name="capacity" placeholder="Approximate number of company representatives" ng-model="vm.banquet.companyrepresentatives" id="capacity" class="form-control"></textarea>
+        </div>
+
+        <!-- Arkad active
+          Used as a buffer to make sure that
+          active in arkad and other invited guests are guaranteed a chance for a spot.
+        -->
+        <div class="form-group">
+          <label class="control-label" for="capacity">Active in Arkad/other invited</label>
+          <textarea name="capacity" placeholder="Approximate number of active in Arkad/other invited" ng-model="vm.banquet.arkadactive" id="capacity" class="form-control"></textarea>
+        </div>
+
         <!-- Date -->
         <div ng-controller="dateCtrler" class="form-group">
           <label class="control-label" for="date">Choose date for banquet</label>

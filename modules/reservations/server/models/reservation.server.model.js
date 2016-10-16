@@ -65,6 +65,18 @@ var ReservationSchema = new Schema({
     type: Boolean,
     default: false
   },
+  priority: {
+    type: Boolean,
+    default: false
+  },
+  enrolled: {
+    type: Boolean,
+    default: false
+  },
+  reserve: {
+    type: Boolean,
+    default: false
+  },
   created: {
     type: Date,
     default: Date.now

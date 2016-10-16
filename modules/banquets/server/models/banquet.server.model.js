@@ -19,8 +19,7 @@ var BanquetSchema = new Schema({
   description: String,
   location: String,
   capacity: Number,
-  companyrepresentatives: Number,
-  arkadactive: Number,
+  buffer: Number,
   date: {
     type: Date,
     required: 'Please fill Banquet date'

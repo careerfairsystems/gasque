@@ -79,6 +79,15 @@
           pageTitle: 'Reservation {{ articleResolve.name }}',
           creating: false
         }
+      })
+      .state('reservations.thankyou', {
+        url: '/thankyou/:reservationId',
+        templateUrl: 'modules/reservations/client/views/thankyou.client.view.html',
+        controller: 'MailController',
+        controllerAs: 'vm',
+        resolve: {
+          reservationResolve: getReservation
+        }
       });
   }
 

@@ -6,6 +6,8 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Reservation = mongoose.model('Reservation'),
+  Banquet = mongoose.model('Banquet'),
+  BanquetsController = require(path.resolve('./modules/banquets/server/controllers/banquets.server.controller')),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -13,58 +15,132 @@ var path = require('path'),
  * Create a Reservation
  */
 exports.create = function(req, res) {
+
+  var invitedtitles = [
+    ['Host Arkad', 0],
+    ['Coordinator Arkad', 0],
+    ['PG Arkad', 0],
+    ['Other invited', 0],
+  ];
+
+  var othertitles = [
+    ['Not member of TLTH', 790],
+    ['Student member of TLTH', 500]
+  ];
+
+  // Calculate Price
   var nonpayingtitles = [
-    ["Host Arkad", 0],
-    ["Coordinator Arkad", 0],
-    ["PG Arkad", 0],
-    ["Other invited", 0],
-    ["Student member of TLTH", 500]
+    ['Host Arkad', 0],
+    ['Coordinator Arkad', 0],
+    ['PG Arkad', 0],
+    ['Other invited', 0],
+    ['Student member of TLTH', 500]
   ];
 
   var payingtitles = [
-    ["Not member of TLTH", 790]
+    ['Not member of TLTH', 790]
   ];
 
   var payingdrinkpackages = [
-    ["Non Alcoholic beverages", 0],
-    ["Alcoholic beverages", 0]
+    ['Non Alcoholic beverages', 0],
+    ['Alcoholic beverages', 0]
   ];
 
 
   var nonpayingdrinkpackages = [
-    ["Non Alcoholic beverages", 0],
-    ["Alcoholic beverages", 135]
+    ['Non Alcoholic beverages', 0],
+    ['Alcoholic beverages', 135]
   ];
+
   var title = req.body.title;
   var drinkpackage = req.body.drinkpackage;
   var price = 0;
 
 
-  function containTitle(t) {
-    return title === t.title;
+  function containsTitle(t) {
+    return title === t[0];
   }
-  var paying = payingtitles.filter(containTitle);
-  var nonpaying = nonpayingtitles.filter(containTitle);
 
-  if(paying.length > 0)
-    price += paying[1];
+  function getPriceOfPackage(packages) {
+    var toReturn = -1;
+    packages.forEach(function(p) {
+      if(drinkpackage === p[0]){
+        toReturn = p[1];
+      }
+    });
+    return toReturn;
+  }
+
+  var paying = payingtitles.filter(containsTitle)[0];
+  var nonpaying = nonpayingtitles.filter(containsTitle)[0];
+  var invited = invitedtitles.filter(containsTitle)[0];
+  var others = othertitles.filter(containsTitle)[0];
 
 
+  if(paying) {
+    console.log("Price: " + price + ", paying[1]: " + paying[1] + ", getPriceOfPackage(p): " + getPriceOfPackage(payingdrinkpackages));
+    price = paying[1] + getPriceOfPackage(payingdrinkpackages);
+    console.log("Paying price: " + price);
+  }
+
+  if(nonpaying) {
+    console.log("Price: " + price + ", paying[1]: " + nonpaying[1] + ", getPriceOfPackage(n): " + getPriceOfPackage(nonpayingdrinkpackages));
+    price = nonpaying[1] + getPriceOfPackage(nonpayingdrinkpackages);
+    console.log("Nonpaying price: " + price);
+  }
+
+  req.body.price = price;
+
+  //Write the reservation to db
+  if(invited){
+    console.log('NOT INVITED');
+    bookReservation(function(enrolled) {
+      req.body.enrolled = enrolled;
+      doSave();
+    });
+  } else {
+    console.log('INVITED');
+    req.body.enrolled = true;
+    doSave();
+  }
+
+  function doSave() {
+    var reservation = new Reservation(req.body);
+    reservation.user = req.user;
+    reservation.save(function(err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(reservation);
+      }
+    });
+  }
+
+};
 
 
-  var reservation = new Reservation(req.body);
-  reservation.user = req.user;
-
-  reservation.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+function bookReservation (done) {
+  Banquet.findOne({ active: true }).exec(function(err, banquet) {
+    if(err) {
+      console.log(err);
     } else {
-      res.jsonp(reservation);
+      Reservation.find({ enrolled: true }).exec(function(err, enrolledReservations) {
+        if(err) {
+          console.log(err);
+        } else {
+          if(banquet.capacity > (enrolledReservations.length + banquet.buffer)) {
+            done(true);
+          } else {
+            done(false);
+          }
+        }
+      });
     }
   });
-};
+
+}
 
 /**
  * Show the current Reservation

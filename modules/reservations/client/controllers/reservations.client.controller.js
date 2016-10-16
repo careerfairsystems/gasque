@@ -6,9 +6,9 @@
     .module('reservations')
     .controller('ReservationsController', ReservationsController);
 
-  ReservationsController.$inject = ['$scope', '$state', 'Authentication', 'reservationResolve', 'CompaniesService'];
+  ReservationsController.$inject = ['$http','$scope', '$state', 'Authentication', 'reservationResolve', 'CompaniesService'];
 
-  function ReservationsController ($scope, $state, Authentication, reservation, CompaniesService) {
+  function ReservationsController ($http, $scope, $state, Authentication, reservation, CompaniesService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -21,10 +21,10 @@
     vm.isMember = undefined;
 
     vm.isPaying = $state.current.data.isPaying;
-    console.log("isPaying:" + vm.isPaying);
+    console.log('isPaying: ' + vm.isPaying);
 
     vm.creating = $state.current.data.creating;
-    console.log("Creating: " + vm.creating);
+    console.log('Creating: ' + vm.creating);
 
     if(vm.creating){
       vm.titles = [];
@@ -40,31 +40,31 @@
     }
 
     vm.clothings = [
-      "Costume",
-      "Dress"
+      'Costume',
+      'Dress'
     ];
 
     vm.memberdrinkpackages = [
-      ["Non Alcoholic beverages", 0],
-      ["Alcoholic beverages", 135]
+      ['Non Alcoholic beverages', 0],
+      ['Alcoholic beverages', 135]
     ];
 
     vm.nonmemberdrinkpackages = [
-      ["Non Alcoholic beverages", 0],
-      ["Alcoholic beverages", 0]
+      ['Non Alcoholic beverages', 0],
+      ['Alcoholic beverages', 0]
     ];
 
     if(!vm.isPaying) {
       vm.titles = [
-        ["Host Arkad", 0],
-        ["Coordinator Arkad", 0],
-        ["PG Arkad", 0],
-        ["Other invited", 0]
+        ['Host Arkad', 0, true],
+        ['Coordinator Arkad', 0, true],
+        ['PG Arkad', 0, true],
+        ['Other invited', 0, true]
       ];
     } else {
       vm.titles= [
-        ["Student member of TLTH", 500, true],
-        ["Not member of TLTH", 790, false]
+        ['Student member of TLTH', 500, true],
+        ['Not member of TLTH', 790, false]
       ];
     }
 
@@ -114,7 +114,8 @@
     $scope.moduleState = 'form';
 
     $scope.showOverview = function() {
-      calculatePrice();var food_arr = [];
+      calculatePrice();
+      var food_arr = [];
       if(vm.laktos)
         food_arr.push('Laktos');
       if(vm.vegetarian)
@@ -168,7 +169,7 @@
       }
 
       function successCallback(res) {
-        $state.go('reservations.view', {
+        $state.go('reservations.thankyou', {
           reservationId: res._id
         });
       }

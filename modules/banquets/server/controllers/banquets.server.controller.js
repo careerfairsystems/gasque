@@ -5,7 +5,9 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
+  ObjectId = mongoose.Types.ObjectId,
   Banquet = mongoose.model('Banquet'),
+  Reservation = mongoose.model('Reservation'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -92,6 +94,9 @@ exports.list = function(req, res) {
   });
 };
 
+/**
+* Retrieves the active banquet
+*/
 exports.getActive = function(req, res) {
   Banquet.find({ active: true }).exec(function(err, banquets) {
     if (err) {
@@ -103,6 +108,7 @@ exports.getActive = function(req, res) {
     }
   });
 };
+
 
 /**
  * Banquet middleware

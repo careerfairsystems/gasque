@@ -72,6 +72,8 @@
         return false;
       }
 
+      vm.banquet.seatsLeft = vm.banquet.capacity - vm.seatsTaken - vm.banquet.companyrepresentatives;
+
       // TODO: move create/update logic to service
       if (vm.banquet._id) {
         vm.banquet.$update(successCallback, errorCallback);

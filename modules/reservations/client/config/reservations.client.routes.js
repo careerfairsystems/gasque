@@ -32,7 +32,6 @@
           reservationResolve: newReservation
         },
         data: {
-          roles: ['user', 'admin'],
           pageTitle : 'Make a Reservation',
           isPaying: false,
           creating: true
@@ -53,7 +52,6 @@
           reservationResolve: newReservation
         },
         data: {
-          roles: ['user', 'admin'],
           pageTitle: 'Make a Reservation',
           isPaying: true,
           creating: true

@@ -46,17 +46,27 @@
     }
   }]);
 
-  BanquetsController.$inject = ['$scope', '$state', 'Authentication', 'banquetResolve'];
+  BanquetsController.$inject = ['$scope', '$state', 'Authentication', 'banquetResolve', 'MailtemplatesService'];
 
-  function BanquetsController ($scope, $state, Authentication, banquet) {
+  function BanquetsController ($scope, $state, Authentication, banquet, MailtemplatesService) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.banquet = banquet;
+    vm.banquet.starttime = new Date(vm.banquet.starttime);
+    vm.banquet.endtime = new Date(vm.banquet.endtime);
+    vm.banquet.date = new Date(vm.banquet.date);
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    vm.mailtemplates = MailtemplatesService.query();
+    $scope.thankyou = vm.banquet.thankyoumail;
+    $scope.reserv = vm.banquet.reservmail;
+    $scope.paymentreceived = vm.banquet.paymentreceivedmail;
+    $scope.paymentinformation = vm.banquet.paymentinformationmail;
+    $scope.unregistered = vm.banquet.unregisteredmail;
+    $scope.seatoffered = vm.banquet.seatofferedmail;
 
     // Remove existing Banquet
     function remove() {
@@ -70,6 +80,25 @@
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.banquetForm');
         return false;
+      }
+
+      if($scope.thankyou){
+        vm.banquet.thankyoumail = $scope.thankyou;
+      }
+      if($scope.reserv){
+        vm.banquet.reservmail = $scope.reserv;
+      }
+      if($scope.paymentreceived){
+        vm.banquet.paymentreceivedmail = $scope.paymentreceived;
+      }
+      if($scope.paymentinformation){
+        vm.banquet.paymentinformationmail = $scope.paymentinformation;
+      }
+      if($scope.unregistered){
+        vm.banquet.unregisteredmail = $scope.unregistered;
+      }
+      if($scope.seatoffered){
+        vm.banquet.seatofferedmail = $scope.seatoffered;
       }
 
       vm.banquet.seatsLeft = vm.banquet.capacity - vm.seatsTaken - vm.banquet.companyrepresentatives;

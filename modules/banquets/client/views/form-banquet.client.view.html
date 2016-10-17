@@ -73,6 +73,43 @@
         </div>
 
 
+        <h3>Mailtemplates</h3>
+        <!-- Thankyou mail -->
+        <div class="form-group">
+          <label for="thankyou">Thankyou mail</label><br>
+          <select ng-model="thankyou" name="thankyou" ng-options="template._id as template.name for template in vm.mailtemplates">
+          </select>
+        </div>
+        <!-- Reserv mail -->
+        <div class="form-group">
+          <label for="reserv">Reserv mail</label><br>
+          <select ng-model="reserv" name="reserv" ng-options="template._id as template.name for template in vm.mailtemplates">
+          </select>
+        </div>
+        <!-- paymentreceived mail -->
+        <div class="form-group">
+          <label for="paymentreceived">Payment received mail</label><br>
+          <select ng-model="paymentreceived" name="paymentreceived" ng-options="template._id as template.name for template in vm.mailtemplates">
+          </select>
+        </div>
+        <!-- paymentinformation mail -->
+        <div class="form-group">
+          <label for="paymentinformation">Payment information mail</label><br>
+          <select ng-model="paymentinformation" name="paymentinformation" ng-options="template._id as template.name for template in vm.mailtemplates">
+          </select>
+        </div>
+        <!-- unregistered mail -->
+        <div class="form-group">
+          <label for="unregistered">Unregistered mail</label><br>
+          <select ng-model="unregistered" name="unregistered" ng-options="template._id as template.name for template in vm.mailtemplates">
+          </select>
+        </div>
+        <!-- seatoffered mail -->
+        <div class="form-group">
+          <label for="seatoffered">SeatOffered mail</label><br>
+          <select ng-model="seatoffered" name="seatoffered" ng-options="template._id as template.name for template in vm.mailtemplates">
+          </select>
+        </div>
 
 
 

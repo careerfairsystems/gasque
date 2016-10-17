@@ -46,6 +46,30 @@ var BanquetSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  thankyoumail: {
+    type: Schema.ObjectId,
+    ref: 'Mailtemplate'
+  },
+  reservmail: {
+    type: Schema.ObjectId,
+    ref: 'Mailtemplate'
+  },
+  paymentreceivedmail: {
+    type: Schema.ObjectId,
+    ref: 'Mailtemplate'
+  },
+  paymentinformationmail: {
+    type: Schema.ObjectId,
+    ref: 'Mailtemplate'
+  },
+  unregisteredmail: {
+    type: Schema.ObjectId,
+    ref: 'Mailtemplate'
+  },
+  seatofferedmail: {
+    type: Schema.ObjectId,
+    ref: 'Mailtemplate'
+  },
   user: {
     type: Schema.ObjectId,
     ref: 'User'

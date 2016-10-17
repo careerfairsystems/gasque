@@ -7,6 +7,23 @@ var reservationsPolicy = require('../policies/reservations.server.policy'),
   reservations = require('../controllers/reservations.server.controller');
 
 module.exports = function(app) {
+
+  // Enrolled Routes
+  app.route('/api/reservations/enrolled')
+    .get(reservations.listenrolled);
+
+  // Reserves Routes
+  app.route('/api/reservations/reserves')
+    .get(reservations.listreserves);
+
+  // Confirmed Routes
+  app.route('/api/reservations/confirmed')
+    .get(reservations.listconfirmed);
+
+  // Attending Routes
+  app.route('/api/reservations/listattending')
+    .get(reservations.listattending);
+
   // Reservations Routes
   app.route('/api/reservations').all(reservationsPolicy.isAllowed)
     .get(reservations.list)

@@ -36,6 +36,15 @@
           pageTitle : 'Banquets Create'
         }
       })
+      .state('banquets.active', {
+        url: '/active',
+        templateUrl: 'modules/banquets/client/views/active-banquet.client.view.html',
+        controller: 'ActiveBanquetController',
+        controllerAs: 'vm',
+        resolve: {
+          banquetListResolve: getBanquetList
+        },
+      })
       .state('banquets.edit', {
         url: '/:banquetId/edit',
         templateUrl: 'modules/banquets/client/views/form-banquet.client.view.html',
@@ -60,15 +69,6 @@
         data:{
           pageTitle: 'Banquet {{ articleResolve.name }}'
         }
-      })
-      .state('banquets.active', {
-        url: '/active',
-        templateUrl: 'modules/banquets/client/views/active-banquet.client.view.html',
-        controller: 'ActiveBanquetController',
-        controllerAs: 'vm',
-        resolve: {
-          banquetListResolve: getBanquetList
-        },
       });
   }
 

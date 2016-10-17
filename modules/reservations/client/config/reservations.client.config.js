@@ -10,6 +10,11 @@
   function menuConfig(Menus) {
     // Set top bar menu items
     Menus.addMenuItem('topbar', {
+      title: 'Enrolled',
+      state: 'reservations.listenrolled',
+      roles: ['admin']
+    });
+    Menus.addMenuItem('topbar', {
       title: 'Reservations',
       state: 'reservations',
       type: 'dropdown',

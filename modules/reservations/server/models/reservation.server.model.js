@@ -65,10 +65,6 @@ var ReservationSchema = new Schema({
     type: Boolean,
     default: false
   },
-  priority: {
-    type: Boolean,
-    default: false
-  },
   enrolled: {
     type: Boolean,
     default: false

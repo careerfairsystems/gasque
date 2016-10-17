@@ -92,11 +92,11 @@ exports.create = function(req, res) {
   req.body.price = price;
 
   //Write the reservation to db
-  if(invited){
+  if(!invited){
     console.log('NOT INVITED');
     bookReservation(function(enrolled) {
       req.body.enrolled = enrolled;
-      req.body.reserve = !req.body.enrolled; 
+      req.body.reserve = !req.body.enrolled;
       doSave();
     });
   } else {
@@ -207,6 +207,67 @@ exports.list = function(req, res) {
     }
   });
 };
+
+/**
+* List of enrolled Reservations
+*/
+exports.listenrolled = function(req,res) {
+  Reservation.find({ enrolled : true }).sort('-created').populate('user', 'displayName').exec(function(err, reservations){
+    if(err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp({ data: reservations });
+    }
+  });
+};
+
+/**
+* List of reserve Reservations
+*/
+exports.listreserves = function(req,res) {
+  Reservation.find({ reserve : true }).sort('-created').populate('user', 'displayName').exec(function(err, reservations){
+    if(err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(reservations);
+    }
+  });
+};
+
+/**
+* List of confirmed Reservations
+*/
+exports.listconfirmed = function(req,res) {
+  Reservation.find({ confirmed : true }).sort('-created').populate('user', 'displayName').exec(function(err, reservations){
+    if(err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(reservations);
+    }
+  });
+};
+
+/**
+* List of Attendee Reservations
+*/
+exports.listattending = function(req,res) {
+  Reservation.find({ payed : true }).sort('-created').populate('user', 'displayName').exec(function(err, reservations){
+    if(err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(reservations);
+    }
+  });
+};
+
 
 /**
  * Reservation middleware

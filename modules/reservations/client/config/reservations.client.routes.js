@@ -38,6 +38,12 @@
           creating: true
         }
       })
+      .state('reservations.listenrolled', {
+        url: '/enrolled',
+        templateUrl: 'modules/reservations/client/views/list-enrolled.client.view.html',
+        controller: 'EnrolledListController',
+        controllerAs: 'vm',
+      })
       .state('reservations.paying', {
         url: '/paying',
         templateUrl: 'modules/reservations/client/views/form-reservation.client.view.html',

@@ -20,6 +20,27 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/reservations/:reservationId',
       permissions: '*'
+    }, {
+      resources: '/api/reservations/enrolled',
+      permissions: '*'
+    }, {
+      resources: '/api/reservations/reserves',
+      permissions: '*'
+    }, {
+      resources: '/api/reservations/confirmed',
+      permissions: '*'
+    }, {
+      resources: '/api/reservations/attending',
+      permissions: '*'
+    }]
+  }, {
+    roles: ['economy'],
+    allows : [{
+      resources: '/api/reservations/confirmed',
+      permissions: ['get', 'post']
+    }, {
+      resources: '/api/reservations/attending',
+      permissions: ['get']
     }]
   }, {
     roles: ['user'],
@@ -34,10 +55,7 @@ exports.invokeRolesPolicies = function () {
     roles: ['guest'],
     allows: [{
       resources: '/api/reservations',
-      permissions: ['get']
-    }, {
-      resources: '/api/reservations/:reservationId',
-      permissions: ['get']
+      permissions: ['get', 'post']
     }]
   }]);
 };

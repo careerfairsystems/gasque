@@ -24,7 +24,7 @@
         }
       })
       .state('reservations.nonpaying', {
-        url: '/2016',
+        url: '/inbjudan',
         templateUrl: 'modules/reservations/client/views/form-reservation.client.view.html',
         controller: 'ReservationsController',
         controllerAs: 'vm',
@@ -45,7 +45,7 @@
         controllerAs: 'vm',
       })
       .state('reservations.paying', {
-        url: '/book',
+        url: '/anmalan',
         templateUrl: 'modules/reservations/client/views/form-reservation.client.view.html',
         controller: 'ReservationsController',
         controllerAs: 'vm',

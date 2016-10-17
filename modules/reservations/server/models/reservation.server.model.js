@@ -30,7 +30,10 @@ var ReservationSchema = new Schema({
   },
   title: {
     type: String,
-    required: 'Title has to be chosen'
+  },
+  membership: {
+    type: String,
+    required: 'Membership has to be chosen'
   },
   drinkpackage: {
     type: String,

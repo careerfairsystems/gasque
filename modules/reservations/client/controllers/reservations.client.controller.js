@@ -37,9 +37,9 @@
     if(vm.creating){
       vm.titles = [];
       vm.drinkpackages = [];
-      vm.reservation.title = {};
+      vm.reservation.membership = {};
       vm.reservation.drinkpackage = {};
-      vm.chosenTitle = [];
+      vm.chosenMembership = [];
       vm.chosenDrinkPackage = [];
       vm.laktos = false;
       vm.vegetarian = false;
@@ -94,7 +94,7 @@
       vm.validity = resForm;
       calculatePrice();
       if(vm.validity){
-        if(!vm.chosenTitle || vm.chosenTitle.length  <= 0){
+        if(!vm.chosenMembership || vm.chosenMembership.length  <= 0){
           vm.titleError = 'You must select Price and Membership';
           return;
         } else {
@@ -118,7 +118,7 @@
           food_arr.push('Gluten');
         vm.reservation.foodpref = food_arr;
         vm.reservation.other = vm.other;
-        vm.reservation.title = vm.chosenTitle[0];
+        vm.reservation.membership = vm.chosenMembership[0];
         vm.reservation.drinkpackage = vm.chosenDrinkPackage[0];
         $scope.moduleState = 'overview';
       } else {
@@ -128,7 +128,7 @@
 
 
     $scope.titleChanged = function() {
-      vm.isMember = vm.chosenTitle[2];
+      vm.isMember = vm.chosenMembership[2];
     };
 
     $scope.moduleState = 'form';
@@ -158,7 +158,7 @@
     };
 
     function calculatePrice(){
-      vm.reservation.price = vm.chosenTitle[1] + vm.chosenDrinkPackage[1];
+      vm.reservation.price = vm.chosenMembership[1] + vm.chosenDrinkPackage[1];
       console.log(vm.reservation.price);
     }
 
@@ -180,7 +180,7 @@
 
       console.log(vm.reservation);
 
-      vm.reservation.title = vm.chosenTitle[0];
+      vm.reservation.membership = vm.chosenMembership[0];
       vm.reservation.drinkpackage = vm.chosenDrinkPackage[0];
       if (vm.reservation._id) {
         vm.reservation.$update(successCallback, errorCallback);

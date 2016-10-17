@@ -69,10 +69,20 @@
               </div>
 
               <!-- Titles -->
-              <div class="form-group" show-errors>
+              <div class="form-group" >
                 <label class="control-label" for="title">Price and Membership in TLTH</label>
+                <br>
+                <small> If you are requested (anmodad) please fill in your title, or whom you are partner for</small>
                 <div>
-                    <select class="form-control" name="title" ng-model="vm.chosenTitle" ng-change="titleChanged()" ng-options="title as (title[0] + ', ' + title[1] + 'kr') for title in vm.titles" required>
+                    <input name="title" type="text" ng-model="vm.reservation.title" id="title" class="form-control" />
+                </div>
+              </div>
+
+              <!-- Membership -->
+              <div class="form-group" show-errors>
+                <label class="control-label" for="membership">Price and Membership in TLTH</label>
+                <div>
+                    <select class="form-control" name="membership" ng-model="vm.chosenMembership" ng-change="titleChanged()" ng-options="title as (title[0] + ', ' + title[1] + 'kr') for title in vm.titles" required>
                     </select>
                 </div>
                 <div ng-messages="vm.form.reservationForm.title.$error" role="alert">
@@ -111,7 +121,7 @@
                 <input type="checkbox" ng-model="vm.vegan" /> Vegan
                 <input type="checkbox" ng-model="vm.gluten" /> Gluten
                 <!-- Other -->
-                <input name="foodpref" type="text" ng-model="vm.other" id="other" placeholder="Other..." class="form-control">
+                <input name="foodpref" type="text" ng-model="vm.other" id="other" placeholder="Other foodpreferences..." class="form-control">
               </div>
 
               <div class="form-group">
@@ -157,8 +167,13 @@
           </div>
 
           <div class="row">
-            <div class="col-md-5"><strong>Price and Membership:</strong></div>
+            <div class="col-md-5"><strong>Title:</strong></div>
             <div class="col-md-6" ng-bind="vm.reservation.title"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5"><strong>Price and Membership:</strong></div>
+            <div class="col-md-6" ng-bind="vm.reservation.membership"></div>
           </div>
 
           <div class="row">

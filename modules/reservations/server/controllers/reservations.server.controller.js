@@ -371,6 +371,7 @@ function thankyoumail(req,res) {
     str += "Program:\n\t" + reservation.program + '\n';
     str += "Clothing:\n\t" + reservation.clothing + '\n';
     str += "Title:\n\t" + reservation.title + '\n';
+    str += "Membership:\n\t" + reservation.membership + '\n';
     str += "Beverage package:\n\t" + reservation.drinkpackage + '\n';
     str += "Food preference:\n\t" + reservation.foodpref + '\n';
     str += "Other preferences:\n\t" + reservation.other + '\n';

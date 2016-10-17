@@ -1,22 +1,67 @@
 <section>
   <div class="page-header">
-    <h1>Reservations</h1>
+    <h1>All Reservations</h1>
   </div>
-  <div class="list-group">
-    <a data-ng-repeat="reservation in vm.reservations"
-       data-ui-sref="reservations.view({ reservationId: reservation._id })"
-       class="list-group-item">
-      <small class="list-group-item-text">
-        Posted on
-        <span data-ng-bind="reservation.created | date:'mediumDate'"></span>
-        by
-        <span data-ng-if="reservation.user" data-ng-bind="reservation.user.displayName"></span>
-        <span data-ng-if="!reservation.user">Deleted User</span>
-      </small>
-      <h4 class="list-group-item-heading" data-ng-bind="reservation.name"></h4>
-    </a>
+  <div class="my-message" ng-show="message">
+    <div style="padding: 5px;">
+      <div class="my-inner-message text-center alert alert-info">
+        <button type="button" class="close" ng-click="message = undefined" data-dismiss="alert">&times;</button>
+        {{ message }}
+      </div>
+    </div>
   </div>
-  <div class="alert alert-warning text-center" data-ng-if="vm.reservations.$resolved && !vm.reservations.length">
-    No Reservations yet, why don't you <a data-ui-sref="reservations.create">create one</a>?
+  <div class="jumbotron">
+    <div class="row">
+      <hr>
+      <table id="reservationsList" class="table table-striped compact table-bordered nowrap" >
+        <thead>
+          <tr>
+            <th></th>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Foodpref</th>
+            <th>Other</th>
+            <th>true or false</th>
+            <th>true or false</th>
+            <th>true or false</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Foodpref</th>
+            <th>Other</th>
+            <th>Enrolled</th>
+            <th>Confirm</th>
+            <th>Unregister</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Foodpref</th>
+            <th>Other</th>
+            <th>Enrolled</th>
+            <th>Confirm</th>
+            <th>Unregister</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <div class="alert alert-warning text-center" ng-show="vm.reservations.$resolved && !vm.reservations.length">
+    No Reservations yet, dont you worry, they will come!
+    <img src="https://mailewindsong.files.wordpress.com/2015/05/15871.jpg" style="display: block; margin: auto;" />
   </div>
 </section>

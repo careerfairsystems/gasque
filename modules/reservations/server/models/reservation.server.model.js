@@ -60,6 +60,10 @@ var ReservationSchema = new Schema({
     type: Boolean,
     default: false
   },
+  ocr: {
+    type: String,
+    default: 'YOUR_NAME'
+  },
   confirmed: {
     type: Boolean,
     default: false

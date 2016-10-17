@@ -10,11 +10,6 @@
   function menuConfig(Menus) {
     // Set top bar menu items
     Menus.addMenuItem('topbar', {
-      title: 'Enrolled',
-      state: 'reservations.listenrolled',
-      roles: ['admin']
-    });
-    Menus.addMenuItem('topbar', {
       title: 'Reservations',
       state: 'reservations',
       type: 'dropdown',
@@ -27,11 +22,19 @@
       state: 'reservations.list',
       roles: ['admin']
     });
-
-    // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'reservations', {
-      title: 'Create Reservation',
-      state: 'reservations.paying',
+      title: 'To confirm',
+      state: 'reservations.enrolled',
+      roles: ['admin']
+    });
+    Menus.addSubMenuItem('topbar', 'reservations', {
+      title: 'To check payment',
+      state: 'reservations.payment',
+      roles: ['admin']
+    });
+    Menus.addSubMenuItem('topbar', 'reservations', {
+      title: 'Reserves',
+      state: 'reservations.reserves',
       roles: ['admin']
     });
   }

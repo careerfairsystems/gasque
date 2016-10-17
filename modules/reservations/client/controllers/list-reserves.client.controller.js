@@ -4,27 +4,26 @@
 
   angular
     .module('reservations')
-    .controller('ReservationsListController', ReservationsListController);
+    .controller('ReservesListController', ReservesListController);
 
-  ReservationsListController.$inject = ['ReservationsService', '$stateParams', '$state', '$filter', '$scope', '$compile', '$http'];
+  ReservesListController.$inject = ['ReservationsService', '$stateParams', '$state', '$filter', '$scope', '$compile', '$http'];
 
-  function ReservationsListController(ReservationsService, $stateParams, $state, $filter, $scope, $compile, $http) {
+  function ReservesListController(ReservationsService, $stateParams, $state, $filter, $scope, $compile, $http) {
     var vm = this;
 
-    $http.get('/api/reservations/enrolled')
+    $http.get('/api/reservations/reserves')
     .then(function(response) {
-      //get enrolled reservations
-      function isEnrolled(r){ return r.enrolled; }
-      vm.reservations = response.data.data.filter(isEnrolled);
+      // Get reserves
+      function isReserve(r){ return r.reserve; }
+      vm.reservations = response.data.data.filter(isReserve);
 
       angular.forEach(vm.reservations, function(reservation, key) {
         reservation.nr = 1 + key;
         reservation.date = $filter('date')(reservation.created, 'yyyy-MM-dd');
-        reservation.enrolled = reservation.enrolled || false;
-        reservation.confirmed = reservation.confirmed || false;
+        reservation.payed = reservation.payed || false;
+
         reservation.program = reservation.program || '';
         reservation.other = reservation.other || '';
-        reservation.unregister = !reservation.enrolled && !reservation.reserve && !reservation.payed;
       });
 
       // Datatable code
@@ -34,9 +33,7 @@
         var pos = index + 1;
         $(this).html('<input class="form-control" id="col-search-'+pos+'" type="text" placeholder="Search '+title+'" />');
       });
-
       vm.createDatatable(vm.reservations);
-
     });
 
     // Show message in 10 sec
@@ -54,34 +51,18 @@
       $state.go('reservations.view', { reservationId: current._id });
     };
 
-    vm.setConfirmation = function(index){
-      var imSure = window.confirm('Are you sure you want to confirm this reservation to the banquet?');
-      if(imSure){
-        vm.reservations[index].confirm = true;
-        var reservation = vm.reservations[index];
-        var res = ReservationsService.get({ reservationId: reservation._id }, function() {
-          res.confirmed = reservation.confirmed;
-          res.$save(function(r){
-            vm.showMessage('Succesfully confirmed reservation.');
-          });
-        });
-      }
-    };
-    vm.setAsUnregistered = function(index){
-      var imSure = window.confirm('Are you sure you want to throw this reservation to unregistered?');
+    vm.setPayed = function(index){
+      var imSure = window.confirm('Are you sure you want to confirm this reservation has payed?');
       if(imSure){
         var reservation = vm.reservations[index];
-
-        $http.post('/api/reservations/unregister', { reservationId: reservation._id }).success(function (response) {
+        $http.post('/api/reservations/haspayed', { reservationId: reservation._id }).success(function (response) {
           vm.showMessage(response.message || 'Succesfully unregistered reservation.');
         }).error(function (response) {
           vm.showMessage('Failed to unregistered reservation.');
           console.log('Err response: ' + JSON.stringify(response));
         });
-
       }
     };
-
 
     // Init datatable
     vm.createDatatable = function(data){
@@ -107,27 +88,15 @@
               $compile(nTd)($scope);
             }
           },
-          { data: 'program' },
           { data: 'email' },
           { data: 'phone' },
-          { data: 'enrolled',
+          { data: 'payed',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
-              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');
+              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-click="vm.setPayed(' + iRow + ')" />');
               $compile(nTd)($scope);
             }
           },
-          { data: 'confirmed',
-            'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
-              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' data-ng-click="vm.setConfirmation('+ iRow+')" />');
-              $compile(nTd)($scope);
-            }
-          },
-          { data: 'unregister',
-            'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
-              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' data-ng-click="vm.setAsUnregistered('+ iRow+')" />');
-              $compile(nTd)($scope);
-            }
-          },
+          { data: 'ocr' },
         ]
       });
 

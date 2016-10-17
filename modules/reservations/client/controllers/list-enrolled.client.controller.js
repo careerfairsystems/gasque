@@ -110,8 +110,6 @@
           { data: 'program' },
           { data: 'email' },
           { data: 'phone' },
-          { data: 'foodpref' },
-          { data: 'other' },
           { data: 'enrolled',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');

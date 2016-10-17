@@ -32,6 +32,10 @@ module.exports = function(app) {
   app.route('/api/reservations/enrolled').all(reservationsPolicy.isAllowed)
     .get(reservations.listenrolled);
 
+  // HastoPay Routes
+  app.route('/api/reservations/payment').all(reservationsPolicy.isAllowed)
+    .get(reservations.listpayment);
+
   // Reserves Routes
   app.route('/api/reservations/reserves').all(reservationsPolicy.isAllowed)
     .get(reservations.listreserves);

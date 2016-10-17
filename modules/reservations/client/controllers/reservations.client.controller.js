@@ -181,6 +181,7 @@
       console.log(vm.reservation);
 
       vm.reservation.membership = vm.chosenMembership[0];
+      vm.reservation.ocr = (new Date()).getTime();
       vm.reservation.drinkpackage = vm.chosenDrinkPackage[0];
       if (vm.reservation._id) {
         vm.reservation.$update(successCallback, errorCallback);

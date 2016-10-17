@@ -23,24 +23,22 @@
           pageTitle: 'Reservations List'
         }
       })
-      .state('reservations.nonpaying', {
-        url: '/inbjudan',
-        templateUrl: 'modules/reservations/client/views/form-reservation.client.view.html',
-        controller: 'ReservationsController',
-        controllerAs: 'vm',
-        resolve: {
-          reservationResolve: newReservation
-        },
-        data: {
-          pageTitle : 'Make a Reservation',
-          isPaying: false,
-          creating: true
-        }
-      })
-      .state('reservations.listenrolled', {
+      .state('reservations.enrolled', {
         url: '/enrolled',
         templateUrl: 'modules/reservations/client/views/list-enrolled.client.view.html',
         controller: 'EnrolledListController',
+        controllerAs: 'vm',
+      })
+      .state('reservations.payment', {
+        url: '/payment',
+        templateUrl: 'modules/reservations/client/views/list-payment.client.view.html',
+        controller: 'PaymentListController',
+        controllerAs: 'vm',
+      })
+      .state('reservations.reserves', {
+        url: '/reserves',
+        templateUrl: 'modules/reservations/client/views/list-reserves.client.view.html',
+        controller: 'ReservesListController',
         controllerAs: 'vm',
       })
       .state('reservations.paying', {
@@ -54,6 +52,20 @@
         data: {
           pageTitle: 'Make a Reservation',
           isPaying: true,
+          creating: true
+        }
+      })
+      .state('reservations.nonpaying', {
+        url: '/inbjudan',
+        templateUrl: 'modules/reservations/client/views/form-reservation.client.view.html',
+        controller: 'ReservationsController',
+        controllerAs: 'vm',
+        resolve: {
+          reservationResolve: newReservation
+        },
+        data: {
+          pageTitle : 'Make a Reservation',
+          isPaying: false,
           creating: true
         }
       })

@@ -65,7 +65,7 @@ exports.create = function(req, res) {
     ['Alcoholic beverages', 135]
   ];
 
-  var title = req.body.title;
+  var title = req.body.membership;
   var drinkpackage = req.body.drinkpackage;
   var price = 0;
 
@@ -161,7 +161,7 @@ function bookReservation (done) {
  */
 exports.unregisterreservation = function(req, res) {
   var reservationId = req.body.reservationId;
-  Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { enrolled: false, reserv: false, payed: false } }, updateDone);
+  Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { enrolled: false, reserv: false } }, updateDone);
   function updateDone(err, affected, reservation){
     // Send email to reservation of being unregistered
     sendEmailWithBanquetTemplate(reservationId, req, res, 'unregisteredmail');
@@ -172,7 +172,7 @@ exports.unregisterreservation = function(req, res) {
  * Confirm a reservation
  */
 exports.confirmreservation = function(req, res) {
-  var reservationId = req.reservationId;
+  var reservationId = req.body.reservationId;
   Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { confirmed: true } }, updateDone);
   function updateDone(err, affected, reservation){
     // Send email to reservation of being unregistered
@@ -184,7 +184,7 @@ exports.confirmreservation = function(req, res) {
  * Offer a reservation a seat
  */
 exports.offerseat = function(req, res) {
-  var reservationId = req.reservationId;
+  var reservationId = req.body.reservationId;
   Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { pending: true, pendingdeadline: getTomorrow() } }, updateDone);
   function updateDone(err, affected, reservation){
     // Send email to reservation of being unregistered
@@ -203,7 +203,7 @@ exports.offerseat = function(req, res) {
  * Update reservation to has payed
  */
 exports.haspayed = function(req, res) {
-  var reservationId = req.reservationId;
+  var reservationId = req.body.reservationId;
   Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { payed: true } }, updateDone);
   function updateDone(err, affected, reservation){
     // Send email to reservation of being unregistered
@@ -272,6 +272,21 @@ exports.list = function(req, res) {
       });
     } else {
       res.jsonp(reservations);
+    }
+  });
+};
+
+/**
+* List of reservations that should pay
+*/
+exports.listpayment = function(req,res) {
+  Reservation.find({ payed : false }).sort('-created').populate('user', 'displayName').exec(function(err, reservations){
+    if(err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp({ data: reservations });
     }
   });
 };
@@ -376,6 +391,8 @@ function thankyoumail(req,res) {
     str += 'Food preference:\n\t' + reservation.foodpref + '\n';
     str += 'Other preferences:\n\t' + reservation.other + '\n';
     str += 'Price:\n\t' + reservation.price + 'kr\n';
+    str += '\n';
+    str += 'Your payment shall state the OCR: \n' + reservation.ocr;
     str += '\n';
     return str;
   }

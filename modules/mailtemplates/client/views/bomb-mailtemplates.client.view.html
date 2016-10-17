@@ -1,0 +1,59 @@
+<section>
+  <div class="page-header">
+    <h1>Mailtemplates</h1>
+  </div>
+  <!-- Choose Event -->
+  <div class="row">
+    <h4>Choose which event whose attendees you want to mailbomb</h4>
+    <div class="list-group">
+      <div data-ng-repeat="event in vm.arkadevents track by $index" ng-class="{active: $index === vm.currEvent}" ng-click="vm.chooseEvent($index)" class="list-group-item" style="cursor: pointer;">
+        <h4 class="list-group-item-heading" data-ng-bind="event.name"></h4>
+      </div>
+    </div>
+    <p class="lead">All the enrolled students will be mailed.</p>
+  </div>
+  <!-- Choose Template -->
+  <div class="row" ng-show="vm.reservations">
+    <h4>Choose mailtemplate to use</h4>
+    <div class="list-group">
+      <div data-ng-repeat="mailtemplate in vm.mailtemplates track by $index" ng-class="{active: $index === vm.currTemplate}" ng-click="vm.chooseTemplate($index)" class="list-group-item" style="cursor: pointer;">
+        <h4 class="list-group-item-heading" data-ng-bind="mailtemplate.name"></h4>
+      </div>
+    </div>
+  </div>
+  <!-- View email && list -->
+  <div class="row" ng-show="vm.template">
+    <div class="jumbotron">
+      <h4>Overview</h4>
+      <hr>
+      <label>Subject</label>
+      <p>{{ vm.template.subject }}</p>
+      <label>Mail-text</label>
+      <pre>{{ vm.template.content }}</pre>
+      
+      <label>Skicka till</label>
+      <table class="table table-condensed" ng-show="vm.reservations.length > 0">
+        <tr class="active">
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+        <tr ng-repeat="reservation in vm.reservations"> 
+          <td>{{ reservation.name }}</td>
+          <td>{{ reservation.email }}</td>
+        </tr>
+      </table>
+      <div class="alert alert-warning text-center" ng-show="vm.reservations.length <= 0">
+        There are no reservations for this event
+      </div>
+      <hr>
+      <button class="btn btn-primary" ng-click="vm.sendEmails()">Send Emails</button>
+    </div>
+  </div>
+  <div class="alert alert-success text-center" data-ng-if="success" ng-bind-html="success">
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="error" ng-bind-html="error">
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.mailtemplates.$resolved && !vm.mailtemplates.length">
+    No Mailtemplates yet, why don't you <a data-ui-sref="mailtemplates.create">create one</a>?
+  </div>
+</section>

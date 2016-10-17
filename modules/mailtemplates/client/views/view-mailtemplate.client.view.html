@@ -1,0 +1,34 @@
+<section>
+  <div class="page-header">
+    <h1>View Mailtemplate</h1>
+  </div>
+  <div class="row">
+    <h2>Name: {{ vm.mailtemplate.name }}</h2>
+    <label> Subject </label>
+    <p>{{ vm.mailtemplate.subject }}</p>
+    <label> Content </label>
+    <pre>{{ vm.mailtemplate.content }}</pre>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="pull-right">
+      <a class="btn btn-primary"
+         data-ui-sref="mailtemplates.edit({ mailtemplateId: vm.mailtemplate._id })">
+        <i class="glyphicon glyphicon-edit"></i>
+      </a>
+      <a class="btn btn-primary" data-ng-click="vm.remove()">
+        <i class="glyphicon glyphicon-trash"></i>
+      </a>
+    </div>
+    <small>
+      <em class="text-muted">
+        Posted on
+        <span data-ng-bind="vm.mailtemplate.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-if="vm.mailtemplate.user"
+              data-ng-bind="vm.mailtemplate.user.displayName"></span>
+        <span data-ng-if="!vm.mailtemplate.user">Deleted User</span>
+      </em>
+    </small>
+  </div>
+</section>

@@ -9,8 +9,8 @@ var reservationsPolicy = require('../policies/reservations.server.policy'),
 module.exports = function(app) {
 
   // Mail Routes
-  app.route('/api/reservations/mail/thankyou')
-    .post(reservations.thankyoumail);
+  app.route('/api/reservations/confirmationmail')
+    .post(reservations.reservationconfirmation);
   
   // Enrolled Routes
   app.route('/api/reservations/enrolled')

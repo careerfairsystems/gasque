@@ -17,7 +17,7 @@
     vm.email = vm.reservation.email;
     vm.enrolled = vm.reservation.enrolled;
 
-    $http.post('/api/reservations/mail/thankyou', { reservationId: vm.reservation._id }).success(function (response) {
+    $http.post('/api/reservations/confirmationmail', { reservationId: vm.reservation._id }).success(function (response) {
       // Show usser success message
       $scope.success = response.message;
     }).error(function (response) {

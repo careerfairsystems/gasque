@@ -5,6 +5,7 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
+  ObjectId = mongoose.Types.ObjectId,
   Reservation = mongoose.model('Reservation'),
   Banquet = mongoose.model('Banquet'),
   MailController = require(path.resolve('./modules/mailtemplates/server/controllers/mail.server.controller')),
@@ -272,33 +273,47 @@ exports.listattending = function(req,res) {
 /**
 * Send thankyou-mail
 */
-exports.thankyoumail = function(req,res) {
+exports.reservationconfirmation = function(req,res) {
   var reservationId = req.body.reservationId;
-  Banquet.findOne({ active: true }, function(err, banquet){
-    var mailtemplate = banquet.thankyoumail;
-    var hasResponded = false;
-    MailController.sendTemplateEmail(mailtemplate, reservationId, res, function(result){
-      if(hasResponded){
-        return;
-      }
-      hasResponded = true;
-      if(result.error){
-        return res.status(400).send({ message: result.message });
-      } else {
-        return res.status(200).send({ message: result.message });
-      }
-    });
-  });
+
+  Reservation.findOne({ _id: new ObjectId(reservationId) }, foundReservation);
+  function foundReservation(err, reservation){
+    if(err || !reservation){
+      return res.status(400).send({ message: "Reservation not found" });
+    } 
+    if(reservation.enrolled){
+      thankyoumail(req, res);
+    } else {
+      reservationmail(req, res);
+    }
+  }
 };
+
+/**
+* Send thankyou-mail
+*/
+exports.thankyoumail = thankyoumail;
+function thankyoumail(req,res) {
+  sendEmailWithBanquetTemplate(req, res, "thankyoumail");
+}
+
 /**
 * Send reserv-mail
 */
-exports.reservmail = function(req,res) {
+exports.reservmail = reservationmail;
+function reservationmail(req,res) {
+  sendEmailWithBanquetTemplate(req, res, "reservmail");
+}
+
+/**
+  * Generic method to send a email based on mailtemplate given
+  */
+function sendEmailWithBanquetTemplate(req,res, mailtemplate) {
   var reservationId = req.body.reservationId;
   Banquet.findOne({ active: true }, function(err, banquet){
-    var mailtemplate = banquet.reservmail;
+    var template = banquet[mailtemplate];
     var hasResponded = false;
-    MailController.sendTemplateEmail(mailtemplate, reservationId, res, function(result){
+    MailController.sendTemplateEmail(template, reservationId, res, function(result){
       if(hasResponded){
         return;
       }
@@ -310,7 +325,7 @@ exports.reservmail = function(req,res) {
       }
     });
   });
-};
+}
 
 /**
  * Reservation middleware

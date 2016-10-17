@@ -16,7 +16,8 @@ var BanquetSchema = new Schema({
     required: 'Please fill Banquet name',
     trim: true
   },
-  description: String,
+  textNonpaying: String,
+  textPaying: String,
   location: String,
   capacity: Number,
   buffer: Number,

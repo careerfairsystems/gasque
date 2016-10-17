@@ -14,18 +14,6 @@
         <span data-ng-if="!banquet.user">Deleted User</span>
       </small>
       <h3 class="list-group-item-heading" data-ng-bind="banquet.name"></h3>
-      <h4>Description:</h4>
-      <span class="list-group-item-heading" data-ng-bind="banquet.description"></span>
-      <h4>Location:</h4>
-      <span class="list-group-item-heading" data-ng-bind="banquet.location"></span>
-      <h4>Capacity:</h4>
-      <span class="list-group-item-heading" data-ng-bind="banquet.capacity"></span>
-      <h4>Buffer:</h4>
-      <span class="list-group-item-heading" data-ng-bind="banquet.buffer"></span>
-      <h4>Date:</h4>
-      <span class="list-group-item-heading" data-ng-bind="banquet.date | date:'mediumDate'"></span>
-
-
     </a>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.banquets.$resolved && !vm.banquets.length">

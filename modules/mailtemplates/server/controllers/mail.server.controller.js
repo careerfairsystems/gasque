@@ -22,7 +22,7 @@ var smtpTransport = nodemailer.createTransport(config.mailer.options);
 /**
   * Send mail to offer a spot for a reservation
   */
-exports.sendTemplateEmail = function (mailtemplateId, reservationId, res, doneMail){
+exports.sendTemplateEmail = function (mailtemplateId, reservationId, res, doneMail, specifikContent){
 
   Mailtemplate.findOne({ _id: new ObjectId(mailtemplateId) }, mailtemplateFound); 
 
@@ -42,6 +42,11 @@ exports.sendTemplateEmail = function (mailtemplateId, reservationId, res, doneMa
       if(err || !reservation){
         return doneMail({ error: true, message: 'Reservation not found. Failure sending email: ' + err });
       }
+
+      if (typeof specifikContent === 'function') { 
+        content += specifikContent(reservation);
+      }
+
       sendMail(reservation, template, content, subject, contact, done, res);
       function done(err) {
         var success = err === null;

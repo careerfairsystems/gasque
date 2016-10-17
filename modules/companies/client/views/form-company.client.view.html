@@ -1,0 +1,46 @@
+<section>
+  <div class="page-header">
+    <h1>{{vm.company._id ? 'Edit Company' : 'New Company'}}</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="vm.form.companyForm" class="form-horizontal" ng-submit="vm.save(vm.form.companyForm.$valid)" novalidate>
+      <fieldset>
+        <!-- Name -->
+        <div class="form-group" show-errors>
+          <label class="control-label" for="name">Name</label>
+          <input name="name" type="text" ng-model="vm.company.name" id="name" class="form-control" placeholder="Name" required>
+          <div ng-messages="vm.form.companyForm.name.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Company name is required.</p>
+          </div>
+        </div>
+        <!-- Desired Programme -->
+        <div class="form-group" show-errors>
+          <table name="desiredprogramme" class="table table-condensed">
+            <tr style="font-weight: bold">
+              <td style="width:70%">Desired Programme</td>
+              <td style="width:30%">
+                <input type="string" style="display:inline-block;width:215px;" ng-model="vm.newDp" class="form-control col-sm-1" placeholder="New desired programme..." />
+                <button type="button" class="btn btn-info" ng-click="addDesiredProgramme(vm.newDp)">Add</button>
+              </td>
+            </tr>
+            <tr ng-repeat="dp in vm.company.desiredProgramme track by $index">
+              <td>
+                <span data-ng-bind="dp"></span>
+              </td>
+              <td style="white-space: nowrap">
+                <button type="button" class="btn btn-danger pull-right" ng-click="deleteDesiredProgramme($index)"><i class="glyphicon glyphicon-trash"></i></button>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- Submit buttons -->
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">{{vm.company._id ? 'Update' : 'Create'}}</button>
+        </div>
+        <div ng-show="vm.error" class="text-danger">
+          <strong ng-bind="vm.error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>

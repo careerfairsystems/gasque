@@ -95,7 +95,7 @@
       calculatePrice();
       if(vm.validity){
         if(!vm.chosenTitle || vm.chosenTitle.length  <= 0){
-          vm.titleError = 'You must select a title';
+          vm.titleError = 'You must select Price and Membership';
           return;
         } else {
           vm.titleError = '';

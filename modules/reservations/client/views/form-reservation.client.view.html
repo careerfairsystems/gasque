@@ -70,19 +70,19 @@
 
               <!-- Titles -->
               <div class="form-group" show-errors>
-                <label class="control-label" for="title">Title</label>
+                <label class="control-label" for="title">Price and Membership in TLTH</label>
                 <div>
                     <select class="form-control" name="title" ng-model="vm.chosenTitle" ng-change="titleChanged()" ng-options="title as (title[0] + ', ' + title[1] + 'kr') for title in vm.titles" required>
                     </select>
                 </div>
                 <div ng-messages="vm.form.reservationForm.title.$error" role="alert">
-                  <p class="help-block error-text" ng-message="required">Title is required.</p>
+                  <p class="help-block error-text" ng-message="required">Price and Membership is required.</p>
                 </div>
               </div>
 
               <!-- Drink Package -->
               <div class="form-group">
-                <label class="control-label" for="drinkpackage">Drink package</label>
+                <label class="control-label" for="drinkpackage">Beverage package</label>
                 <div ng-if="vm.isMember === undefined" >
                   <select class="form-control" ng-disabled="true" name="drinkpackage" ng-options="drinkpackage as (drinkpackage + ', ' + drinkpackage[1] + 'kr') for drinkpackage in vm.memberdrinkpackages" required>
                   </select>
@@ -97,7 +97,7 @@
                 </div>
 
                 <div ng-messages="vm.form.reservationForm.drinkpackage.$error" role="alert">
-                  <p class="help-block error-text" ng-message="required">Drink package is required.</p>
+                  <p class="help-block error-text" ng-message="required">Beverage package is required.</p>
                 </div>
               </div>
 
@@ -132,7 +132,7 @@
       </div>
     </div>
     <div ng-switch-when="overview">
-      <h2>You have chosen the following alternatives:</h2>
+      <h2>Please confirm your personal information:</h2>
       <hr/>
       <div class="row">
         <div class="col-md-8">
@@ -157,12 +157,12 @@
           </div>
 
           <div class="row">
-            <div class="col-md-5"><strong>Title:</strong></div>
+            <div class="col-md-5"><strong>Price and Membership:</strong></div>
             <div class="col-md-6" ng-bind="vm.reservation.title"></div>
           </div>
 
           <div class="row">
-            <div class="col-md-5"><strong>Drink package:</strong></div>
+            <div class="col-md-5"><strong>Beverage package:</strong></div>
             <div class="col-md-6" ng-bind="vm.reservation.drinkpackage"></div>
           </div>
 
@@ -184,7 +184,7 @@
         </div>
       </div>
       <hr/>
-      <h3>You will be asked to pay the following price: <strong>{{vm.reservation.price}} kr</strong></h3>
+      <h3>Amount to pay: <strong>{{vm.reservation.price}} kr</strong></h3>
       <hr/>
       <div class="form-group">
         <button class="btn btn-default" ng-click="showForm()">Back</button>

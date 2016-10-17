@@ -36,6 +36,7 @@ module.exports = function(app) {
   app.route('/api/reservations/:reservationId').all(reservationsPolicy.isAllowed)
     .get(reservations.read)
     .put(reservations.update)
+    .post(reservations.update)
     .delete(reservations.delete);
 
   // Finish by binding the Reservation middleware

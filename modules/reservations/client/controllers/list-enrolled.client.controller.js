@@ -14,8 +14,8 @@
     $http.get('/api/reservations/enrolled')
     .then(function(response) {
       //get enrolled reservations
-      vm.reservations = response.data.data;
-
+      function isEnrolled(r){ return r.enrolled; }
+      vm.reservations = response.data.data.filter(isEnrolled);
 
       angular.forEach(vm.reservations, function(reservation, key) {
         reservation.nr = 1 + key;
@@ -24,6 +24,7 @@
         reservation.confirmed = reservation.confirmed || false;
         reservation.program = reservation.program || '';
         reservation.other = reservation.other || '';
+        reservation.unregister = !reservation.enrolled && !reservation.reserve && !reservation.payed;
       });
 
       // Datatable code
@@ -46,15 +47,6 @@
     };
 
     vm.setConfirmation = function(index){
-      if(vm.reservations[index].confirmed){
-        vm.deconfirm(index);
-      } else {
-        vm.confirm(index);
-      }
-    };
-
-    // Enroll reservation
-    vm.confirm = function (index){
       var imSure = window.confirm('Are you sure you want to confirm this reservation to the banquet?');
       if(imSure){
         vm.reservations[index].confirm = true;
@@ -67,6 +59,22 @@
         });
       }
     };
+    vm.setAsUnregistered = function(index){
+      var imSure = window.confirm('Are you sure you want to throw this reservation to unregistered?');
+      if(imSure){
+        var reservation = vm.reservations[index];
+        var res = ReservationsService.get({ reservationId: reservation._id }, function() {
+          res.confirmed = false;
+          res.enrolled = false;
+          res.payed = false;
+          res.reserve = false;
+          res.$save(function(r){
+            alert('Succesfully confirmed reservation.');
+          });
+        });
+      }
+    };
+
 
     // Init datatable
     vm.createDatatable = function(data){
@@ -106,6 +114,12 @@
           { data: 'confirmed',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' data-ng-click="vm.setConfirmation('+ iRow+')" />');
+              $compile(nTd)($scope);
+            }
+          },
+          { data: 'unregister',
+            'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
+              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' data-ng-click="vm.setAsUnregistered('+ iRow+')" />');
               $compile(nTd)($scope);
             }
           },

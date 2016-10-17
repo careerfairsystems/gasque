@@ -94,6 +94,19 @@
       vm.validity = resForm;
       calculatePrice();
       if(vm.validity){
+        if(!vm.chosenTitle || vm.chosenTitle.length  <= 0){
+          vm.titleError = 'You must select a title';
+          return;
+        } else {
+          vm.titleError = '';
+        }
+        if(!vm.chosenDrinkPackage || vm.chosenDrinkPackage.length  <= 0){
+          vm.drinkError = 'You must select a beverage package';
+          return;
+        } else {
+          vm.drinkError = '';
+        }
+
         var food_arr = [];
         if(vm.laktos)
           food_arr.push('Laktos');
@@ -111,7 +124,6 @@
       } else {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.reservationForm');
       }
-
     };
 
 

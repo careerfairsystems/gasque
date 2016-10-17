@@ -94,13 +94,13 @@
       vm.validity = resForm;
       calculatePrice();
       if(vm.validity){
-        if(!vm.chosenMembership || vm.chosenMembership.length  <= 0){
+        if(!vm.chosenMembership || vm.chosenMembership.length <= 0){
           vm.titleError = 'You must select Price and Membership';
           return;
         } else {
           vm.titleError = '';
         }
-        if(!vm.chosenDrinkPackage || vm.chosenDrinkPackage.length  <= 0){
+        if(!vm.chosenDrinkPackage || vm.chosenDrinkPackage.length <= 0){
           vm.drinkError = 'You must select a beverage package';
           return;
         } else {

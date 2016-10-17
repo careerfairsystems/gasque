@@ -190,10 +190,10 @@ exports.offerseat = function(req, res) {
     // Send email to reservation of being unregistered
     sendEmailWithBanquetTemplate(reservationId, req, res, 'offerseatmail', specifikContent);
     function specifikContent(reservation){
-      var str = "\n\n";
-      str += "Link to verify that you are still interested in attending the Banquet:\n";
-      str += config.host + "/reservations/verify/" + reservation._id;
-      str += "\n";
+      var str = '\n\n';
+      str += 'Link to verify that you are still interested in attending the Banquet:\n';
+      str += config.host + '/reservations/verify/' + reservation._id;
+      str += '\n';
       return str;
     }
   }
@@ -363,20 +363,20 @@ function thankyoumail(req,res) {
   sendEmailWithBanquetTemplate(req.body.reservationId, req, res, 'thankyoumail', specifikContent);
   function specifikContent(reservation){
     reservation.other = reservation.other || '';
-    var str = "\n\n";
-    str += "Your reservation:\n";
-    str += "Name:\n\t" + reservation.name + '\n';
-    str += "Email:\n\t" + reservation.email + '\n';
-    str += "Phone:\n\t" + reservation.phone + '\n';
-    str += "Program:\n\t" + reservation.program + '\n';
-    str += "Clothing:\n\t" + reservation.clothing + '\n';
-    str += "Title:\n\t" + reservation.title + '\n';
-    str += "Membership:\n\t" + reservation.membership + '\n';
-    str += "Beverage package:\n\t" + reservation.drinkpackage + '\n';
-    str += "Food preference:\n\t" + reservation.foodpref + '\n';
-    str += "Other preferences:\n\t" + reservation.other + '\n';
-    str += "Price:\n\t" + reservation.price + 'kr\n';
-    str += "\n";
+    var str = '\n\n';
+    str += 'Your reservation:\n';
+    str += 'Name:\n\t' + reservation.name + '\n';
+    str += 'Email:\n\t' + reservation.email + '\n';
+    str += 'Phone:\n\t' + reservation.phone + '\n';
+    str += 'Program:\n\t' + reservation.program + '\n';
+    str += 'Clothing:\n\t' + reservation.clothing + '\n';
+    str += 'Title:\n\t' + reservation.title + '\n';
+    str += 'Membership:\n\t' + reservation.membership + '\n';
+    str += 'Beverage package:\n\t' + reservation.drinkpackage + '\n';
+    str += 'Food preference:\n\t' + reservation.foodpref + '\n';
+    str += 'Other preferences:\n\t' + reservation.other + '\n';
+    str += 'Price:\n\t' + reservation.price + 'kr\n';
+    str += '\n';
     return str;
   }
 }

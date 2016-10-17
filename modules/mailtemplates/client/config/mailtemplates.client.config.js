@@ -19,7 +19,8 @@
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'mailtemplates', {
       title: 'List Mailtemplates',
-      state: 'mailtemplates.list'
+      state: 'mailtemplates.list',
+      roles: ['admin']
     });
 
     // Add the dropdown create item

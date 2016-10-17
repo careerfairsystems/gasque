@@ -96,6 +96,7 @@ exports.create = function(req, res) {
     console.log('NOT INVITED');
     bookReservation(function(enrolled) {
       req.body.enrolled = enrolled;
+      req.body.reserve = !req.body.enrolled; 
       doSave();
     });
   } else {

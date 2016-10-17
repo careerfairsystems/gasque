@@ -73,10 +73,10 @@
         var reservation = vm.reservations[index];
 
         $http.post('/api/reservations/unregister', { reservationId: reservation._id }).success(function (response) {
-            vm.showMessage(response.message || 'Succesfully unregistered reservation.');
+          vm.showMessage(response.message || 'Succesfully unregistered reservation.');
         }).error(function (response) {
-            vm.showMessage('Failed to unregistered reservation.');
-            console.log("Err response: " + JSON.stringify(response));
+          vm.showMessage('Failed to unregistered reservation.');
+          console.log('Err response: ' + JSON.stringify(response));
         });
 
       }

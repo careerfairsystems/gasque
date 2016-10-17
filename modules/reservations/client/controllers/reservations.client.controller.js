@@ -6,9 +6,9 @@
     .module('reservations')
     .controller('ReservationsController', ReservationsController);
 
-  ReservationsController.$inject = ['$http','$scope', '$state', 'Authentication', 'reservationResolve', 'CompaniesService'];
+  ReservationsController.$inject = ['$http','$scope', '$state', 'Authentication', 'reservationResolve', 'CompaniesService', 'BanquetsService'];
 
-  function ReservationsController ($http, $scope, $state, Authentication, reservation, CompaniesService) {
+  function ReservationsController ($http, $scope, $state, Authentication, reservation, CompaniesService, BanquetsService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -20,8 +20,16 @@
     vm.programs = [];
     vm.isMember = undefined;
 
+    // Check if ispaying
     vm.isPaying = $state.current.data.isPaying;
     console.log('isPaying: ' + vm.isPaying);
+
+    // Get the active banquet and load data.
+    BanquetsService.query(function(data){
+      function isActive(b){ return b.active; }
+      vm.banquet = data.filter(isActive)[0];
+      $scope.infoText = vm.isPaying ? vm.banquet.textPaying : vm.banquet.textNonpaying;
+    });
 
     vm.creating = $state.current.data.creating;
     console.log('Creating: ' + vm.creating);

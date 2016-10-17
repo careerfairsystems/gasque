@@ -73,6 +73,14 @@ var ReservationSchema = new Schema({
     type: Boolean,
     default: false
   },
+  pending: {
+    type: Boolean,
+    default: false
+  },
+  pendingdeadline: {
+    type: Date,
+    default: new Date()
+  },
   created: {
     type: Date,
     default: Date.now

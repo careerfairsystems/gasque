@@ -32,6 +32,18 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/reservations/attending',
       permissions: '*'
+    }, {
+      resources: '/api/reservations/unregister',
+      permissions: '*'
+    }, {
+      resources: '/api/reservations/confirm',
+      permissions: '*'
+    }, {
+      resources: '/api/reservations/offerseat',
+      permissions: '*'
+    }, {
+      resources: '/api/reservations/haspayed',
+      permissions: '*'
     }]
   }, {
     roles: ['economy'],
@@ -41,6 +53,18 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/reservations/attending',
       permissions: ['get']
+    }, {
+      resources: '/api/reservations/unregister',
+      permissions: ''
+    }, {
+      resources: '/api/reservations/confirm',
+      permissions: ''
+    }, {
+      resources: '/api/reservations/offerseat',
+      permissions: ''
+    }, {
+      resources: '/api/reservations/haspayed',
+      permissions: '*'
     }]
   }, {
     roles: ['user'],
@@ -50,6 +74,18 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/reservations/:reservationId',
       permissions: ['get', 'post']
+    }, {
+      resources: '/api/reservations/unregister',
+      permissions: ''
+    }, {
+      resources: '/api/reservations/confirm',
+      permissions: ''
+    }, {
+      resources: '/api/reservations/offerseat',
+      permissions: ''
+    }, {
+      resources: '/api/reservations/haspayed',
+      permissions: ''
     }]
   }, {
     roles: ['guest'],
@@ -59,6 +95,18 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/reservations/:reservationId',
       permissions: ['get', 'post']
+    }, {
+      resources: '/api/reservations/unregister',
+      permissions: ''
+    }, {
+      resources: '/api/reservations/confirm',
+      permissions: ''
+    }, {
+      resources: '/api/reservations/offerseat',
+      permissions: ''
+    }, {
+      resources: '/api/reservations/haspayed',
+      permissions: ''
     }]
   }]);
 };

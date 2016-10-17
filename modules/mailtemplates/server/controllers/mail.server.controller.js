@@ -44,7 +44,12 @@ exports.sendTemplateEmail = function (mailtemplateId, reservationId, res, doneMa
       }
       sendMail(reservation, template, content, subject, contact, done, res);
       function done(err) {
-        return doneMail({ error: err, message: 'Failure sending email: ' + err });
+        var success = err === null;
+        if(success){
+          return doneMail({ error: false, message: 'Mail succeessfully sent' });
+        } else {
+          return doneMail({ error: true, message: 'Failure sending email: ' + err });
+        }
       }
     }
   }
@@ -169,12 +174,10 @@ function sendMail(reservation, template, content, subject, contact, callback, re
         html: emailHTML
       };
       smtpTransport.sendMail(mailOptions, function (err) {
-        callback(err);
         done(err);
       });
     }
   ], function (err) {
     callback(err);
   });
-
 }

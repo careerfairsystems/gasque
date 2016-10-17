@@ -1,3 +1,13 @@
+.my-message {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+.my-inner-message {
+    margin: 0 auto;
+}
+
 pre{
   white-space: pre-wrap;       /* Since CSS 2.1 */
   white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */

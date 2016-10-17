@@ -2,6 +2,14 @@
   <div class="page-header">
     <h1>Reservations</h1>
   </div>
+  <div class="my-message" ng-show="message">
+    <div style="padding: 5px;">
+      <div class="my-inner-message text-center alert alert-info">
+        <button type="button" class="close" ng-click="message = undefined" data-dismiss="alert">&times;</button>
+        {{ message }}
+      </div>
+    </div>
+  </div>
   <div class="jumbotron">
     <div class="row">
       <hr>

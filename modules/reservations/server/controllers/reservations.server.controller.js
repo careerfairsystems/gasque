@@ -14,6 +14,16 @@ var path = require('path'),
   _ = require('lodash');
 
 /**
+  * Get yesterday-date-object
+  */
+function getTomorrow(){
+  var today = new Date();
+  today.setDate(today.getDate() + 1);
+  return today;
+}
+
+
+/**
  * Create a Reservation
  */
 exports.create = function(req, res) {
@@ -80,15 +90,15 @@ exports.create = function(req, res) {
 
 
   if(paying) {
-    console.log("Price: " + price + ", paying[1]: " + paying[1] + ", getPriceOfPackage(p): " + getPriceOfPackage(payingdrinkpackages));
+    console.log('Price: ' + price + ', paying[1]: ' + paying[1] + ', getPriceOfPackage(p): ' + getPriceOfPackage(payingdrinkpackages));
     price = paying[1] + getPriceOfPackage(payingdrinkpackages);
-    console.log("Paying price: " + price);
+    console.log('Paying price: ' + price);
   }
 
   if(nonpaying) {
-    console.log("Price: " + price + ", paying[1]: " + nonpaying[1] + ", getPriceOfPackage(n): " + getPriceOfPackage(nonpayingdrinkpackages));
+    console.log('Price: ' + price + ', paying[1]: ' + nonpaying[1] + ', getPriceOfPackage(n): ' + getPriceOfPackage(nonpayingdrinkpackages));
     price = nonpaying[1] + getPriceOfPackage(nonpayingdrinkpackages);
-    console.log("Nonpaying price: " + price);
+    console.log('Nonpaying price: ' + price);
   }
 
   req.body.price = price;
@@ -142,8 +152,56 @@ function bookReservation (done) {
       });
     }
   });
-
 }
+
+
+/**
+ * Unregister a reservation
+ */
+exports.unregisterreservation = function(req, res) {
+  var reservationId = req.body.reservationId;
+  Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { enrolled: false, reserv: false, payed: false } }, updateDone);
+  function updateDone(err, affected, reservation){
+    // Send email to reservation of being unregistered
+    sendEmailWithBanquetTemplate(reservationId, req, res, 'unregisteredmail');
+  }
+};
+
+/**
+ * Confirm a reservation
+ */
+exports.confirmreservation = function(req, res) {
+  var reservationId = req.reservationId;
+  Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { confirmed: true } }, updateDone);
+  function updateDone(err, affected, reservation){
+    // Send email to reservation of being unregistered
+    sendEmailWithBanquetTemplate(reservationId, req, res, 'paymentinformationmail');
+  }
+};
+
+/**
+ * Offer a reservation a seat
+ */
+exports.offerseat = function(req, res) {
+  var reservationId = req.reservationId;
+  Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { pending: true, pendingdeadline: getTomorrow() } }, updateDone);
+  function updateDone(err, affected, reservation){
+    // Send email to reservation of being unregistered
+    sendEmailWithBanquetTemplate(reservationId, req, res, 'offerseatmail');
+  }
+};
+
+/**
+ * Update reservation to has payed
+ */
+exports.haspayed = function(req, res) {
+  var reservationId = req.reservationId;
+  Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { payed: true } }, updateDone);
+  function updateDone(err, affected, reservation){
+    // Send email to reservation of being unregistered
+    sendEmailWithBanquetTemplate(reservationId, req, res, 'paymentreceivedmail');
+  }
+};
 
 /**
  * Show the current Reservation
@@ -152,7 +210,7 @@ exports.read = function(req, res) {
   // convert mongoose document to JSON
   var reservation = req.reservation ? req.reservation.toJSON() : {};
 
-  // Add a custom field to the Article, for determining if the current User is the "owner".
+  // Add a custom field to the Article, for determining if the current User is the 'owner'.
   // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
   reservation.isCurrentUserOwner = req.user && reservation.user && reservation.user._id.toString() === req.user._id.toString() ? true : false;
 
@@ -271,7 +329,7 @@ exports.listattending = function(req,res) {
 };
 
 /**
-* Send thankyou-mail
+* Send thankyou-mail or reservmail depending on enrolled
 */
 exports.reservationconfirmation = function(req,res) {
   var reservationId = req.body.reservationId;
@@ -279,7 +337,7 @@ exports.reservationconfirmation = function(req,res) {
   Reservation.findOne({ _id: new ObjectId(reservationId) }, foundReservation);
   function foundReservation(err, reservation){
     if(err || !reservation){
-      return res.status(400).send({ message: "Reservation not found" });
+      return res.status(400).send({ message: 'Reservation not found' });
     } 
     if(reservation.enrolled){
       thankyoumail(req, res);
@@ -294,7 +352,7 @@ exports.reservationconfirmation = function(req,res) {
 */
 exports.thankyoumail = thankyoumail;
 function thankyoumail(req,res) {
-  sendEmailWithBanquetTemplate(req, res, "thankyoumail");
+  sendEmailWithBanquetTemplate(req.body.reservationId, req, res, 'thankyoumail');
 }
 
 /**
@@ -302,14 +360,13 @@ function thankyoumail(req,res) {
 */
 exports.reservmail = reservationmail;
 function reservationmail(req,res) {
-  sendEmailWithBanquetTemplate(req, res, "reservmail");
+  sendEmailWithBanquetTemplate(req.body.reservationId, req, res, 'reservmail');
 }
 
 /**
   * Generic method to send a email based on mailtemplate given
   */
-function sendEmailWithBanquetTemplate(req,res, mailtemplate) {
-  var reservationId = req.body.reservationId;
+function sendEmailWithBanquetTemplate(reservationId, req, res, mailtemplate) {
   Banquet.findOne({ active: true }, function(err, banquet){
     var template = banquet[mailtemplate];
     var hasResponded = false;

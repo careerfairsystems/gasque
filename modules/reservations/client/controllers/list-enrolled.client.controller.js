@@ -39,6 +39,14 @@
 
     });
 
+    // Show message in 10 sec
+    vm.showMessage = function (message){
+      $scope.message = message;
+      setTimeout(function(){ 
+        $scope.message = undefined; 
+        $scope.$apply();
+      }, 10000);
+    };
 
     vm.openReservation = function(index) {
       vm.currentIndex = index;
@@ -54,7 +62,7 @@
         var res = ReservationsService.get({ reservationId: reservation._id }, function() {
           res.confirmed = reservation.confirmed;
           res.$save(function(r){
-            alert('Succesfully confirmed reservation.');
+            vm.showMessage('Succesfully confirmed reservation.');
           });
         });
       }
@@ -63,15 +71,14 @@
       var imSure = window.confirm('Are you sure you want to throw this reservation to unregistered?');
       if(imSure){
         var reservation = vm.reservations[index];
-        var res = ReservationsService.get({ reservationId: reservation._id }, function() {
-          res.confirmed = false;
-          res.enrolled = false;
-          res.payed = false;
-          res.reserve = false;
-          res.$save(function(r){
-            alert('Succesfully confirmed reservation.');
-          });
+
+        $http.post('/api/reservations/unregister', { reservationId: reservation._id }).success(function (response) {
+            vm.showMessage(response.message || 'Succesfully unregistered reservation.');
+        }).error(function (response) {
+            vm.showMessage('Failed to unregistered reservation.');
+            console.log("Err response: " + JSON.stringify(response));
         });
+
       }
     };
 

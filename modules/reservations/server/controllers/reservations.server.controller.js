@@ -7,6 +7,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Reservation = mongoose.model('Reservation'),
   Banquet = mongoose.model('Banquet'),
+  MailController = require(path.resolve('./modules/mailtemplates/server/controllers/mail.server.controller')),
   BanquetsController = require(path.resolve('./modules/banquets/server/controllers/banquets.server.controller')),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
@@ -268,6 +269,48 @@ exports.listattending = function(req,res) {
   });
 };
 
+/**
+* Send thankyou-mail
+*/
+exports.thankyoumail = function(req,res) {
+  var reservationId = req.body.reservationId;
+  Banquet.findOne({ active: true }, function(err, banquet){
+    var mailtemplate = banquet.thankyoumail;
+    var hasResponded = false;
+    MailController.sendTemplateEmail(mailtemplate, reservationId, res, function(result){
+      if(hasResponded){
+        return;
+      }
+      hasResponded = true;
+      if(result.error){
+        return res.status(400).send({ message: result.message });
+      } else {
+        return res.status(200).send({ message: result.message });
+      }
+    });
+  });
+};
+/**
+* Send reserv-mail
+*/
+exports.reservmail = function(req,res) {
+  var reservationId = req.body.reservationId;
+  Banquet.findOne({ active: true }, function(err, banquet){
+    var mailtemplate = banquet.reservmail;
+    var hasResponded = false;
+    MailController.sendTemplateEmail(mailtemplate, reservationId, res, function(result){
+      if(hasResponded){
+        return;
+      }
+      hasResponded = true;
+      if(result.error){
+        return res.status(400).send({ message: result.message });
+      } else {
+        return res.status(200).send({ message: result.message });
+      }
+    });
+  });
+};
 
 /**
  * Reservation middleware

@@ -17,15 +17,13 @@
     vm.email = vm.reservation.email;
     vm.enrolled = vm.reservation.enrolled;
 
-    /**
-    $http.post('/api/taskapplications/confirmationmail', { name: vm.name, email: vm.email }).success(function (response) {
+    $http.post('/api/reservations/mail/thankyou', { reservationId: vm.reservation._id }).success(function (response) {
       // Show usser success message
       $scope.success = response.message;
     }).error(function (response) {
       // Show user error message
       $scope.error = response.message;
     });
-    */
 
   }
 })();

@@ -39,7 +39,7 @@ exports.sendTemplateEmail = function (mailtemplateId, reservationId, res, doneMa
 
     Reservation.findOne({ _id: new ObjectId(reservationId) }, reservationFound);
     function reservationFound(err, reservation){
-      if(err){
+      if(err || !reservation){
         return doneMail({ error: true, message: 'Reservation not found. Failure sending email: ' + err });
       }
       sendMail(reservation, template, content, subject, contact, done, res);

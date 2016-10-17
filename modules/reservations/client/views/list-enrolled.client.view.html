@@ -1,0 +1,56 @@
+<section>
+  <div class="page-header">
+    <h1>Reservations</h1>
+  </div>
+  <div class="jumbotron">
+    <div class="row">
+      <hr>
+      <table id="reservationsList" class="table table-striped compact table-bordered nowrap" >
+        <thead>
+          <tr>
+            <th></th>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Foodpref</th>
+            <th>Other</th>
+            <th>true or false</th>
+            <th>true or false</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Foodpref</th>
+            <th>Other</th>
+            <th>Enrolled</th>
+            <th>Confirmed</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Foodpref</th>
+            <th>Other</th>
+            <th>Enrolled</th>
+            <th>Confirmed</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <div class="alert alert-warning text-center" ng-show="vm.reservations.$resolved && !vm.reservations.length">
+    No Reservations yet, dont you worry, they will come!
+    <img src="https://mailewindsong.files.wordpress.com/2015/05/15871.jpg" style="display: block; margin: auto;" />
+  </div>
+</section>

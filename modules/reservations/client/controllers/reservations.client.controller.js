@@ -29,7 +29,7 @@
       function isActive(b){ return b.active; }
       vm.banquet = data.filter(isActive)[0];
       $scope.infoText = vm.isPaying ? vm.banquet.textPaying : vm.banquet.textNonpaying;
-      $scope.infoText = $scope.infoText.replace(/(?:\r\n|\r|\n)/g, '<br /><br />');
+      $scope.infoText = $scope.infoText.replace(/(?:\r\n|\r|\n)/g, '<br />');
       $scope.infoTextHtml = $sce.trustAsHtml($scope.infoText);
     });
 

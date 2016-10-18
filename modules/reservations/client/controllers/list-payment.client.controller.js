@@ -90,6 +90,7 @@
           },
           { data: 'email' },
           { data: 'phone' },
+          { data: 'price' },
           { data: 'payed',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-click="vm.setPayed(' + iRow + ')" />');

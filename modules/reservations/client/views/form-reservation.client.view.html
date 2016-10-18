@@ -70,16 +70,6 @@
                 </div>
               </div>
 
-              <!-- Titles -->
-              <div class="form-group" >
-                <label class="control-label" for="title">Price and Membership in TLTH</label>
-                <br>
-                <small> If you are requested (anmodad) please fill in your title, or whom you are partner for</small>
-                <div>
-                    <input name="title" type="text" ng-model="vm.reservation.title" id="title" class="form-control" />
-                </div>
-              </div>
-
               <!-- Membership -->
               <div class="form-group" show-errors>
                 <label class="control-label" for="membership">Price and Membership in TLTH</label>
@@ -89,6 +79,16 @@
                 </div>
                 <div ng-messages="vm.form.reservationForm.title.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">Price and Membership is required.</p>
+                </div>
+              </div>
+
+              <!-- Titles -->
+              <div class="form-group" >
+                <label class="control-label" for="title">Title</label>
+                <br>
+                <small> If you are requested (anmodad) please fill in your title, e.g PG15 or Head of Business relations W-sek</small>
+                <div>
+                    <input name="title" type="text" ng-model="vm.reservation.title" id="title" class="form-control" />
                 </div>
               </div>
 

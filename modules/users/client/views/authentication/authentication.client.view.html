@@ -1,7 +1,12 @@
 <section class="row" ng-controller="AuthenticationController">
+<div class="col-md-12 text-center">
+  <small class="alert text-center alert-warning"><font>If your are accessing this page from a <strong>public</strong> computer, be sure to use <strong>incognito mode.</strong></font></small>
+</div>
   <h3 class="col-md-12 text-center">Sign in using your school account</h3>
 
   <div class="col-md-12 text-center">
     <button type="button" class="btn btn-primary btn-lg" ng-click="callOauthProvider('/api/auth/cas')">Login with Stil-id (CAS)</button>
   </div>
+  <hr>
+  <div ui-view></div>
 </section>

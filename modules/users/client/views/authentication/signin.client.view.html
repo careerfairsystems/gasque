@@ -1,6 +1,5 @@
 <div ng-controller="AuthenticationController">
   <h3 class="col-md-12 text-center">Or with your account</h3>
-  <small class="col-md-12 text-center"><font color="red">If your are accessing this page from a <strong>public</strong> computer, be sure to use <strong>incognito mode.</strong></font></small>
   <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
     <br>
     <form name="userForm" ng-submit="signin(userForm.$valid)" class="signin" novalidate autocomplete="off">
@@ -24,7 +23,6 @@
           <!--a ui-sref="authentication.signup">Sign up</a-->
         </div>
         <div class="text-center forgot-password">
-          <a ui-sref="password.forgot">Forgot your password?</a>
         </div>
         <alert type="danger" ng-show="error" class="text-center text-danger">
           <span ng-bind="error"></span>

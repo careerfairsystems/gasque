@@ -57,6 +57,9 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/reservations/attending',
       permissions: ['get']
     }, {
+      resources: '/api/reservations/payment',
+      permissions: '*'
+    }, {
       resources: '/api/reservations/unregister',
       permissions: ''
     }, {

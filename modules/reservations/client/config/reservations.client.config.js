@@ -13,14 +13,14 @@
       title: 'Reservations',
       state: 'reservations',
       type: 'dropdown',
-      roles: ['admin']
+      roles: ['admin', 'economy']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'reservations', {
       title: 'List Reservations',
       state: 'reservations.list',
-      roles: ['admin']
+      roles: ['admin', 'economy']
     });
     Menus.addSubMenuItem('topbar', 'reservations', {
       title: 'To confirm',
@@ -30,7 +30,7 @@
     Menus.addSubMenuItem('topbar', 'reservations', {
       title: 'To check payment',
       state: 'reservations.payment',
-      roles: ['admin']
+      roles: ['admin', 'economy']
     });
     Menus.addSubMenuItem('topbar', 'reservations', {
       title: 'Reserves',

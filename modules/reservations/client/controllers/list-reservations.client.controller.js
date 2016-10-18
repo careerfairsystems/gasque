@@ -19,7 +19,7 @@
 
       angular.forEach(vm.reservations, function(reservation, key) {
         reservation.nr = 1 + key;
-        reservation.date = $filter('date')(reservation.created, 'yyyy-MM-dd');
+        reservation.date = $filter('date')(reservation.created, 'yyyy-MM-dd HH:MM:ss');
         reservation.enrolled = reservation.enrolled || false;
         reservation.confirmed = reservation.confirmed || false;
         reservation.program = reservation.program || '';
@@ -80,10 +80,19 @@
           { data: 'program' },
           { data: 'title' },
           { data: 'membership' },
+          { data: 'price' },
           { data: 'email' },
           { data: 'phone' },
           { data: 'foodpref' },
+          { data: 'drinkpackage' },
           { data: 'other' },
+          { data: 'clothing' },
+          { data: 'honorary',
+            'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
+              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');
+              $compile(nTd)($scope);
+            }
+          },
           { data: 'enrolled',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');

@@ -378,7 +378,10 @@ function thankyoumail(req,res) {
   sendEmailWithBanquetTemplate(req.body.reservationId, req, res, 'thankyoumail', specifikContent);
   function specifikContent(reservation){
     reservation.other = reservation.other || '';
-    var str = '\n\n';
+    var str = '';
+    str += 'Your payment shall state the OCR: \n' + reservation.ocr;
+    str += '\n';
+    str += '\n';
     str += 'Your reservation:\n';
     str += 'Name:\n\t' + reservation.name + '\n';
     str += 'Email:\n\t' + reservation.email + '\n';
@@ -391,8 +394,6 @@ function thankyoumail(req,res) {
     str += 'Food preference:\n\t' + reservation.foodpref + '\n';
     str += 'Other preferences:\n\t' + reservation.other + '\n';
     str += 'Price:\n\t' + reservation.price + 'kr\n';
-    str += '\n';
-    str += 'Your payment shall state the OCR: \n' + reservation.ocr;
     str += '\n';
     return str;
   }

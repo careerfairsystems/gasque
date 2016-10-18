@@ -17,7 +17,7 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
-    vm.programs = [];
+    vm.programs = ['Non-Student', 'Other'];
     vm.isMember = undefined;
 
     // Check if ispaying

@@ -8,9 +8,9 @@
         <h1>{{vm.reservation._id ? 'Edit a Reservation' : vm.banquet.name }}</h1>
       </div>
       <div class="row">
-        <div class="col-md-12">
-          <pre data-ng-bind="infoText">
-          </pre>
+        <div class="col-md-12 jumbotron">
+          <div ng-bind-html="infoTextHtml">
+          </div>
         </div>
       </div>
       <hr />

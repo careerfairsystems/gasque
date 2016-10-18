@@ -6,9 +6,9 @@
     .module('reservations')
     .controller('ReservationsController', ReservationsController);
 
-  ReservationsController.$inject = ['$http','$scope', '$state', 'Authentication', 'reservationResolve', 'CompaniesService', 'BanquetsService'];
+  ReservationsController.$inject = ['$http','$scope', '$state', 'Authentication', 'reservationResolve', 'CompaniesService', 'BanquetsService', '$sce'];
 
-  function ReservationsController ($http, $scope, $state, Authentication, reservation, CompaniesService, BanquetsService) {
+  function ReservationsController ($http, $scope, $state, Authentication, reservation, CompaniesService, BanquetsService, $sce) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -29,6 +29,8 @@
       function isActive(b){ return b.active; }
       vm.banquet = data.filter(isActive)[0];
       $scope.infoText = vm.isPaying ? vm.banquet.textPaying : vm.banquet.textNonpaying;
+      $scope.infoText = $scope.infoText.replace(/(?:\r\n|\r|\n)/g, '<br /><br />');
+      $scope.infoTextHtml = $sce.trustAsHtml($scope.infoText);
     });
 
     vm.creating = $state.current.data.creating;

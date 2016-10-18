@@ -15,11 +15,12 @@
     .then(function(response) {
       // Get reserves
       function isReserve(r){ return r.reserve; }
-      vm.reservations = response.data.data.filter(isReserve);
+      vm.reservations = response.data.filter(isReserve);
 
       angular.forEach(vm.reservations, function(reservation, key) {
         reservation.nr = 1 + key;
-        reservation.date = $filter('date')(reservation.created, 'yyyy-MM-dd');
+        reservation.date = $filter('date')(reservation.created, 'yyyy-MM-dd HH:MM');
+        reservation.pendingdeadline = reservation.pending ? $filter('date')(reservation.pendingdeadline, 'yyyy-MM-dd HH:MM') : '';
         reservation.payed = reservation.payed || false;
 
         reservation.program = reservation.program || '';
@@ -51,17 +52,20 @@
       $state.go('reservations.view', { reservationId: current._id });
     };
 
-    vm.setPayed = function(index){
-      var imSure = window.confirm('Are you sure you want to confirm this reservation has payed?');
+    vm.offerSeat = function(index){
+      alert('Function not yet implemented. Ask Nille');
+      /*
+      var imSure = window.confirm('Are you sure you want to offer a seat to this reservation?');
       if(imSure){
         var reservation = vm.reservations[index];
-        $http.post('/api/reservations/haspayed', { reservationId: reservation._id }).success(function (response) {
-          vm.showMessage(response.message || 'Succesfully unregistered reservation.');
+        $http.post('/api/reservations/offerseat', { reservationId: reservation._id }).success(function (response) {
+          vm.showMessage(response.message || 'Succesfully offered a seat and sent imail to the attendee.');
         }).error(function (response) {
-          vm.showMessage('Failed to unregistered reservation.');
+          vm.showMessage('Failed to offer a seat.');
           console.log('Err response: ' + JSON.stringify(response));
         });
       }
+      */
     };
 
     // Init datatable
@@ -90,13 +94,13 @@
           },
           { data: 'email' },
           { data: 'phone' },
-          { data: 'payed',
+          { data: 'pending',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
-              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-click="vm.setPayed(' + iRow + ')" />');
+              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-click="vm.offerSeat(' + iRow + ')" />');
               $compile(nTd)($scope);
             }
           },
-          { data: 'ocr' },
+          { data: 'pendingdeadline' },
         ]
       });
 

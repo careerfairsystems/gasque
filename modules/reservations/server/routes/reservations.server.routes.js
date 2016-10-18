@@ -23,6 +23,10 @@ module.exports = function(app) {
   // Offer Seat to reservation
   app.route('/api/reservations/offerseat').all(reservationsPolicy.isAllowed)
     .post(reservations.offerseat);
+
+  // Verify offered seat
+  app.route('/api/reservations/verify').all(reservationsPolicy.isAllowed)
+    .post(reservations.verify);
   
   // Update to has payed
   app.route('/api/reservations/haspayed').all(reservationsPolicy.isAllowed)

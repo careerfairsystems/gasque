@@ -188,7 +188,7 @@ exports.offerseat = function(req, res) {
   Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { pending: true, pendingdeadline: getTomorrow() } }, updateDone);
   function updateDone(err, affected, reservation){
     // Send email to reservation of being unregistered
-    sendEmailWithBanquetTemplate(reservationId, req, res, 'offerseatmail', specifikContent);
+    sendEmailWithBanquetTemplate(reservationId, req, res, 'seatofferedmail', specifikContent);
     function specifikContent(reservation){
       var str = '\n\n';
       str += 'Link to verify that you are still interested in attending the Banquet:\n';
@@ -197,6 +197,28 @@ exports.offerseat = function(req, res) {
       return str;
     }
   }
+};
+
+/**
+ * Verify Seat offered
+ */
+exports.verify = function(req, res) {
+  var reservationId = req.body.reservationId;
+  // TODO: Implement
+  /*
+  Reservation.update({ _id: new ObjectId(reservationId) }, { $set: { pending: false, , pendingdeadline: getTomorrow() } }, updateDone);
+  function updateDone(err, affected, reservation){
+    // Send email to reservation of being unregistered
+    sendEmailWithBanquetTemplate(reservationId, req, res, 'seatofferedmail', specifikContent);
+    function specifikContent(reservation){
+      var str = '\n\n';
+      str += 'Link to verify that you are still interested in attending the Banquet:\n';
+      str += config.host + '/reservations/verify/' + reservation._id;
+      str += '\n';
+      return str;
+    }
+  }
+  */
 };
 
 /**
@@ -379,7 +401,9 @@ function thankyoumail(req,res) {
   function specifikContent(reservation){
     reservation.other = reservation.other || '';
     var str = '';
-    str += 'Your payment shall state the OCR: \n' + reservation.ocr;
+    str += '\n';
+    str += 'Price: ' + reservation.price + 'kr\n';
+    str += 'Your payment shall state the OCR: ' + reservation.ocr;
     str += '\n';
     str += '\n';
     str += 'Your reservation:\n';
@@ -393,7 +417,6 @@ function thankyoumail(req,res) {
     str += 'Beverage package:\n\t' + reservation.drinkpackage + '\n';
     str += 'Food preference:\n\t' + reservation.foodpref + '\n';
     str += 'Other preferences:\n\t' + reservation.other + '\n';
-    str += 'Price:\n\t' + reservation.price + 'kr\n';
     str += '\n';
     return str;
   }

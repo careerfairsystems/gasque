@@ -45,6 +45,9 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/reservations/offerseat',
       permissions: '*'
     }, {
+      resources: '/api/reservations/verify',
+      permissions: '*'
+    }, {
       resources: '/api/reservations/haspayed',
       permissions: '*'
     }]
@@ -68,6 +71,9 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/reservations/offerseat',
       permissions: ''
+    }, {
+      resources: '/api/reservations/verify',
+      permissions: '*'
     }, {
       resources: '/api/reservations/haspayed',
       permissions: '*'
@@ -110,6 +116,9 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/reservations/offerseat',
       permissions: ''
+    }, {
+      resources: '/api/reservations/verify',
+      permissions: '*'
     }, {
       resources: '/api/reservations/haspayed',
       permissions: ''

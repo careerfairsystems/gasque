@@ -19,11 +19,7 @@
 
       angular.forEach(vm.reservations, function(reservation, key) {
         reservation.nr = 1 + key;
-        reservation.date = $filter('date')(reservation.created, 'yyyy-MM-dd');
         reservation.payed = reservation.payed || false;
-
-        reservation.program = reservation.program || '';
-        reservation.other = reservation.other || '';
       });
 
       // Datatable code
@@ -80,7 +76,6 @@
         'order': [[ 1, 'asc' ]],
         columns: [
           { data: 'nr' },
-          { data: 'date' },
           { data: 'name',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html('<button class="btn-link" data-ng-click="vm.openReservation('+ iRow+')">'+sData+'</button>');
@@ -88,8 +83,6 @@
               $compile(nTd)($scope);
             }
           },
-          { data: 'email' },
-          { data: 'phone' },
           { data: 'price' },
           { data: 'payed',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {

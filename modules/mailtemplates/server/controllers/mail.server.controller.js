@@ -179,6 +179,7 @@ function sendMail(reservation, template, content, subject, contact, callback, re
         html: emailHTML
       };
       smtpTransport.sendMail(mailOptions, function (err) {
+        console.log('Email sent to: ' + reservation.email);
         done(err);
       });
     }

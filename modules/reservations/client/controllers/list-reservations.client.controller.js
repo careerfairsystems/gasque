@@ -23,6 +23,8 @@
         reservation.enrolled = reservation.enrolled || false;
         reservation.confirmed = reservation.confirmed || false;
         reservation.program = reservation.program || '';
+        reservation.membership = reservation.membership || '';
+        reservation.title = reservation.title || '';
         reservation.other = reservation.other || '';
         reservation.unregister = !reservation.enrolled && !reservation.reserve && !reservation.payed;
       });
@@ -36,7 +38,6 @@
       });
 
       vm.createDatatable(vm.reservations);
-
     });
 
     // Show message in 10 sec
@@ -54,35 +55,6 @@
       $state.go('reservations.view', { reservationId: current._id });
     };
 
-    vm.setConfirmation = function(index){
-      var imSure = window.confirm('Are you sure you want to confirm this reservation to the banquet?');
-      if(imSure){
-        vm.reservations[index].confirm = true;
-        var reservation = vm.reservations[index];
-        var res = ReservationsService.get({ reservationId: reservation._id }, function() {
-          res.confirmed = reservation.confirmed;
-          res.$save(function(r){
-            vm.showMessage('Succesfully confirmed reservation.');
-          });
-        });
-      }
-    };
-    vm.setAsUnregistered = function(index){
-      var imSure = window.confirm('Are you sure you want to throw this reservation to unregistered?');
-      if(imSure){
-        var reservation = vm.reservations[index];
-
-        $http.post('/api/reservations/unregister', { reservationId: reservation._id }).success(function (response) {
-          vm.showMessage(response.message || 'Succesfully unregistered reservation.');
-        }).error(function (response) {
-          vm.showMessage('Failed to unregistered reservation.');
-          console.log('Err response: ' + JSON.stringify(response));
-        });
-
-      }
-    };
-
-
     // Init datatable
     vm.createDatatable = function(data){
       vm.table = $('#reservationsList').DataTable({
@@ -92,9 +64,7 @@
         autoWidth: false,
         paging: false,
         stateSave: true,
-        buttons: [
-          'copy', 'excel', 'pdf', 'colvis'
-        ],
+        buttons: ['copy', 'excel', 'pdf', 'colvis'],
         data: data,
         'order': [[ 1, 'asc' ]],
         columns: [
@@ -108,8 +78,12 @@
             }
           },
           { data: 'program' },
+          { data: 'title' },
+          { data: 'membership' },
           { data: 'email' },
           { data: 'phone' },
+          { data: 'foodpref' },
+          { data: 'other' },
           { data: 'enrolled',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');
@@ -118,13 +92,7 @@
           },
           { data: 'confirmed',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
-              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' data-ng-click="vm.setConfirmation('+ iRow+')" />');
-              $compile(nTd)($scope);
-            }
-          },
-          { data: 'unregister',
-            'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
-              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' data-ng-click="vm.setAsUnregistered('+ iRow+')" />');
+              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');
               $compile(nTd)($scope);
             }
           },
@@ -141,8 +109,5 @@
         });
       });
     };
-
-
-
   }
 })();

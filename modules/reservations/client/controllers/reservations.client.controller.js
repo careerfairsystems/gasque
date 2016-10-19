@@ -6,9 +6,9 @@
     .module('reservations')
     .controller('ReservationsController', ReservationsController);
 
-  ReservationsController.$inject = ['$http','$scope', '$state', 'Authentication', 'reservationResolve', 'CompaniesService', 'BanquetsService', '$sce'];
+  ReservationsController.$inject = ['$http','$scope', '$state', 'Authentication', 'reservationResolve', 'ProgramsService', 'BanquetsService', '$sce'];
 
-  function ReservationsController ($http, $scope, $state, Authentication, reservation, CompaniesService, BanquetsService, $sce) {
+  function ReservationsController ($http, $scope, $state, Authentication, reservation, ProgramsService, BanquetsService, $sce) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -78,19 +78,9 @@
       ];
     }
 
-
-    CompaniesService.query(function (response) {
-      vm.companies = response;
-      vm.displayCompanies = vm.companies;
-      // Get unique programs.
-      vm.companies.forEach(function(c) {
-        c.desiredProgramme.forEach(function (dp){
-          if(vm.programs.indexOf(dp) === -1){
-            vm.programs.push(dp);
-          }
-        });
-      });
-    });
+    // Get all programs
+    var programsSet = new Set(ProgramsService);
+    vm.programs = Array.from(programsSet);
 
     $scope.checkValidity = function(resForm) {
       vm.validity = resForm;

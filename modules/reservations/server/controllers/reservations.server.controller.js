@@ -177,6 +177,11 @@ exports.confirmreservation = function(req, res) {
   function updateDone(err, affected, reservation){
     // Send email to reservation of being unregistered
     //sendEmailWithBanquetTemplate(reservationId, req, res, 'paymentinformationmail');
+    if(err){
+      return res.status(400).send({ message: 'Save didnt work' });
+    } else {
+      return res.status(200).send({ message: 'Save did work' });
+    }
   }
 };
 

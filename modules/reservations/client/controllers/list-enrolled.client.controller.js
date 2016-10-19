@@ -57,13 +57,13 @@
     vm.setConfirmation = function(index){
       var imSure = window.confirm('Are you sure you want to confirm this reservation to the banquet?');
       if(imSure){
-        vm.reservations[index].confirm = true;
+        vm.reservations[index].confirmed = true;
         var reservation = vm.reservations[index];
-        var res = ReservationsService.get({ reservationId: reservation._id }, function() {
-          res.confirmed = reservation.confirmed;
-          res.$save(function(r){
-            vm.showMessage('Succesfully confirmed reservation.');
-          });
+        $http.post('/api/reservations/confirm', { reservationId: reservation._id }).success(function (response) {
+          vm.showMessage(response.message || 'Succesfully unregistered reservation.');
+        }).error(function (response) {
+          vm.showMessage('Failed to unregistered reservation.');
+          console.log('Err response: ' + JSON.stringify(response));
         });
       }
     };
@@ -78,7 +78,6 @@
           vm.showMessage('Failed to unregistered reservation.');
           console.log('Err response: ' + JSON.stringify(response));
         });
-
       }
     };
 

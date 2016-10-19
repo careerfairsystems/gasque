@@ -17,7 +17,6 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
-    vm.programs = ['Non-Student', 'Other'];
     vm.isMember = undefined;
 
     // Check if ispaying
@@ -81,6 +80,7 @@
     // Get all programs
     var programsSet = new Set(ProgramsService);
     vm.programs = Array.from(programsSet);
+    vm.programs.unshift('Non-Student', 'Other');
 
     $scope.checkValidity = function(resForm) {
       vm.validity = resForm;

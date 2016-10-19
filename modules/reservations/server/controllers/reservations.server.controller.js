@@ -403,7 +403,7 @@ function thankyoumail(req,res) {
     var str = '';
     str += '\n';
     str += 'Price: ' + reservation.price + 'kr\n';
-    str += 'Your payment shall state the OCR: ' + reservation.ocr;
+    str += 'Your payment shall state the message: ' + reservation.ocr;
     str += '\n';
     str += '\n';
     str += 'Your reservation:\n';

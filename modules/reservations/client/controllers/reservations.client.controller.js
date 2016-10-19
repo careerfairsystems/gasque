@@ -49,7 +49,7 @@
     }
 
     vm.clothings = [
-      'Costume',
+      'Suit',
       'Dress'
     ];
 

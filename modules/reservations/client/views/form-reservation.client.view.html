@@ -96,6 +96,8 @@
               <!-- Drink Package -->
               <div class="form-group">
                 <label class="control-label" for="drinkpackage">Beverage package</label>
+                <br>
+                <small> Please select membership first to be able to select beverage package.</small>
                 <div ng-if="vm.isMember === undefined" >
                   <select class="form-control" ng-disabled="true" name="drinkpackage" ng-options="drinkpackage as (drinkpackage + ', ' + drinkpackage[1] + 'kr') for drinkpackage in vm.memberdrinkpackages" required>
                   </select>
@@ -119,11 +121,11 @@
                 <label class="control-label" for="foodpref">Matpreferens / Food preference</label>
                 <br />
                 <!-- Choices -->
-                <input type="checkbox" ng-model="vm.laktos" /> Laktos
+                <input type="checkbox" ng-model="vm.laktos" /> Lactos free
                 <input type="checkbox" ng-model="vm.vegetarian" /> Vegetarian
                 <input type="checkbox" ng-model="vm.pescotarian" /> Vegetarian (Eat fish and seafood)
                 <input type="checkbox" ng-model="vm.vegan" /> Vegan
-                <input type="checkbox" ng-model="vm.gluten" /> Gluten
+                <input type="checkbox" ng-model="vm.gluten" /> Gluten free
                 <!-- Other -->
                 <input name="foodpref" type="text" ng-model="vm.other" id="other" placeholder="Other foodpreferences..." class="form-control">
               </div>

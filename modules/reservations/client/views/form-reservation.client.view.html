@@ -86,7 +86,8 @@
               <div class="form-group" >
                 <label class="control-label" for="title">Title</label>
                 <br>
-                <small> If you are requested (anmodad) please fill in your title, e.g PG15 or Head of Business relations W-sek</small>
+                <small ng-if="vm.isPaying"> If you are requested (anmodad) please fill in your title, e.g PG15 or Head of Business relations W-sek</small>
+                <small ng-if="!vm.isPaying"> If you choosed "Other invited" please fill in you titel, e.g PG15 or Head of Business relations W-sek</small>
                 <div>
                     <input name="title" type="text" ng-model="vm.reservation.title" id="title" class="form-control" />
                 </div>

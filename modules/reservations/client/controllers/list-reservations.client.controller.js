@@ -87,6 +87,7 @@
           { data: 'drinkpackage' },
           { data: 'other' },
           { data: 'clothing' },
+          { data: 'price' },
           { data: 'honorary',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');
@@ -100,6 +101,12 @@
             }
           },
           { data: 'confirmed',
+            'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
+              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');
+              $compile(nTd)($scope);
+            }
+          },
+          { data: 'payed',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');
               $compile(nTd)($scope);

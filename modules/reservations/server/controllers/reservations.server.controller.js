@@ -408,7 +408,8 @@ function thankyoumail(req,res) {
     var str = '';
     str += '\n';
     str += 'Price: ' + reservation.price + 'kr\n';
-    str += 'Your payment shall state the message: ' + reservation.ocr;
+    str += 'Your payment shall state the message: ' + reservation.ocr + '\n';
+    str += 'If  your payment is 0SEK, your application is completed.';
     str += '\n';
     str += '\n';
     str += 'Your reservation:\n';

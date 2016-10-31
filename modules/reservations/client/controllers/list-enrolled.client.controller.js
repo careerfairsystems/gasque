@@ -24,6 +24,7 @@
         reservation.confirmed = reservation.confirmed || false;
         reservation.program = reservation.program || '';
         reservation.other = reservation.other || '';
+        reservation.membership = reservation.membership || '';
         reservation.unregister = !reservation.enrolled && !reservation.reserve && !reservation.payed;
       });
 
@@ -109,6 +110,8 @@
           { data: 'program' },
           { data: 'email' },
           { data: 'phone' },
+          { data: 'membership' },
+          { data: 'price' },
           { data: 'enrolled',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
               $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');

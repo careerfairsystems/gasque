@@ -13,20 +13,21 @@
       title: 'Tableplannings',
       state: 'tableplannings',
       type: 'dropdown',
-      roles: ['*']
+      roles: ['admin']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'tableplannings', {
       title: 'List Tableplannings',
-      state: 'tableplannings.list'
+      state: 'tableplannings.list',
+      roles: ['admin']
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'tableplannings', {
       title: 'Create Tableplanning',
       state: 'tableplannings.create',
-      roles: ['user']
+      roles: ['admin']
     });
   }
 })();

@@ -44,7 +44,9 @@ pre {
 /* ARKAD design */
 body {
   background: url("/modules/core/client/img/bakground-image.png");
-  background-attachment: fixed; }
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat; }
 
 @media screen and (max-width: 768px) {
   .navbar nav {

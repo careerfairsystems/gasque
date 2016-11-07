@@ -76,6 +76,32 @@
         };
       }
 
+      // Remove old reservationsRepresentatives
+      var oldCompanies = vm.allReservations.filter(isCompany);
+      vm.reservations = vm.allReservations.filter(isStudent);
+      var count = oldCompanies.length;
+      function isCompany(c){ return c.company; }
+      function isStudent(c){ return !c.company; }
+
+      if(count > 0){
+        oldCompanies.forEach(function(c){
+          ReservationsService.get({ reservationId: c._id }, function(res){
+            res.$delete(function(res){
+              console.log('Delete ' + res.name);
+              count--;
+              if(count <= 0){
+                afterOldDeleted();
+              }
+            });
+          });
+        });
+      } else {
+        afterOldDeleted();
+      }
+    };
+
+    function afterOldDeleted(){
+
       // Filter those who will attend the banquet.
       vm.reservations = vm.reservations.filter(attendGasque);
       function attendGasque(r){
@@ -98,6 +124,12 @@
         }
       }
         
+
+      vm.reservations.forEach(countSpots);   
+      function countSpots(r){
+        vm.companyGasqueList[r.company]--;
+      }
+
         
       createMockupReservations();
       function createMockupReservations(){
@@ -126,16 +158,12 @@
 
 
 
-
       vm.reservations.forEach(addIfNew);   
       function addIfNew(r){
         var exists = vm.allReservations.filter(isSameR).length > 0;
         function isSameR(allR){ 
           return compareStrings(allR.company, r.company) && compareStrings(allR.name, r.name); 
         }
-        
-        vm.companyGasqueList[r.company]--;
-
 
         if(!exists){
           var newR = new ReservationsService();
@@ -170,6 +198,6 @@
           vm.errorCount++;
         }
       }
-    };
+    }
   }
 })();

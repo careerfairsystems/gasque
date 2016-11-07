@@ -367,7 +367,24 @@
 
 
 
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
 
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
 
 
 
@@ -408,53 +425,6 @@
       vm.suitCompany = [];
       vm.companyRep = [];
 
-  
-      // Divide and calculate
-      vm.reservations.forEach(divide);
-      function divide(r){
-        if(r.company && (r.clothing === 'Suit' || r.clothing === 'Costume')){
-          vm.suitCompany.push(r);
-        }
-        if(!r.company && (r.clothing === 'Suit' || r.clothing === 'Costume')){
-          vm.suitStudent.push(r);
-        }
-        if(!r.company && r.clothing === 'Dress'){
-          vm.dressStudent.push(r);
-        }
-        if(r.company && r.clothing === 'Dress'){
-          vm.dressCompany.push(r);
-        }
-      }
-
-
-      // TODO: Get all companies by CompaniesService, create seats for 
-      // each gasqueTicket they have. This messes up a bit the code below. 
-
-
-      // Calculate list sizes.
-      var countSS = vm.suitStudent.length; // SuitStudent
-      var countDS = vm.dressStudent.length;  // DressStudent
-      var countSC = vm.suitCompany.length; // SuitCompany
-      var countDC = vm.dressCompany.length; // DressCompany
-
-      var countS = countSS + countDS;
-      var countC = countSC + countDC;
-      
-      var countTotal = countS + countC;
-
-      // Calculate procentages.
-      var proS = countS / countTotal;
-      var proC = countC / countTotal;
-
-      var proSS = countSS / countTotal;
-      var proDS = countDS / countTotal;
-      var proSC = countSC / countTotal;
-      var proDC = countDC / countTotal;
-
-      // Merge Student and Companies to 2 lists.
-      var students = vm.suitStudent.concat(vm.dressStudent);
-      var companies = vm.suitCompany.concat(vm.dressCompany);
-
 
       // Extract all programs and sort with least popular by companies first.
       Array.prototype.flatMap = function(lambda) { 
@@ -478,9 +448,227 @@
       );
       programList = sortable;
 
+
+      // Sort programs in reservations after increasing popularity
+      vm.reservations.forEach(sortPrograms);
+      function sortPrograms(r){
+        r.programs.sort(afterPopularity);
+        function afterPopularity(p1, p2){
+          return programList[p1] > programList[p2];
+        }
+        
+      }
+
+
+
+
+
+
+
+
       // Begin with the least popular program, sort companyRep by most specifik
       // desired programme that includes this program. 
       programList.forEach();
+
+  
+      // Divide and calculate
+      vm.reservations.forEach(divide);
+      function divide(r){
+        if(r.company && (r.clothing === 'Suit' || r.clothing === 'Costume')){
+          vm.suitCompany.push(r);
+        }
+        if(!r.company && (r.clothing === 'Suit' || r.clothing === 'Costume')){
+          vm.suitStudent.push(r);
+        }
+        if(!r.company && r.clothing === 'Dress'){
+          vm.dressStudent.push(r);
+        }
+        if(r.company && r.clothing === 'Dress'){
+          vm.dressCompany.push(r);
+        }
+      }
+
+
+      // TODO: Get all companies by CompaniesService, create seats for 
+      // each gasqueTicket they have. This messes up a bit the code below. 
+
+
+      // Calculate thingis.
+      var countSS = vm.suitStudent.length; 
+      var countDS = vm.dressStudent.length;  
+      var countSC = vm.suitCompany.length; 
+      var countDC = vm.dressCompany.length; 
+      var countS = countSS + countDS;
+      var countC = countSC + countDC;
+      var countTotal = countS + countC;
+
+      var sextetsCount = Math.ceil((countTotal / 6));
+      vm.sextets = [];
+      for(var i = 0; i < sextetsCount; i++) {
+        matrix[i] = [];
+      }
+
+      // Fas 1
+      // ===============================================================
+      // For i < dc+sc
+      // - push least of girl or boy in sextet
+
+      divideCompanyRepresentatives();
+      function divideCompanyRepresentatives(){
+        for(i = 0; i < countC; i++){
+          var sextetPosition = sextetsCount % i;
+          var sextet = vm.sextets[sextetPosition];
+          if(!sextet){
+            sextet = [];
+            vm.sextets.push(sextet);
+          }
+          var guyCount = sextet.filter(isBoy);
+          var girlCount = sextet.filter(isGirl);
+          
+          if(girlCount < boyCount){
+            vm.sextets[sextetsPosition].push(vm.dressCompany.shift());
+          }
+        }
+      }
+      function isBoy(s){ return (s.clothing === 'Suite' || s.clothing === 'Costume'); }
+      function isGirl(s){ return s.clothing === 'Dress'; }
+
+      // Fas 2
+      // ===============================================================
+      // For i < ds + ss
+      // - sort c in sextet efter matches
+      // - sort programs in c
+      // - foreach program
+      //    - filter students if length > 0 
+      //      TAKE student. c.matched++;
+  
+      divideStudents();
+      funtion divideStudents(){
+        for(i = countC; i < countTotal; i++){
+          var pos = sextetsCount % i;
+          var sextet = vm.sextets[pos];
+          
+          sextet.sort(afterMatches);
+          function afterMatches(s1, s2){ return s1.matches > s2.matches ? 1 : -1; }
+
+        }
+      }
+
+
+
+      // Fas 3
+      // ===============================================================
+      // filter first if tablelength % 6 === 0
+      // - sextet foreach add rows (with left and right)
+
+
+
+
+
+
+
+
+      while(vm.sextets.length < countC){
+          
+          if(countDC >= countSC){
+            newSextet.push(vm.dressCompany.shift());
+          } else {
+            newSextet.push(vm.suitCompany.shift());
+          }
+          i++;
+          
+      }
+
+      
+
+
+
+
+
+
+      /*
+      addCompanySextet();
+      function addCompanySextet(){
+        var proS = countS / countTotal;
+        var proC = countC / countTotal;
+        var proSS = countSS / countTotal;
+        var proDS = countDS / countTotal;
+        var proSC = countSC / countTotal;
+        var proDC = countDC / countTotal;
+        var students = vm.suitStudent.concat(vm.dressStudent);
+        var companies = vm.suitCompany.concat(vm.dressCompany);
+
+        // Placera ut företag i i sexteter randomly. Jämt fördelat mellan 
+        // tjej och killar.
+        var girls = countDC;
+        var guys = countSC;
+        var tot = countC;
+        // Shuffle arrays
+        shuffle(vm.suitCompany);
+        shuffle(vm.dressCompany);
+   
+        var groupSize = 6;
+        var spots = groupSize * proC;
+
+        var newSextet = [];
+        for(var i = 0; i < spots; i++){
+        }
+        vm.sextets.push(newSextet);      
+        if((tot-1) > 0){
+          addCompanySextet();
+        }
+      } 
+
+
+      addStudentSextet();
+      function addStudentSextet(){
+        // Calculate thingis.
+        var countSS = vm.suitStudent.length; 
+        var countDS = vm.dressStudent.length;  
+        var countSC = vm.suitCompany.length; 
+        var countDC = vm.dressCompany.length; 
+        var countS = countSS + countDS;
+        var countC = countSC + countDC;
+        var countTotal = countS + countC;
+        var proS = countS / countTotal;
+        var proC = countC / countTotal;
+        var proSS = countSS / countTotal;
+        var proDS = countDS / countTotal;
+        var proSC = countSC / countTotal;
+        var proDC = countDC / countTotal;
+        var students = vm.suitStudent.concat(vm.dressStudent);
+        var companies = vm.suitCompany.concat(vm.dressCompany);
+
+        // Placera ut företag i i sexteter randomly. Jämt fördelat mellan 
+        // tjej och killar.
+        var girls = countDS;
+        var guys = countSS;
+        var tot = countS;
+        // Shuffle arrays
+        shuffle(vm.suitStudent);
+        shuffle(vm.dressStudent);
+   
+        var groupSize = 6;
+        var spots = groupSize * proS;
+
+        var newSextet = [];
+        for(var i = 0; i < spots; i++){
+          if(girls >= guys){
+            newSextet.push(vm.dressStudent.shift());
+          } else {
+            newSextet.push(vm.suitStudent.shift());
+          }
+        }
+        vm.sextets.push(newSextet); 
+        if((tot-1) > 0){
+          addStudentSextet();
+        }
+      } 
+      */
+
+
+
+
 
 
 

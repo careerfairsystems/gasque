@@ -110,11 +110,13 @@ exports.create = function(req, res) {
     bookReservation(function(enrolled) {
       req.body.enrolled = enrolled;
       req.body.reserve = !req.body.enrolled;
+      req.body.company = null;
       doSave(req, res);
     });
   } else {
     console.log('INVITED');
     req.body.enrolled = true;
+    req.body.company = null;
     doSave(req, res);
   }
 

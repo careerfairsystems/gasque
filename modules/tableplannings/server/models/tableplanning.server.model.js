@@ -16,6 +16,24 @@ var TableplanningSchema = new Schema({
     required: 'Please fill Tableplanning name',
     trim: true
   },
+  tables: [{
+    nbrSeats: {
+      type: Number,
+      default: 0
+    }, 
+    name: {
+      type: String,
+      trim: true
+    },
+    seats: [{
+      nbr: Number,
+      name: String,
+      id: {
+        type: Schema.ObjectId,
+        ref: 'Reservation'
+      }
+    }]
+  }],
   created: {
     type: Date,
     default: Date.now

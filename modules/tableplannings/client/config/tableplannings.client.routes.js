@@ -51,7 +51,7 @@
       })
       .state('tableplannings.view', {
         url: '/:tableplanningId',
-        templateUrl: 'modules/tableplannings/client/views/view-tableplanning.client.view.html',
+        templateUrl: 'modules/tableplannings/client/views/form-tableplanning.client.view.html',
         controller: 'TableplanningsController',
         controllerAs: 'vm',
         resolve: {

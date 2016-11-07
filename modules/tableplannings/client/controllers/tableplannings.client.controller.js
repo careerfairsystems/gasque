@@ -15,14 +15,10 @@
     vm.error = null;
     vm.tableplanning = tableplanningResolve;
     vm.tableplanning.tables = !vm.tableplanning.tables ? [] : vm.tableplanning.tables;
-    vm.form = {};
-    vm.remove = remove;
-    vm.save = save;
-
     vm.tableplannings = TableplanningsService.query();
     vm.reservations = ReservationsService.query(function(data){
-      vm.reservations = data.filter(isEnrolled);
-      function isEnrolled(r){ return r.enrolled; }
+      vm.reservations = data.filter(isEnrolledOrCompany);
+      function isEnrolledOrCompany(r){ return r.enrolled || r.company; }
       vm.reservations = vm.reservations.sort(onName);
       function onName(r1, r2){ return r1.name > r2.name ? 1 : -1; }
       vm.filteredReservations = vm.reservations;
@@ -37,8 +33,22 @@
     // Get all data from reservations and tableplanning.
     
 
+    // Create left and right lists of Seats in Table.
+    vm.tableplanning.tables.forEach(createLeftRight);
+    function createLeftRight(t){
+      var halfLength = Math.ceil(t.seats.length / 2);    
+      var left = t.seats.slice(0, halfLength);
+      var right = t.seats.slice(halfLength); 
+      right.reverse();
+      t.rows = [];
+      for(var i = 0; i < left.length; i++){
+        t.rows.push({ left: left[i], right: right[i] });
+      }
+    }
+
 
     // Test data
+    /*
     var table = {
       name: 'Nilles bord',
       nbrSeats: 32
@@ -46,6 +56,7 @@
     generateTable(table);
     generateTable(table);
     generateTable(table);
+    */
 
 
     // Add a table
@@ -72,8 +83,8 @@
       table.seats = [];
       var i;
       for(i = 0; i < (nbr/2); i++){
-        var left = { nbr: (i+1), name: 'Empty seat', id: undefined };
-        var right = { nbr: (nbr-i), name: 'Empty seat', id: undefined };
+        var left = { table: table.name, nbr: (i+1), name: 'Empty seat', id: undefined };
+        var right = { table: table.name, nbr: (nbr-i), name: 'Empty seat', id: undefined };
         table.rows.push({ left: left, right: right });
       }
       for(i = 0; i < nbr; i++){
@@ -127,12 +138,21 @@
     // Overwrite old plan with new.
     $scope.saveOverOldPlan = function(oldPlan){
       // TODO: Implement
+      alert('Not yet implemented');
     };
 
     // Save plan as a new one.
     $scope.saveAsNewPlan = function(newName){
-      // TODO: Implement
+      vm.tableplanning.name = newName;      
+      vm.tableplanning.$save(successCallback, errorCallback);
     };
+    function successCallback(tp){
+      console.log('Successfull save:' + JSON.stringify(tp));
+      $state.go('tableplannings.edit', { tableplanningId: tp._id });
+    }
+    function errorCallback(tp){
+      console.log('FAILED save:' + JSON.stringify(tp));
+    }
 
 
 
@@ -164,11 +184,8 @@
 
 
 
-
-
-
-
-
+    // Modal functions
+    // =======================================================================
 
 
     // Create modal functions.
@@ -270,36 +287,144 @@
 
 
 
-    // Remove existing Tableplanning
-    function remove() {
-      if (confirm('Are you sure you want to delete?')) {
-        vm.tableplanning.$remove($state.go('tableplannings.list'));
-      }
-    }
 
-    // Save Tableplanning
-    function save(isValid) {
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.tableplanningForm');
-        return false;
+
+
+
+
+
+    // Tableplacement algoritm
+    // =======================================================================
+    
+    vm.generateTablePlanning = function(){
+
+      // Lists
+      vm.dressStudent = [];
+      vm.dressCompany = [];
+      vm.suitStudent = [];
+      vm.suitCompany = [];
+      
+      
+      
+      vm.reservations.forEach(divide);
+      function divide(r){
+        if(r.company && (r.clothing === 'Suit' || r.clothing === 'Costume')){
+          vm.suitCompany.push(r);
+        }
+        if(!r.company && (r.clothing === 'Suit' || r.clothing === 'Costume')){
+          vm.suitStudent.push(r);
+        }
+        if(!r.company && r.clothing === 'Dress'){
+          vm.dressStudent.push(r);
+        }
+        if(r.company && r.clothing === 'Dress'){
+          vm.dressCompany.push(r);
+        }
       }
 
-      // TODO: move create/update logic to service
-      if (vm.tableplanning._id) {
-        vm.tableplanning.$update(successCallback, errorCallback);
-      } else {
-        vm.tableplanning.$save(successCallback, errorCallback);
-      }
 
-      function successCallback(res) {
-        $state.go('tableplannings.view', {
-          tableplanningId: res._id
-        });
-      }
+      // TODO: Get all companies by CompaniesService, create seats for 
+      // each gasqueTicket they have. This messes up a bit the code below. 
 
-      function errorCallback(res) {
-        vm.error = res.data.message;
-      }
-    }
+
+      // Calculate list sizes.
+      var countSS = vm.suitStudent.length; // SuitStudent
+      var countDS = vm.dressStudent.length;  // DressStudent
+      var countSC = vm.suitCompany.length; // SuitCompany
+      var countDC = vm.dressCompany.length; // DressCompany
+
+      var countS = countSS + countDS;
+      var countC = countSC + countDC;
+      
+      var countTotal = countS + countC;
+
+      // Calculate procentages.
+      var proS = countS / countTotal;
+      var proC = countC / countTotal;
+
+      var proSS = countSS / countTotal;
+      var proDS = countDS / countTotal;
+      var proSC = countSC / countTotal;
+      var proDC = countDC / countTotal;
+
+      // Merge Student and Companies to 2 lists.
+      var students = vm.suitStudent.concat(vm.dressStudent);
+      var companies = vm.suitCompany.concat(vm.dressCompany);
+
+
+      // Extract all programs and sort with least popular by companies first.
+      Array.prototype.flatMap = function(lambda) { 
+        return Array.prototype.concat.apply([], this.map(lambda)); 
+      };
+      var programList = companies.flatMap(function(r){ 
+        return r.program ? r.program.split(',') : []; 
+      });
+      var popularity = programList.reduce( function (prev, item) { 
+        if ( item in prev ) prev[item] ++; 
+        else prev[item] = 1; 
+        return prev; 
+      }, {} );
+      var sortable = [];
+      for (var program in popularity)
+        sortable.push([program, popularity[program]]);
+      sortable.sort(
+        function(a, b) {
+          return a[1] - b[1];
+        }
+      );
+      programList = sortable;
+
+      // Begin with the least popular program, sort companyRep by most specifik
+      // desired programme that includes this program. 
+      programList.forEach();
+
+
+
+
+      // With them build sextets. 
+
+
+
+
+      // When all sextets are done, divide them to the tables
+
+
+
+      // Calculate which tables have too many guests, remove those who are 
+      // above the procentage rate. 
+
+
+
+
+
+
+
+      
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 })();

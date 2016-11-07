@@ -59,6 +59,24 @@
       // Print length
       console.log('Reservations: ' + vm.reservations.length);
 
+
+      // Get program from company
+      vm.reservations.forEach(getCompanyPrograms);
+      function getCompanyPrograms(r){
+        
+        var companies = vm.companies.filter(isSame);
+        function isSame(c){ return compareStrings(c.name, r.company); }
+        if(companies.length > 0){
+          var company = companies[0];
+          r.program = company.desiredProgramme.join(',');
+        }
+        
+        
+      }
+
+
+
+
       vm.reservations.forEach(addIfNew);   
       function addIfNew(r){
         var exists = vm.allReservations.filter(isSameR).length > 0;
@@ -79,6 +97,7 @@
           newR.company = r.company;
           newR.name = r.name;
           newR.foodpref = r.foodpref;
+          newR.program = r.program;
           newR.clothing = clothing;
           newR.drinkpackage = beverage;
           newR.membership = 'Company Representative';

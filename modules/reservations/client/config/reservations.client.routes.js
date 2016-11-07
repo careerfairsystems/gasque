@@ -69,6 +69,12 @@
           creating: true
         }
       })
+      .state('reservations.loadcompany', {
+        url: '/loadcompany',
+        templateUrl: 'modules/reservations/client/views/company-reservations.client.view.html',
+        controller: 'CompanyReservationsController',
+        controllerAs: 'vm'
+      })
       .state('reservations.edit', {
         url: '/:reservationId/edit',
         templateUrl: 'modules/reservations/client/views/form-reservation.client.view.html',

@@ -53,6 +53,10 @@ module.exports = function(app) {
     .get(reservations.listattending);
 
   // Reservations Routes
+  app.route('/api/reservations/companyrepresentative').all(reservationsPolicy.isAllowed)
+    .post(reservations.createcompanyrepresentative);
+
+  // Reservations Routes
   app.route('/api/reservations').all(reservationsPolicy.isAllowed)
     .get(reservations.list)
     .post(reservations.create);

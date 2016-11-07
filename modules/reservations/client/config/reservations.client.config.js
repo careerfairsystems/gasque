@@ -37,5 +37,10 @@
       state: 'reservations.reserves',
       roles: ['admin']
     });
+    Menus.addSubMenuItem('topbar', 'reservations', {
+      title: 'Load Company Representatives',
+      state: 'reservations.loadcompany',
+      roles: ['admin']
+    });
   }
 })();

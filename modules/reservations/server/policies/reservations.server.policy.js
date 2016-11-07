@@ -18,6 +18,9 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/reservations',
       permissions: '*'
     }, {
+      resources: '/api/reservations/companyrepresentative',
+      permissions: '*'
+    }, {
       resources: '/api/reservations/:reservationId',
       permissions: '*'
     }, {

@@ -110,29 +110,29 @@ exports.create = function(req, res) {
     bookReservation(function(enrolled) {
       req.body.enrolled = enrolled;
       req.body.reserve = !req.body.enrolled;
-      doSave();
+      doSave(req, res);
     });
   } else {
     console.log('INVITED');
     req.body.enrolled = true;
-    doSave();
+    doSave(req, res);
   }
 
-  function doSave() {
-    var reservation = new Reservation(req.body);
-    reservation.user = req.user;
-    reservation.save(function(err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(reservation);
-      }
-    });
-  }
 
 };
+function doSave(req, res) {
+  var reservation = new Reservation(req.body);
+  reservation.user = req.user;
+  reservation.save(function(err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(reservation);
+    }
+  });
+}
 
 
 function bookReservation (done) {
@@ -154,6 +154,17 @@ function bookReservation (done) {
     }
   });
 }
+
+/**
+ * Create a company representative
+ */
+exports.createcompanyrepresentative = function (req, res){
+  bookReservation(function(enrolled) {
+    req.body.enrolled = false;
+    req.body.reserve = false;
+    doSave(req, res);
+  });
+};
 
 
 /**

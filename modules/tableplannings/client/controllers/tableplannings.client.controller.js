@@ -6,13 +6,12 @@
     .module('tableplannings')
     .controller('TableplanningsController', TableplanningsController);
 
-  TableplanningsController.$inject = ['$scope', '$state', 'Authentication', 'tableplanningResolve'];
+  TableplanningsController.$inject = ['$scope', '$state', 'Authentication', 'TableplanningsService', 'ReservationsService'];
 
-  function TableplanningsController ($scope, $state, Authentication, tableplanning) {
+  function TableplanningsController ($scope, $state, Authentication, TableplanningsService, ReservationsService) {
     var vm = this;
 
     vm.authentication = Authentication;
-    vm.tableplanning = tableplanning;
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
@@ -26,19 +25,41 @@
       { name: 'Hej' }
     ];
 
+    vm.tableplannings = TableplanningsService.query();
+    vm.reservations = ReservationsService.query(function(data){
+      vm.reservations = data.filter(isEnrolled);
+      function isEnrolled(r){ return r.enrolled; }
+      vm.reservations = vm.reservations.sort(onName);
+      function onName(r1, r2){ return r1.name > r2.name ? 1 : -1; }
+      vm.filteredReservations = vm.reservations;
+    });
+
+
+
+    // String comparer
+    function prettify(str){
+      return str.trim().toLowerCase();
+    }
+    // Get all data from reservations and tableplanning.
+    
 
 
 
 
-
-
-
-
+    // Add a table
+    $scope.addTable = function(){
+      // TODO: Implement
+    };
 
 
     // Update reservation to server.
     $scope.searchReservations = function (searchText){
       // TODO: Implement
+      console.log(searchText);
+      vm.filteredReservations = vm.reservations.filter(onSearch);
+      function onSearch(r){ 
+        return !searchText || prettify(r.name).indexOf(prettify(searchText)) >= 0; 
+      }
     };
 
     // Update reservation to server.

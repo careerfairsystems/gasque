@@ -36,5 +36,11 @@
       state: 'companies.create',
       roles: ['admin']
     });
+    // Add the dropdown create item
+    Menus.addSubMenuItem('topbar', 'companies', {
+      title: 'Load Tickets',
+      state: 'companies.loadtickets',
+      roles: ['admin']
+    });
   }
 })();

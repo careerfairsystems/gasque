@@ -32,6 +32,15 @@
           pageTitle: 'Companies List'
         }
       })
+      .state('companies.loadtickets', {
+        url: '/loadtickets',
+        templateUrl: 'modules/companies/client/views/load-tickets.client.view.html',
+        controller: 'CompaniesTicketsController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['admin'],
+        }
+      })
       .state('companies.create', {
         url: '/create',
         templateUrl: 'modules/companies/client/views/form-company.client.view.html',

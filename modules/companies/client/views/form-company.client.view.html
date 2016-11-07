@@ -33,6 +33,16 @@
             </tr>
           </table>
         </div>
+        <!-- Gasque Tickets -->
+        <div class="form-group" show-errors>
+          <label class="control-label" for="gasque">Gasque Tickets</label>
+          <input name="gasque" type="Number" ng-model="vm.company.gasqueTickets" id="name" class="form-control">
+        </div>
+        <!-- Drink Tickets -->
+        <div class="form-group" show-errors>
+          <label class="control-label" for="drink">Drink Tickets</label>
+          <input name="drink" type="Number" ng-model="vm.company.drinkTickets" id="name" class="form-control">
+        </div>
         <!-- Submit buttons -->
         <div class="form-group">
           <button type="submit" class="btn btn-primary">{{vm.company._id ? 'Update' : 'Create'}}</button>

@@ -21,6 +21,14 @@ var CompanySchema = new Schema({
     type: Date,
     default: Date.now
   },
+  gasqueTickets: {
+    type: Number,
+    default: 0
+  },
+  drinkTickets: {
+    type: Number,
+    default: 0
+  },
   user: {
     type: Schema.ObjectId,
     ref: 'User'

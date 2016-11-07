@@ -1,0 +1,32 @@
+<section>
+  <div class="page-header">
+    <h1>Load nr of tickets</h1>
+  </div>
+  <div class="row">
+    <div class="col-md-12 jumbotron">
+      <p>Klistra in texten från csv-filen i rutan nedan, (inkludera första raden med rubrik)</p>
+      <textarea class="form-control" row="10" ng-model="vm.csvFile">
+      </textarea>
+      <button class="btn btn-primary" ng-click="loadCsv()">Ladda in data
+      </button>
+    </div>
+    <div class="col-md-12 jumbotron">
+      <h3>Loaded reservations</h3>
+      <p> Nbr of companies loaded: {{ vm.companies.length }} </p>
+      <p> Nbr of successfull updates: {{ vm.successCount }} </p>
+      <p> Nbr of unsuccessfull updates: {{ vm.errorCount }} </p>
+      <table class="table table-condensed table-bordered">
+        <tr>
+          <th> Företag </th>
+          <th> Gasquebiljetter </th>
+          <th> DryckesBiljetter </th>
+        </tr>
+        <tr ng-repeat="c in vm.companies">
+          <td> {{ c.name }} </td>
+          <td> {{ c.gasqueTickets }} </td>
+          <td> {{ c.drinkTickets }} </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>

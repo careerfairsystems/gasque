@@ -9,6 +9,10 @@
     <ul>
       <li ng-repeat="programme in vm.company.desiredProgramme">{{ programme }}</li>
     </ul>
+    <h3>Gasque Tickets</h3>
+    <p> Nbr: {{ vm.company.gasqueTickets }}</p>
+    <h3>Drink Tickets</h3>
+    <p> Nbr: {{ vm.company.drinkTickets }}</p>
   </div>
   <div class="pull-right"
        data-ng-show="vm.company.isCurrentUserOwner">

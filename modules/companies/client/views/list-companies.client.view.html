@@ -14,6 +14,8 @@
         <span data-ng-if="!company.user">Deleted User</span>
       </small>
       <h4 class="list-group-item-heading" data-ng-bind="company.name"></h4>
+      <span> Nbr GasqueTickets: {{ company.gasqueTickets }} </span>
+      <span> Nbr DrinkTickets: {{ company.drinkTickets }} </span>
     </a>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.companies.$resolved && !vm.companies.length">

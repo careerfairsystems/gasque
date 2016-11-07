@@ -1,41 +1,42 @@
 <section>
-    <div class="col-sm-8 col-sm-offset-2">
-      <div class="page-header">
-        <h1>Load company-reservations from CSV-file</h1>
+  <div class="col-sm-8 col-sm-offset-2">
+    <div class="page-header">
+      <h1>Load company-reservations from CSV-file</h1>
+    </div>
+    <div class="row">
+      <div class="col-md-12 jumbotron">
+        <p>Klistra in texten från csv-filen i rutan nedan, (inkludera första raden med rubrik)</p>
+        <textarea class="form-control" row="10" ng-model="vm.csvFile">
+        </textarea>
+        <button class="btn btn-primary" ng-click="loadCsv()">Ladda in data
+        </button>
       </div>
-      <div class="row">
-        <div class="col-md-12 jumbotron">
-          <p>Klistra in texten från csv-filen i rutan nedan, (inkludera första raden med rubrik)</p>
-          <textarea class="form-control" row="10" ng-model="vm.csvFile">
-          </textarea>
-          <button class="btn btn-primary" ng-click="loadCsv()">Ladda in data
-          </button>
-        </div>
-        <div class="col-md-12 jumbotron">
-          <h3>Loaded reservations</h3>
-          <p> Nbr of reservations: {{ vm.reservations.length }} </p>
-          <p> Nbr of successfull saves: {{ vm.successCount }} </p>
-          <p> Nbr of unsuccessfull saves: {{ vm.errorCount }} </p>
-          <p> Nbr that already exists : {{ vm.existsCount }} </p>
-          <table class="table table-condensed table-bordered">
-            <tr>
-              <th> Företag </th>
-              <th> Namn </th>
-              <th> Ska på gasque </th>
-              <th> Matpref </th>
-              <th> Kön </th>
-              <th> Dryckespaket </th>
-            </tr>
-            <tr ng-repeat="r in vm.reservations">
-              <td> {{ r.company }} </td>
-              <td> {{ r.name }} </td>
-              <td> {{ r.gasque }} </td>
-              <td> {{ r.foodpref }} </td>
-              <td> {{ r.sex }} </td>
-              <td> {{ r.beverage }} </td>
-            </tr>
-          </table>
-        </div>
+      <div class="col-md-12 jumbotron">
+        <h3>Loaded reservations</h3>
+        <p> Nbr of reservations: {{ vm.reservations.length }} </p>
+        <p> Nbr of successfull saves: {{ vm.successCount }} </p>
+        <p> Nbr of unsuccessfull saves: {{ vm.errorCount }} </p>
+        <p> Nbr that already exists : {{ vm.existsCount }} </p>
+        <table class="table table-condensed table-bordered">
+          <tr>
+            <th> Företag </th>
+            <th> Namn </th>
+            <th> Ska på gasque </th>
+            <th> Matpref </th>
+            <th> Kön </th>
+            <th> Dryckespaket </th>
+          </tr>
+          <tr ng-repeat="r in vm.reservations">
+            <td> {{ r.company }} </td>
+            <td> {{ r.name }} </td>
+            <td> {{ r.gasque }} </td>
+            <td> {{ r.foodpref }} </td>
+            <td> {{ r.sex }} </td>
+            <td> {{ r.beverage }} </td>
+          </tr>
+        </table>
       </div>
-      <hr />
+    </div>
+    <hr />
+  </div>
 </section>

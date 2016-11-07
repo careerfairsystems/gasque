@@ -29,10 +29,9 @@
 
     $scope.loadCsv = function(){
       console.log('Load csv file');
-      vm.hej = vm.csvFile;
 
       // Extract lines
-      vm.reservations = vm.csvFile.split("\n");
+      vm.reservations = vm.csvFile.split('\n');
 
       // Remove headers in csv-file.
       vm.reservations.shift();

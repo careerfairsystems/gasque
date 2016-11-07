@@ -19,9 +19,9 @@
           <h3>{{ table.name }}</h3>
           <table class="tabletable">
             <tr ng-repeat="row in table.rows">
-              <td class="reservation" ng-click="selectSeat(table, row.left.nbr)"> {{ row.left.name }} </td>
+              <td class="reservation" ng-click="selectSeat(table, row.left)"> {{ row.left.name }} </td>
               <td class="middle"> {{ row.left.nbr }}   |   {{ row.right.nbr }}  </td>
-              <td class="reservation" ng-click="selectSeat(table, row.right.nbr)"> {{ row.right.name }} </td>
+              <td class="reservation" ng-click="selectSeat(table, row.right)"> {{ row.right.name }} </td>
             </tr>
           </table>
         </div>
@@ -63,7 +63,7 @@
       <div class="modal-header">
         <span class="reservationClose">×</span>
         <h2>{{ vm.currReservation.name }}</h2>
-        <button class="btn btn-primary pull-right" ng-click="vm.updateReservation(vm.currReservation)">Update</button>
+        <button class="btn btn-primary pull-right" ng-click="updateReservation(vm.currReservation)">Update</button>
       </div>
       <!-- Modal Body -->
       <div class="modal-body">
@@ -86,7 +86,7 @@
             </td>
             <td><strong>Seat</strong></td>
             <td>
-              <select class="form-control" ng-model="vm.currSeatNbr" ng-options="s.nbr for s in vm.currTable.seats">
+              <select class="form-control" ng-model="vm.currSeat" ng-options="s.nbr for s in vm.currTable.seats">
               </select>
             </td>
           </tr>
@@ -118,7 +118,7 @@
               </button>
             </td>
             <td>
-              <button disabled class="btn btn-primary center-block" ng-click="vm.switchSeats = !vm.switchSeats">{{ vm.switchSeats ? 'Cancel switch' : 'Switch seat with another'; }}
+              <button disabled class="btn btn-primary center-block" ng-click="switchSeats()">{{ vm.switchSeats ? 'Cancel switch' : 'Switch seat with another'; }}
               </button>
             </td>
           </tr>

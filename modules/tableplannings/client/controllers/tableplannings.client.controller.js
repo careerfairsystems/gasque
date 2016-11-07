@@ -121,23 +121,67 @@
 
     // Update reservation to server.
     $scope.updateReservation = function (reservation){
-      // TODO: Implement
+      
+      // Save honorary to reservation 
+      ReservationsService.get({ reservationId: reservation._id }, function(res){
+        res.honorary = reservation.honorary;
+        res.$save();
+      });
+        
+      // Save table and seat to tableplanning (not save on server, only client) 
+      vm.tableplanning.tables.forEach(function(t){
+        if(t.name === vm.currTable.name){
+          t.seats.forEach(function(s){
+            if(s.nbr === vm.currSeat.nbr){
+              s.name = reservation.name;
+              s._id = reservation._id;
+            }
+          });
+        }
+      });
+      closeReservationModal();
     };
 
     // Select reservation.
     $scope.selectReservation = function (reservation){
-      // TODO: Implement
       vm.openReservationModal(reservation);
     };
 
     // Select seat
     $scope.selectSeat = function(table, seat){
-      vm.openSeatModal(seat);
       if(vm.switchSeats){
+        vm.switchSeats = false;
         // TODO: Implement
+        var tempSeat = vm.currSeat;
+       
+        vm.tableplanning.tables.forEach(function(t){
+          if(t.name === table.name){
+            t.seats.forEach(function(s){
+              if(s.nbr === seat.nbr){
+                s.name = vm.currSeat.name;
+                s._id = vm.currSeat._id;
+              }
+            });
+          }
+          // TODO: Fix bug, never enters this if
+          if(t.name === vm.currSeat.table){
+            t.seats.forEach(function(s){
+              if(s.nbr === vm.currSeat.nbr){
+                s.name = seat.name;
+                s._id = seat._id;
+              }
+            });
+          }
+        });
       } else {
-        // TODO: Implement
+        seat.table = table.name;
+        vm.openSeatModal(seat);
       }
+    };
+
+    $scope.switchSeats = function(){
+      vm.switchSeats = !vm.switchSeats; 
+      seatModal.style.display = 'none';
     };
 
     // Remove reservation from seat
@@ -224,14 +268,18 @@
     vm.openSaveModal = function() {
       saveModal.style.display = 'block';
     };
-    reservationClose.onclick = function() {
+    reservationClose.onclick = closeReservationModal;
+    function closeReservationModal() {
       reservationModal.style.display = 'none';
       vm.currReservation = undefined;
-    };
-    seatClose.onclick = function() {
+      vm.currTable = undefined;
+      vm.currSeat = undefined;
+    }
+    seatClose.onclick = closeSeatModal;
+    function closeSeatModal() {
       seatModal.style.display = 'none';
       vm.currSeat = undefined;
-    };
+    }
     saveClose.onclick = function() {
       saveModal.style.display = 'none';
     };

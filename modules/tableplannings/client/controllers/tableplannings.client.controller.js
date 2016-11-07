@@ -16,12 +16,24 @@
     vm.tableplanning = tableplanningResolve;
     vm.tableplanning.tables = !vm.tableplanning.tables ? [] : vm.tableplanning.tables;
     vm.tableplannings = TableplanningsService.query();
+
     vm.reservations = ReservationsService.query(function(data){
       vm.reservations = data.filter(isEnrolledOrCompany);
       function isEnrolledOrCompany(r){ return r.enrolled || r.company; }
       vm.reservations = vm.reservations.sort(onName);
       function onName(r1, r2){ return r1.name > r2.name ? 1 : -1; }
       vm.filteredReservations = vm.reservations;
+
+      vm.tableplanning.tables.forEach(function (t){
+        t.seats.forEach(function(s){
+          vm.reservations.forEach(function(r){
+            if(r._id === s._id){
+              r.table = t.name;
+              r.seatNbr = s.nbr;
+            }
+          });
+        });
+      });
     });
 
 
@@ -100,7 +112,6 @@
 
     // Update reservation to server.
     $scope.searchReservations = function (searchText){
-      // TODO: Implement
       console.log(searchText);
       vm.filteredReservations = vm.reservations.filter(onSearch);
       function onSearch(r){ 
@@ -359,11 +370,11 @@
       var programList = companies.flatMap(function(r){ 
         return r.program ? r.program.split(',') : []; 
       });
-      var popularity = programList.reduce( function (prev, item) { 
-        if ( item in prev ) prev[item] ++; 
+      var popularity = programList.reduce(function (prev, item) { 
+        if (item in prev) prev[item] ++; 
         else prev[item] = 1; 
         return prev; 
-      }, {} );
+      }, {});
       var sortable = [];
       for (var program in popularity)
         sortable.push([program, popularity[program]]);

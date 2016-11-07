@@ -16,7 +16,7 @@
 
 
         <div class="tablegrid" ng-repeat="table in vm.tableplanning.tables track by $index">
-          <strong class="text-center">{{ table.name }}</strong>
+          <h3>{{ table.name }}</h3>
           <table class="tabletable">
             <tr ng-repeat="row in table.rows">
               <td class="reservation" ng-click="selectSeat(table, row.left.nbr)"> {{ row.left.name }} </td>
@@ -114,11 +114,25 @@
         <table class="table compact table-bordered nowrap">
           <tr>
             <td>
-              <button class="btn btn-warning center-block" ng-click="removeSeat(vm.currSeat)">Empty seat
+              <button class="btn btn-warning center-block" ng-click="removeSeat(vm.currSeat)">Set as 'Empty seat'
               </button>
             </td>
             <td>
-              <button class="btn btn-primary center-block" ng-click="vm.switchSeats = !vm.switchSeats">{{ vm.switchSeats ? 'Cancel switch' : 'Switch seat with another'; }}
+              <button disabled class="btn btn-primary center-block" ng-click="vm.switchSeats = !vm.switchSeats">{{ vm.switchSeats ? 'Cancel switch' : 'Switch seat with another'; }}
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label><strong>Set reservation to this seat</strong></label>
+              <br>
+              <select class="form-control" ng-model="vm.newReservation" ng-options="r.name for r in vm.reservations">
+              </select>
+            </td>
+            <td>
+              
+              <br>
+              <button class="btn btn-primary" ng-click="setReservationToSeat(vm.newReservation, vm.currSeat)">Update
               </button>
             </td>
           </tr>

@@ -18,6 +18,7 @@
     vm.remove = remove;
     vm.save = save;
     vm.isMember = undefined;
+    vm.isEditing = vm.reservation._id;
 
     // Check if ispaying
     vm.isPaying = $state.current.data.isPaying;
@@ -189,9 +190,13 @@
       }
 
       function successCallback(res) {
-        $state.go('reservations.thankyou', {
-          reservationId: res._id
-        });
+        if(!vm.isEditing){
+          $state.go('reservations.thankyou', {
+            reservationId: res._id
+          });
+        } else {
+          $state.go('reservations.list');
+        }
       }
 
       function errorCallback(res) {

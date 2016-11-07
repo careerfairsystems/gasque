@@ -19,7 +19,33 @@
 
     // Get data from DB
     vm.allReservations = ReservationsService.query();
-    vm.companies = CompaniesService.query();
+    vm.companies = CompaniesService.query(function(data){
+      vm.companies = data;
+
+      // CompanyGasqueList
+      /*
+      vm.companyGasqueList = [];
+      vm.companies.forEach(function(c){
+        for(var i = 0; i < c.gasqueTickets; i++){
+          vm.companyGasqueList.push({
+            membership: 'Company Representative',
+            name: c.name + ' ' + (i+1),
+            sex: 'None',
+            drinkpackage: '',
+          }); 
+        }
+      });
+      */
+      
+      vm.companyPrograms = vm.companies.reduce(function(pre, c){
+        pre[c.name] = c.desiredProgramme.join(',');
+        return pre;
+      }, {});
+      vm.companyGasqueList = vm.companies.reduce(function(pre, c){
+        pre[c.name] = c.gasqueTickets;
+        return pre;
+      }, {});
+    });
 
     // String comparer
     function compareStrings(str1, str2){
@@ -70,8 +96,32 @@
           var company = companies[0];
           r.program = company.desiredProgramme.join(',');
         }
+      }
         
         
+      createMockupReservations();
+      function createMockupReservations(){
+        var cNames = Object.keys(vm.companyGasqueList);
+        for(var cName in cNames){
+          var company = cNames[cName];
+          var reservationsLeft = vm.companyGasqueList[company];
+          for(var i = 0; i < reservationsLeft; i++){
+            var newR = {};
+            var clothing = 'None';
+            
+            var program = vm.companyPrograms[company];
+            // Set beverage
+            var beverage = 'Alcoholic beverages';
+          
+            // Set values
+            newR.company = company;
+            newR.program = program;
+            newR.name = company + ' ' + (i + 1);
+            newR.drinkpackage = beverage;
+            newR.membership = 'Company Representative';
+            vm.reservations.push(newR);
+          } 
+        }
       }
 
 
@@ -83,6 +133,9 @@
         function isSameR(allR){ 
           return compareStrings(allR.company, r.company) && compareStrings(allR.name, r.name); 
         }
+        
+        vm.companyGasqueList[r.company]--;
+
 
         if(!exists){
           var newR = new ReservationsService();

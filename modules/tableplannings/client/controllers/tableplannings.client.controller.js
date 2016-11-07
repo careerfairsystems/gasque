@@ -6,9 +6,9 @@
     .module('tableplannings')
     .controller('TableplanningsController', TableplanningsController);
 
-  TableplanningsController.$inject = ['$scope', '$state', 'Authentication', 'TableplanningsService', 'ReservationsService', 'tableplanningResolve'];
+  TableplanningsController.$inject = ['$scope', '$state', 'Authentication', 'TableplanningsService', 'ReservationsService', 'tableplanningResolve', 'CompaniesService'];
 
-  function TableplanningsController ($scope, $state, Authentication, TableplanningsService, ReservationsService, tableplanningResolve) {
+  function TableplanningsController ($scope, $state, Authentication, TableplanningsService, ReservationsService, tableplanningResolve, CompaniesService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -16,6 +16,7 @@
     vm.tableplanning = tableplanningResolve;
     vm.tableplanning.tables = !vm.tableplanning.tables ? [] : vm.tableplanning.tables;
     vm.tableplannings = TableplanningsService.query();
+    vm.companies = CompaniesService.query();
 
     vm.reservations = ReservationsService.query(function(data){
       vm.reservations = data.filter(isEnrolledOrCompany);
@@ -386,9 +387,18 @@
 
 
 
-    // Tableplacement algoritm
+    // Tableplacement algorithm
     // =======================================================================
-    
+/*
+- Utifrån andelen företagare / totala platser, placera ut företagare i olika
+  sexteter. (med plats för studenter)
+- Sortera studenter med minst populära program först. Tilldela när en sextet 
+  innehåller minst 1 företegarare som eftersöker det programmet.
+- Om ej möjligt stå över den studenten och placera resten först. Sedan
+  placera ut randomly
+
+*/
+
     vm.generateTablePlanning = function(){
 
       // Lists
@@ -396,9 +406,10 @@
       vm.dressCompany = [];
       vm.suitStudent = [];
       vm.suitCompany = [];
-      
-      
-      
+      vm.companyRep = [];
+
+  
+      // Divide and calculate
       vm.reservations.forEach(divide);
       function divide(r){
         if(r.company && (r.clothing === 'Suit' || r.clothing === 'Costume')){

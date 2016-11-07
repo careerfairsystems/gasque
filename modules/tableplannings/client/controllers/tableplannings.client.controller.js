@@ -119,6 +119,38 @@
       }
     };
 
+    // Set Reservation To Seat
+    vm.removeSeat = function(seat){
+      // Save table and seat to tableplanning (not save on server, only client) 
+      vm.tableplanning.tables.forEach(function(t){
+        if(t.name === seat.table){
+          t.seats.forEach(function(s){
+            if(s.nbr === seat.nbr){
+              s.name = 'Empty seat';
+              s._id = undefined;
+            }
+          });
+        }
+      });
+      closeSeatModal();
+    };
+
+    // Set Reservation To Seat
+    $scope.setReservationToSeat = function(reservation, seat){
+      // Save table and seat to tableplanning (not save on server, only client) 
+      vm.tableplanning.tables.forEach(function(t){
+        if(t.name === seat.table){
+          t.seats.forEach(function(s){
+            if(s.nbr === seat.nbr){
+              s.name = reservation.name;
+              s._id = reservation._id;
+            }
+          });
+        }
+      });
+      closeSeatModal();
+    };
+
     // Update reservation to server.
     $scope.updateReservation = function (reservation){
       
@@ -188,6 +220,8 @@
     $scope.removeSeat = function(seat){
       // TODO: Implement
     };
+
+
 
 
     // Overwrite old plan with new.
@@ -263,6 +297,7 @@
     };
     vm.openSeatModal = function(seat) {
       vm.currSeat = seat;
+      vm.newReservation = seat;
       seatModal.style.display = 'block';
     };
     vm.openSaveModal = function() {
@@ -277,8 +312,8 @@
     }
     seatClose.onclick = closeSeatModal;
     function closeSeatModal() {
-      seatModal.style.display = 'none';
       vm.currSeat = undefined;
+      seatModal.style.display = 'none';
     }
     saveClose.onclick = function() {
       saveModal.style.display = 'none';

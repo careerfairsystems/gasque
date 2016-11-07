@@ -58,19 +58,6 @@
       }
     }
 
-
-    // Test data
-    /*
-    var table = {
-      name: 'Nilles bord',
-      nbrSeats: 32
-    };
-    generateTable(table);
-    generateTable(table);
-    generateTable(table);
-    */
-
-
     // Add a table
     $scope.addTable = function(){
       // TODO: Implement
@@ -216,24 +203,24 @@
       seatModal.style.display = 'none';
     };
 
-    // Remove reservation from seat
-    $scope.removeSeat = function(seat){
-      // TODO: Implement
-    };
-
-
-
-
     // Overwrite old plan with new.
     $scope.saveOverOldPlan = function(oldPlan){
       // TODO: Implement
-      alert('Not yet implemented');
+      //alert('Not yet implemented');
+      vm.tableplanning.tables.forEach(convertLeftRightToSeats);
+      TableplanningsService.get({ tableplanningId: oldPlan._id }, function (tp){
+        tp.tables = vm.tableplanning.tables;
+        tp.$save();
+        closeSaveModal();
+      });
     };
 
     // Save plan as a new one.
     $scope.saveAsNewPlan = function(newName){
-      vm.tableplanning.name = newName;      
+      vm.tableplanning.name = newName;       
+      vm.tableplanning.tables.forEach(convertLeftRightToSeats);
       vm.tableplanning.$save(successCallback, errorCallback);
+      closeSaveModal();
     };
     function successCallback(tp){
       console.log('Successfull save:' + JSON.stringify(tp));
@@ -243,6 +230,17 @@
       console.log('FAILED save:' + JSON.stringify(tp));
     }
 
+    function convertLeftRightToSeats(table){
+      var left = [];
+      var right = [];
+      table.rows.forEach(zip);
+      function zip(row){
+        left.push(row.left);
+        right.push(row.right);
+      }
+      right.reverse();
+      table.seats = left.concat(right);
+    }
 
 
 
@@ -315,9 +313,10 @@
       vm.currSeat = undefined;
       seatModal.style.display = 'none';
     }
-    saveClose.onclick = function() {
+    saveClose.onclick = closeSaveModal;
+    function closeSaveModal() {
       saveModal.style.display = 'none';
-    };
+    }
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
       if (event.target === reservationModal) {

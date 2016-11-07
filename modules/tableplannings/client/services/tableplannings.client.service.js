@@ -14,6 +14,12 @@
     }, {
       update: {
         method: 'PUT'
+      },
+      post: {
+        method: 'POST'
+      },
+      save: {
+        method: 'PUT'
       }
     });
   }

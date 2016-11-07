@@ -4,77 +4,24 @@
   </div>
   <div class="row ">
     <div class="row jumbotron">
-      <div class="col-sm-4">
-        <label><strong>Reservation actions</strong></label>
-        <div class="row">
-          <label class="col-sm-4"> Honorary </label> 
-          <select ng-model="vm.isHonorary" class="col-sm-8">
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-        </div>
-        <div class="row">
-          <label class="col-sm-4"> Set Seat </label> 
-          <select ng-model="vm.table" class="col-sm-8" ng-options="t.name for t in vm.tables"></select>
-        </div>
-        <div class="row">
-          <label class="col-sm-4"> Set Seat </label> 
-          <select ng-model="vm.table" class="col-sm-8" ng-options="s.nbr for s in vm.currTable.seats"></select>
-        </div>
-        <div class="row">
-          <button class="btn btn-primary pull-right" ng-click="updateReservation(vm.currReservation)">
-            Update Reservation
-          </button>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <label><strong>Seat actions</strong></label>
-        <span class="text-center" style="display: block;">Selected seat: {{ vm.currSeat.name }}, {{ vm.currSeat.table }} {{ vm.currSeat.nbr }}</span>
-        <div class="row">
-          <button class="btn btn-warning center-block" ng-click="removeSeat(vm.currSeat)">Empty seat
-          </button>
-        </div>
-        <div class="row">
-          <button class="btn btn-primary center-block" ng-click="vm.switchSeats = !vm.switchSeats">{{ vm.switchSeats ? 'Cancel switch' : 'Switch seat with another'; }}
-          </button>
-        </div>
-        <div class="row">
-          <button class="btn btn-primary center-block" ng-click="addTable()">Add table</button>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <label><strong>Tableplanning actions</strong></label>
-        <div class="row">
-          <label class="col-sm-4">Overwrite</label> 
-          <select ng-model="vm.oldPlan" class="col-sm-8" ng-options="tp.name for tp in vm.tableplannings"></select>
-          </select>
-          <button class="btn btn-primary pull-right" ng-click="saveOverOldPlan(vm.oldPlan)">
-            Save
-          </button>
-        </div>
-        <div class="row">
-          <hr>
-          <label class="col-sm-4">Save as new</label> 
-          <input type="text" class="" ng-model="vm.newPlanName" />
-          <button class="btn btn-primary pull-right" ng-click="saveAsNewPlan(vm.newPlanName)">
-            Save
-          </button>
-        </div>
-        <div class="row">
-        </div>
-      </div>
+      <button class="btn btn-warning" ng-click="vm.generateTablePlanning()">Generate automatic tableplanning
+      </button>
+      <button class="btn btn-primary" ng-click="addTable()">Add table
+      </button>
+      <button class="btn btn-primary pull-right" ng-click="vm.openSaveModal()">Save...
+      </button>
     </div>
     <div class="row">
       <div class="col-sm-9">
 
 
-        <div class="col-sm-6" ng-repeat="table in vm.tables">
+        <div class="tablegrid" ng-repeat="table in vm.tableplanning.tables track by $index">
+          <strong class="text-center">{{ table.name }}</strong>
           <table class="tabletable">
             <tr ng-repeat="row in table.rows">
-              <td class="reservation"> {{ row.left }} </td>
-              <td class="middle">  </td>
-              <td class="middle">  </td>
-              <td class="reservation"> {{ row.right }} </td>
+              <td class="reservation" ng-click="selectSeat(table, row.left.nbr)"> {{ row.left.name }} </td>
+              <td class="middle"> {{ row.left.nbr }}   |   {{ row.right.nbr }}  </td>
+              <td class="reservation" ng-click="selectSeat(table, row.right.nbr)"> {{ row.right.name }} </td>
             </tr>
           </table>
         </div>
@@ -87,7 +34,7 @@
       <div class="col-sm-3">
         <div class="list-group">
           <div class="list-group-item">
-            <input type="text" ng-change="searchReservations(searchText)" ng-model="searchText" class="form-control">
+            <input type="text" ng-change="searchReservations(searchText)" ng-model="searchText" placeholder="{{ vm.filteredReservations.length }} st..." class="form-control">
           </div>
           <button class="list-group-item" ng-repeat="reservation in vm.filteredReservations" ng-click="selectReservation(reservation)">
             {{ reservation.name }}, {{ reservation.table }} {{ reservation.seatNbr }}
@@ -96,4 +43,140 @@
       </div>
     </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Reservation Modal -->
+  <div id="reservationModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <span class="reservationClose">×</span>
+        <h2>{{ vm.currReservation.name }}</h2>
+        <button class="btn btn-primary pull-right" ng-click="vm.updateReservation(vm.currReservation)">Update</button>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <table class="table compact table-bordered nowrap">
+          <tr>
+            <td style="width: 125px"><strong>Honorary</strong></td>
+            <td>
+              <input type="checkbox" value="true" ng-model="vm.currReservation.honorary"/> Is honorary
+            </td>
+            <td><strong>Program</strong></td>
+            <td>
+              {{ vm.currReservation.program }}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Table</strong></td>
+            <td>
+              <select class="form-control" ng-model="vm.currTable" ng-options="table.name for table in vm.tableplanning.tables">
+              </select>
+            </td>
+            <td><strong>Seat</strong></td>
+            <td>
+              <select class="form-control" ng-model="vm.currSeatNbr" ng-options="s.nbr for s in vm.currTable.seats">
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <h3></h3>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Seat Modal -->
+  <div id="seatModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <span class="seatClose">×</span>
+        <h2>{{ vm.currSeat.name || 'Empty seat' }}</h2>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <table class="table compact table-bordered nowrap">
+          <tr>
+            <td>
+              <button class="btn btn-warning center-block" ng-click="removeSeat(vm.currSeat)">Empty seat
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-primary center-block" ng-click="vm.switchSeats = !vm.switchSeats">{{ vm.switchSeats ? 'Cancel switch' : 'Switch seat with another'; }}
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <h3></h3>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- Save Modal -->
+  <div id="saveModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <span class="saveClose">×</span>
+        <h2>Save TablePlanning</h2>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+            <div class="row">
+              <label class="col-sm-4">Overwrite</label> 
+              <select ng-model="vm.oldPlan" class="form-control" ng-options="tp.name for tp in vm.tableplannings"></select>
+              </select>
+              <button class="btn btn-primary pull-right" ng-click="saveOverOldPlan(vm.oldPlan)">
+                Save
+              </button>
+            </div>
+            <p class="lead text-center">Or</p>
+            <div class="row">
+              <label class="col-sm-4">Save as new</label> 
+              <input type="text" class="form-control" ng-model="vm.newPlanName" placeholder="Name..." />
+              <button class="btn btn-primary pull-right" ng-click="saveAsNewPlan(vm.newPlanName)">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <h3></h3>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
 </section>

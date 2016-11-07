@@ -1,0 +1,70 @@
+
+
+
+
+
+
+
+
+
+
+
+.tablegrid{
+  width: 50%;
+  display: inline-block;
+
+  strong{
+    text-align: center;
+    display: block;
+  }
+
+  .tabletable{
+    position: relative;
+    display: block;
+    width: 100%;
+    
+    tbody{
+      background-color: #333;
+    }
+    .reservation{
+      cursor: pointer; 
+      font-style: italic;
+      opacity: 0.85;
+      transition: all 0.3s ease-in;
+      &:hover{
+        transform: scale(1.1);
+        opacity: 1;
+      }
+    }
+
+    .reservation, .middle{
+      background-color: #eee;
+      color: #333;
+      width: 25%;
+      padding: 1px 15px;
+      position: relative;  
+      font-size: 11px;
+      display: inline-block;
+    }
+    .middle{
+      color: #eee;
+      background-color: #333;
+      width: 50%;
+      text-align: center;
+    }
+
+  }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+

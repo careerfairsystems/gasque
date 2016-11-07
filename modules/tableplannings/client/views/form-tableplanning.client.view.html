@@ -2,25 +2,92 @@
   <div class="page-header">
     <h1>TablePlanning</h1>
   </div>
-  <div class="col-md-12">
-    <form name="vm.form.tableplanningForm" class="form-horizontal" ng-submit="vm.save(vm.form.tableplanningForm.$valid)" novalidate>
-      <fieldset>
-        <div class="form-group" show-errors>
-          <label class="control-label" for="name">Name</label>
-          <input name="name" type="text" ng-model="vm.tableplanning.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.tableplanningForm.name.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Tableplanning name is required.</p>
+  <div class="row ">
+    <div class="row jumbotron">
+      <div class="col-sm-4">
+        <label><strong>Reservation actions</strong></label>
+        <div class="row">
+          <label class="col-sm-4"> Honorary </label> 
+          <select ng-model="vm.isHonorary" class="col-sm-8">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+        <div class="row">
+          <label class="col-sm-4"> Set Seat </label> 
+          <select ng-model="vm.table" class="col-sm-8" ng-options="t.name for t in vm.tables"></select>
+        </div>
+        <div class="row">
+          <label class="col-sm-4"> Set Seat </label> 
+          <select ng-model="vm.table" class="col-sm-8" ng-options="s.nbr for s in vm.currTable.seats"></select>
+        </div>
+        <div class="row">
+          <button class="btn btn-primary pull-right" ng-click="updateReservation(vm.currReservation)">
+            Update Reservation
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <label><strong>Seat actions</strong></label>
+        <span class="text-center" style="display: block;">Selected seat: {{ vm.currSeat.name }}, {{ vm.currSeat.table }} {{ vm.currSeat.nbr }}</span>
+        <div class="row">
+          <button class="btn btn-warning center-block" ng-click="removeSeat(vm.currSeat)">Empty seat
+          </button>
+        </div>
+        <div class="row">
+          <button class="btn btn-primary center-block" ng-click="vm.switchSeats = !vm.switchSeats">{{ vm.switchSeats ? 'Cancel switch' : 'Switch seat with another'; }}
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <label><strong>Tableplanning actions</strong></label>
+        <div class="row">
+          <label class="col-sm-4">Overwrite</label> 
+          <select ng-model="vm.oldPlan" class="col-sm-8" ng-options="tp.name for tp in vm.tableplannings"></select>
+          </select>
+          <button class="btn btn-primary pull-right" ng-click="saveOverOldPlan(vm.oldPlan)">
+            Save
+          </button>
+        </div>
+        <div class="row">
+          <hr>
+          <label class="col-sm-4">Save as new</label> 
+          <input type="text" class="" ng-model="vm.newPlanName" />
+          <button class="btn btn-primary pull-right" ng-click="saveAsNewPlan(vm.newPlanName)">
+            Save
+          </button>
+        </div>
+        <div class="row">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-9">
+
+
+
+        <div class="col-sm-6" ng-repeat="table in vm.tables">
+          <table class="table">
+            <tr >
+            </tr>
+          </table>
+        </div>
+
+
+
+
+
+      </div>
+      <div class="col-sm-3">
+        <div class="list-group">
+          <div class="list-group-item">
+            <input type="text" ng-change="searchReservations(searchText)" ng-model="searchText" class="form-control">
           </div>
+          <button class="list-group-item" ng-repeat="reservation in vm.filteredReservations" ng-click="selectReservation(reservation)">
+            {{ reservation.name }}, {{ reservation.table }} {{ reservation.seatNbr }}
+          </button>
         </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.tableplanning._id ? 'Update' : 'Create'}}</button>
-        </div>
-        <div ng-show="vm.error" class="text-danger">
-          <strong ng-bind="vm.error"></strong>
-        </div>
-      </fieldset>
-    </form>
-  </div>
-  <div class="row">
+      </div>
+    </div>
   </div>
 </section>

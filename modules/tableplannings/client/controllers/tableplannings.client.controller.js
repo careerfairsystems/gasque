@@ -18,6 +18,132 @@
     vm.remove = remove;
     vm.save = save;
 
+    vm.tables = [
+      { name: 'Hej' },
+      { name: 'Hej' },
+      { name: 'Hej' },
+      { name: 'Hej' },
+      { name: 'Hej' }
+    ];
+
+
+
+
+
+
+
+
+
+
+
+    // Update reservation to server.
+    $scope.searchReservations = function (searchText){
+      // TODO: Implement
+    };
+
+    // Update reservation to server.
+    $scope.updateReservation = function (reservation){
+      // TODO: Implement
+    };
+
+    // Select seat
+    $scope.selectSeat = function(seat){
+      if(vm.switchSeats){
+        // TODO: Implement
+      } else {
+        // TODO: Implement
+      }
+    };
+
+    // Remove reservation from seat
+    $scope.removeSeat = function(seat){
+      // TODO: Implement
+    };
+
+
+    // Overwrite old plan with new.
+    $scope.saveOverOldPlan = function(oldPlan){
+      // TODO: Implement
+    };
+
+    // Save plan as a new one.
+    $scope.saveAsNewPlan = function(newName){
+      // TODO: Implement
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Remove existing Tableplanning
     function remove() {
       if (confirm('Are you sure you want to delete?')) {

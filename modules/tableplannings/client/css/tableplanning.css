@@ -28,7 +28,7 @@
       display: inline-block; }
     .tablegrid .tabletable .middle {
       color: #eee;
-      background-color: #333;
+      background-color: transparent;
       width: 50%;
       text-align: center; }
 

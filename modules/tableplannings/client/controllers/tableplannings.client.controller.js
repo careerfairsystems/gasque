@@ -456,6 +456,9 @@
       vm.suitCompany = [];
       vm.companyRep = [];
   
+      // Filter out honary
+      vm.reservations = vm.reservations.filter(function(r){ return !r.honorary; });
+
       // Divide and calculate
       vm.reservations.forEach(divide);
       function divide(r){

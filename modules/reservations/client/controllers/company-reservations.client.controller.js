@@ -81,7 +81,7 @@
       // Map from array to an object
       vm.reservations = vm.reservations.map(arrayToObject);
       function arrayToObject(r){
-        r = r.split(';');
+        r = r.split(',');
         return {
           company: r[0],
           name: r[1],

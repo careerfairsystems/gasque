@@ -10,7 +10,7 @@
 
 
 .tablegrid{
-  width: 50%;
+  width: 100%;
   display: inline-block;
 
   strong{
@@ -19,9 +19,6 @@
   }
 
   .tabletable{
-    position: relative;
-    display: block;
-    width: 100%;
     
     tbody{
       background-color: #333;
@@ -45,6 +42,20 @@
       position: relative;  
       font-size: 11px;
       display: inline-block;
+
+      &.girl{ background-color: pink; }
+      &.guy{ background-color: lightblue; }
+      &.other{ background-color: #eee; }
+
+      &.company{
+        &.left{ border-left: 7px solid green; }
+        &.right{ border-right: 7px solid green; }
+      }
+      &.student{
+        &.left{ border-left: 7px solid orange; }
+        &.right{ border-right: 7px solid orange; }
+      }
+  
     }
     .middle{
       color: #eee;

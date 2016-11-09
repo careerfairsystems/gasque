@@ -17,16 +17,30 @@
 
         <div class="tablegrid" ng-repeat="table in vm.tableplanning.tables track by $index">
           <h3>{{ table.name }}</h3>
-          <table class="tabletable">
+          <table class="tabletable table">
             <tr ng-repeat="row in table.rows">
-              <td class="reservation" ng-click="selectSeat(table, row.left)"> {{ row.left.name }} </td>
-              <td class="middle"> {{ row.left.nbr }}   |   {{ row.right.nbr }}  </td>
-              <td class="reservation" ng-click="selectSeat(table, row.right)"> {{ row.right.name }} </td>
+              <td class="reservation left" 
+                ng-class="{student: !row.left.company, company: row.left.company, girl: row.left.clothing === 'Dress', guy: (row.left.clothing === 'Suit' || row.left.clothing === 'Costume'), other: row.left.clothing === 'None' }" ng-click="selectSeat(table, row.left)"> {{ row.left.name }} <span class="pull-right">{{ row.left.matched }}</span> </td>
+              <td class="middle"> {{ row.left.nbr }}   |   {{ row.right.nbr }} </td>
+              <td class="reservation right" 
+                ng-class="{student: !row.right.company, company: row.right.company, girl: row.right.clothing === 'Dress', guy: (row.right.clothing === 'Suit' || row.right.clothing === 'Costume'), other: row.right.clothing === 'None' }" ng-click="selectSeat(table, row.right)"> <span class="pull-right">{{ row.right.matched }}</span> {{ row.right.name }} </td>
             </tr>
           </table>
         </div>
 
 
+        <div class="tablegrid">
+          <h3>Remaining rows</h3>
+          <table class="tabletable table">
+            <tr ng-repeat="row in vm.remainingRows">
+              <td class="reservation left" 
+                ng-class="{student: !row.left.company, company: row.left.company, girl: row.left.clothing === 'Dress', guy: (row.left.clothing === 'Suit' || row.left.clothing === 'Costume'), other: row.left.clothing === 'None' }" ng-click="selectSeat(table, row.left)"> {{ row.left.name }} <span class="pull-right">{{ row.left.matched }}</span> </td>
+              <td class="middle"> {{ row.left.nbr }}   |   {{ row.right.nbr }} </td>
+              <td class="reservation right" 
+                ng-class="{student: !row.right.company, company: row.right.company, girl: row.right.clothing === 'Dress', guy: (row.right.clothing === 'Suit' || row.right.clothing === 'Costume'), other: row.right.clothing === 'None' }" ng-click="selectSeat(table, row.right)"> <span class="pull-right">{{ row.right.matched }}</span> {{ row.right.name }} </td>
+            </tr>
+          </table>
+        </div>
 
 
 
@@ -90,6 +104,12 @@
               </select>
             </td>
           </tr>
+          <tr>
+            <td><strong>Company</strong></td>
+            <td>
+              {{ vm.currReservation.company }}
+            </td>
+          </tr>
         </table>
       </div>
       <!-- Modal Footer -->
@@ -120,6 +140,18 @@
             <td>
               <button disabled class="btn btn-primary center-block" ng-click="switchSeats()">{{ vm.switchSeats ? 'Cancel switch' : 'Switch seat with another'; }}
               </button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong class="pull-right">Company</strong></td>
+            <td>
+              {{ vm.currSeat.company }}
+            </td>
+          </tr>
+          <tr>
+            <td><strong class="pull-right">Program</strong></td>
+            <td>
+              {{ vm.currSeat.program }}
             </td>
           </tr>
           <tr>

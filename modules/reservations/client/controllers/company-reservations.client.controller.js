@@ -52,6 +52,22 @@
       return str1 && str2 && str1.trim().toLowerCase() === str2.trim().toLowerCase();
     }
 
+    $scope.deleteOldCompanies = function(){
+
+      // Remove old reservationsRepresentatives
+      var oldCompanies = vm.allReservations.filter(isCompany);
+      function isCompany(c){ return c.company; }
+      var count = oldCompanies.length;
+      oldCompanies.forEach(function(c){
+        ReservationsService.get({ reservationId: c._id }, function(res){
+          res.$delete(function(res){
+            console.log('Delete ' + res.name);
+            count--;
+            console.log('Left ' + count);
+          });
+        });
+      });
+    };
 
     $scope.loadCsv = function(){
       console.log('Load csv file');
@@ -75,32 +91,6 @@
           beverage: r[5]
         };
       }
-
-      // Remove old reservationsRepresentatives
-      var oldCompanies = vm.allReservations.filter(isCompany);
-      vm.reservations = vm.allReservations.filter(isStudent);
-      var count = oldCompanies.length;
-      function isCompany(c){ return c.company; }
-      function isStudent(c){ return !c.company; }
-
-      if(count > 0){
-        oldCompanies.forEach(function(c){
-          ReservationsService.get({ reservationId: c._id }, function(res){
-            res.$delete(function(res){
-              console.log('Delete ' + res.name);
-              count--;
-              if(count <= 0){
-                afterOldDeleted();
-              }
-            });
-          });
-        });
-      } else {
-        afterOldDeleted();
-      }
-    };
-
-    function afterOldDeleted(){
 
       // Filter those who will attend the banquet.
       vm.reservations = vm.reservations.filter(attendGasque);
@@ -150,6 +140,7 @@
             newR.program = program;
             newR.name = company + ' ' + (i + 1);
             newR.drinkpackage = beverage;
+            newR.clothing = clothing;
             newR.membership = 'Company Representative';
             vm.reservations.push(newR);
           } 
@@ -170,6 +161,9 @@
           
           // Set clothing
           var clothing = r.sex === 'man' ? 'Suit' : 'Dress';
+          if(r.clothing === 'None'){
+            clothing = 'None';
+          }
           
           // Set beverage
           var beverage = r.beverage === 'alkoholfritt' ? 'Alcoholic beverages' : 'Non Alcoholic beverages';
@@ -198,6 +192,6 @@
           vm.errorCount++;
         }
       }
-    }
+    };
   }
 })();

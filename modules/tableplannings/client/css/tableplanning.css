@@ -1,35 +1,45 @@
 .tablegrid {
-  width: 50%;
+  width: 100%;
   display: inline-block; }
   .tablegrid strong {
     text-align: center;
     display: block; }
-  .tablegrid .tabletable {
+  .tablegrid .tabletable tbody {
+    background-color: #333; }
+  .tablegrid .tabletable .reservation {
+    cursor: pointer;
+    font-style: italic;
+    opacity: 0.85;
+    transition: all 0.3s ease-in; }
+    .tablegrid .tabletable .reservation:hover {
+      transform: scale(1.1);
+      opacity: 1; }
+  .tablegrid .tabletable .reservation, .tablegrid .tabletable .middle {
+    background-color: #eee;
+    color: #333;
+    width: 25%;
+    padding: 1px 15px;
     position: relative;
-    display: block;
-    width: 100%; }
-    .tablegrid .tabletable tbody {
-      background-color: #333; }
-    .tablegrid .tabletable .reservation {
-      cursor: pointer;
-      font-style: italic;
-      opacity: 0.85;
-      transition: all 0.3s ease-in; }
-      .tablegrid .tabletable .reservation:hover {
-        transform: scale(1.1);
-        opacity: 1; }
-    .tablegrid .tabletable .reservation, .tablegrid .tabletable .middle {
-      background-color: #eee;
-      color: #333;
-      width: 25%;
-      padding: 1px 15px;
-      position: relative;
-      font-size: 11px;
-      display: inline-block; }
-    .tablegrid .tabletable .middle {
-      color: #eee;
-      background-color: transparent;
-      width: 50%;
-      text-align: center; }
+    font-size: 11px;
+    display: inline-block; }
+    .tablegrid .tabletable .reservation.girl, .tablegrid .tabletable .middle.girl {
+      background-color: pink; }
+    .tablegrid .tabletable .reservation.guy, .tablegrid .tabletable .middle.guy {
+      background-color: lightblue; }
+    .tablegrid .tabletable .reservation.other, .tablegrid .tabletable .middle.other {
+      background-color: #eee; }
+    .tablegrid .tabletable .reservation.company.left, .tablegrid .tabletable .middle.company.left {
+      border-left: 7px solid green; }
+    .tablegrid .tabletable .reservation.company.right, .tablegrid .tabletable .middle.company.right {
+      border-right: 7px solid green; }
+    .tablegrid .tabletable .reservation.student.left, .tablegrid .tabletable .middle.student.left {
+      border-left: 7px solid orange; }
+    .tablegrid .tabletable .reservation.student.right, .tablegrid .tabletable .middle.student.right {
+      border-right: 7px solid orange; }
+  .tablegrid .tabletable .middle {
+    color: #eee;
+    background-color: transparent;
+    width: 50%;
+    text-align: center; }
 
 /*# sourceMappingURL=tableplanning.css.map */

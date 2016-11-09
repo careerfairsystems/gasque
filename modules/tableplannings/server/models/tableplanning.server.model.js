@@ -28,6 +28,9 @@ var TableplanningSchema = new Schema({
     seats: [{
       nbr: Number,
       name: String,
+      company: String,
+      matched: Number,
+      clothing: String,
       id: {
         type: Schema.ObjectId,
         ref: 'Reservation'

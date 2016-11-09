@@ -28,6 +28,8 @@
       background-color: lightblue; }
     .tablegrid .tabletable .reservation.other, .tablegrid .tabletable .middle.other {
       background-color: #eee; }
+    .tablegrid .tabletable .reservation.selected, .tablegrid .tabletable .middle.selected {
+      background-color: green; }
     .tablegrid .tabletable .reservation.company.left, .tablegrid .tabletable .middle.company.left {
       border-left: 7px solid green; }
     .tablegrid .tabletable .reservation.company.right, .tablegrid .tabletable .middle.company.right {

@@ -46,6 +46,7 @@
       &.girl{ background-color: pink; }
       &.guy{ background-color: lightblue; }
       &.other{ background-color: #eee; }
+      &.selected{ background-color: green; }
 
       &.company{
         &.left{ border-left: 7px solid green; }

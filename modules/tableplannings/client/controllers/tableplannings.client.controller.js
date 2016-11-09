@@ -106,7 +106,7 @@
       vm.filteredReservations = vm.reservations.filter(onSearch);
       function onSearch(r){ 
         var name = r.name && prettify(r.name).indexOf(prettify(searchText)) >= 0;
-        var table = r.table &&prettify(r.table).indexOf(prettify(searchText)) >= 0;
+        var table = r.table && prettify(r.table).indexOf(prettify(searchText)) >= 0;
         return !searchText || name || table; 
       }
     };
@@ -175,24 +175,25 @@
     $scope.selectSeat = function(table, seat){
       if(vm.switchSeats){
         vm.switchSeats = false;
-        // TODO: Implement
-        var tempSeat = vm.currSeat;
+        vm.currSeat.selected = false;
+        var tempSeat = {};
        
         vm.tableplanning.tables.forEach(function(t){
           if(t.name === table.name){
             t.seats.forEach(function(s){
               if(s.nbr === seat.nbr){
+                tempSeat.name = s.name;
+                tempSeat._id = s._id;
                 s.name = vm.currSeat.name;
                 s._id = vm.currSeat._id;
               }
             });
           }
-          // TODO: Fix bug, never enters this if
           if(t.name === vm.currSeat.table){
             t.seats.forEach(function(s){
               if(s.nbr === vm.currSeat.nbr){
-                s.name = seat.name;
-                s._id = seat._id;
+                s.name = tempSeat.name;
+                s._id = tempSeat._id;
               }
             });
           }
@@ -203,7 +204,8 @@
       }
     };
 
-    $scope.switchSeats = function(){
+    $scope.switchSeats = function(seat){
+      seat.selected = true;
       vm.switchSeats = !vm.switchSeats; 
       seatModal.style.display = 'none';
     };

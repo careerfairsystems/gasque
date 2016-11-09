@@ -595,11 +595,6 @@
           var student = getStudent(sextet);
           function getStudent(sextet){
             vm.program = getProgramFromCompany(sextet);
-            if(!vm.program){
-              // Get random student or wait with filling sextet?
-              console.log('Error: Program not found');
-              return;
-            }
 
             // Get student
             var guys = vm.suitStudent;
@@ -614,17 +609,14 @@
             
             if(girls.length === 0 && guys.length === 0){
               // Works without this?
-              /*
               var before = sextet.reduce(countP, 0);
               sextet.forEach(removeProgram);
               var newS = sextet.filter(hasNoProgram);
               var after = newS.reduce(countP, 0);
               //console.log('program: ' + program + ', Before: ' + before + ', After: ' + after);
               if(newS.length > 0 && after !== before && after > 0){
-                getStudent(newS);
-                return;
+                return getStudent(newS);
               }
-              */
             }
             function hasNoProgram(s){ return s.program && s.program.length > 0; }
             function countP(pre, curr){ 
@@ -644,12 +636,10 @@
             }
 
             if(mostBoys(sextet) || (guys.length === 0 && girls.length > 0) || (vm.suitStudent.length === 0 && vm.dressStudent.length > 0)){
-              return vm.dressStudent.shift();
+              var dress = vm.dressStudent.shift();
+              return dress;
             } else {
               var suit = vm.suitStudent.shift();
-              if(!suit){
-                console.log('aoeu');
-              }
               return suit;
             }
           }
@@ -676,12 +666,8 @@
         var program = getLeastPopularProgram(programs, programList);
         if(!program && sextet.length > 1){
           return getProgramFromCompany(sextet.slice(1));
-        } else if(program){
-          return program;
         } else {
-          // Random select
-          var p = Math.floor((Math.random() * programList.length) + 1);
-          return programList[p - 1][0];
+          return program;
         }
       }
       function getLeastPopularProgram(programs, programScores){
@@ -793,30 +779,7 @@
         addRow(t);
       });
       vm.remainingRows = sextetRows;
-
-      //console.log('aoeu');
-      
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

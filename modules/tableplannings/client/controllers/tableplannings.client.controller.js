@@ -105,8 +105,9 @@
       console.log(searchText);
       vm.filteredReservations = vm.reservations.filter(onSearch);
       function onSearch(r){ 
-        var name = ;
-        return !searchText || prettify(r.name).indexOf(prettify(searchText)) >= 0; 
+        var name = r.name && prettify(r.name).indexOf(prettify(searchText)) >= 0;
+        var table = r.table &&prettify(r.table).indexOf(prettify(searchText)) >= 0;
+        return !searchText || name || table; 
       }
     };
 

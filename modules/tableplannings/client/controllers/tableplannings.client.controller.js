@@ -184,8 +184,12 @@
               if(s.nbr === seat.nbr){
                 tempSeat.name = s.name;
                 tempSeat._id = s._id;
+                tempSeat.company = s.company;
+                tempSeat.clothing = s.clothing;
                 s.name = vm.currSeat.name;
                 s._id = vm.currSeat._id;
+                s.company = vm.currSeat.company;
+                s.clothing = vm.currSeat.clothing;
               }
             });
           }
@@ -720,6 +724,7 @@
           if(!r.left){
             console.log('Student: ' + student);
             console.log('Compnay: ' + company);
+            r.left = { name: 'Empty seat' };
           }
         }); 
         rows.forEach(function(r){
@@ -727,6 +732,7 @@
           if(!r.right){
             console.log('Student: ' + student);
             console.log('Compnay: ' + company);
+            r.right = { name: 'Empty seat' };
           }
         }); 
         toggle = !toggle;

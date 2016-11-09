@@ -243,6 +243,7 @@
     // Save plan as a new one.
     $scope.saveAsNewPlan = function(newName){
       vm.tableplanning.name = newName;       
+      vm.tableplanning._id = undefined;       
       vm.tableplanning.tables.forEach(convertLeftRightToSeats);
       vm.tableplanning.tables = vm.tableplanning.tables.map(minimizeTable);
       vm.tableplanning.$save(successCallback, errorCallback);
@@ -591,34 +592,66 @@
           var sextet = vm.sextets[pos];
           
           sextet.sort(afterMatches);
-
-          var program = getProgramFromCompany(sextet);
-          if(!program){
-            // Get random student or wait with filling sextet?
-            console.log('Error: Program not found');
-            return;
-          }
-
-          // Get student
-          var guys = vm.suitStudent;
-          var girls = vm.dressStudent;
-          
-          girls = girls.filter(function(s){ return s.program === program; });
-          guys = guys.filter(function(s){ return s.program === program; });
-          
-          var student; 
-          if(vm.suitStudent.length === 0 || vm.dressStudent.length ===0){
-            if(mostBoys(sextet)){
-              //student = vm.dressStudent.shift();
-            } else {
-              //student = vm.suitStudent.shift();
+          var student = getStudent(sextet);
+          function getStudent(sextet){
+            vm.program = getProgramFromCompany(sextet);
+            if(!vm.program){
+              // Get random student or wait with filling sextet?
+              console.log('Error: Program not found');
+              return;
             }
-          }
 
-          if((mostBoys(sextet) && girls.length > 0) || (vm.suitStudent.length === 0 && vm.dressStudent.length > 0)){
-            student = vm.dressStudent.shift();
-          } else {
-            student = vm.suitStudent.shift();
+            // Get student
+            var guys = vm.suitStudent;
+            var girls = vm.dressStudent;
+            
+            girls = girls.filter(function(s){ return s.program[0] === vm.program; });
+            guys = guys.filter(function(s){ 
+              var p1 = vm.program;
+              var p2 = s.program[0];
+              return p1 === p2; 
+            });
+            
+            if(girls.length === 0 && guys.length === 0){
+              // Works without this?
+              /*
+              var before = sextet.reduce(countP, 0);
+              sextet.forEach(removeProgram);
+              var newS = sextet.filter(hasNoProgram);
+              var after = newS.reduce(countP, 0);
+              //console.log('program: ' + program + ', Before: ' + before + ', After: ' + after);
+              if(newS.length > 0 && after !== before && after > 0){
+                getStudent(newS);
+                return;
+              }
+              */
+            }
+            function hasNoProgram(s){ return s.program && s.program.length > 0; }
+            function countP(pre, curr){ 
+              if(curr && curr.program){
+                return pre + curr.program.length; 
+              } else {
+                return pre;
+              }
+            }
+            function removeProgram(r){ 
+              if(!r || !r.program){
+                return;
+              }
+              r.program = r.program.filter(function(p){ 
+                return p !== program; 
+              }); 
+            }
+
+            if(mostBoys(sextet) || (guys.length === 0 && girls.length > 0) || (vm.suitStudent.length === 0 && vm.dressStudent.length > 0)){
+              return vm.dressStudent.shift();
+            } else {
+              var suit = vm.suitStudent.shift();
+              if(!suit){
+                console.log('aoeu');
+              }
+              return suit;
+            }
           }
           if(student){
             student.matched = 999; // Never match on students.
@@ -627,7 +660,7 @@
   
           // Increment matched on those where this is true
           vm.sextets[pos].forEach(function(s){
-            if(s.program && s.program.length > 0 && s.program.indexOf(program) > -1){
+            if(s.program && s.program.length > 0 && s.program.indexOf(vm.program) > -1){
               s.matched++;
             }
           });
@@ -641,25 +674,27 @@
         programs = !programs ? [] : programs;
         // Get least popular program from first company repre.
         var program = getLeastPopularProgram(programs, programList);
-        function getLeastPopularProgram(programs, programScores){
-          if(!programScores.length || programScores.length === 0){
-            return undefined;
-          }
-          var match = programs.filter(function(p){ 
-            return p === programScores[0][0]; 
-          });
-          if(match.length > 0){
-            return match[0];
-          } else {
-            return getLeastPopularProgram(programs, programScores.slice(1));
-          }
-        }
         if(!program && sextet.length > 1){
           return getProgramFromCompany(sextet.slice(1));
+        } else if(program){
+          return program;
         } else {
           // Random select
           var p = Math.floor((Math.random() * programList.length) + 1);
           return programList[p - 1][0];
+        }
+      }
+      function getLeastPopularProgram(programs, programScores){
+        if(!programScores.length || programScores.length === 0){
+          return undefined;
+        }
+        var match = programs.filter(function(p){ 
+          return p === programScores[0][0]; 
+        });
+        if(match.length > 0){
+          return match[0];
+        } else {
+          return getLeastPopularProgram(programs, programScores.slice(1));
         }
       }
 
@@ -695,9 +730,17 @@
         }
         rows.forEach(function(r){
           r.left = ziped.shift();
+          if(!r.left){
+            console.log('Student: ' + student);
+            console.log('Compnay: ' + company);
+          }
         }); 
         rows.forEach(function(r){
           r.right = ziped.shift();
+          if(!r.right){
+            console.log('Student: ' + student);
+            console.log('Compnay: ' + company);
+          }
         }); 
         toggle = !toggle;
         return rows;

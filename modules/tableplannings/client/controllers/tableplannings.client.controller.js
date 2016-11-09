@@ -224,6 +224,7 @@
     };
     function minimizeTable(tp){
       var seats = tp.seats.map(function(s){
+        s = !s ? {} : s;
         return {
           nbr: s.nbr,
           name: s.name,
@@ -246,7 +247,7 @@
       vm.tableplanning._id = undefined;       
       vm.tableplanning.tables.forEach(convertLeftRightToSeats);
       vm.tableplanning.tables = vm.tableplanning.tables.map(minimizeTable);
-      vm.tableplanning.$save(successCallback, errorCallback);
+      vm.tableplanning.$create(successCallback, errorCallback);
       closeSaveModal();
     };
     function successCallback(tp){

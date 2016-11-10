@@ -477,7 +477,6 @@
 
       var c = vm.suitCompany.concat(vm.dressCompany);
 
-
       // Extract all programs and sort with least popular by companies first.
       Array.prototype.flatMap = function(lambda) { 
         return Array.prototype.concat.apply([], this.map(lambda)); 
@@ -499,7 +498,6 @@
         }
       );
 
-
       // Sort programs in reservations after increasing popularity
       vm.reservations.forEach(sortPrograms);
       function sortPrograms(r){
@@ -512,9 +510,6 @@
           return programList[p1] > programList[p2];
         }
       }
-      /*
-      programList = popularity;
-      */
       programList = sortable;
 
       // Calculates if sextet contains mostly men.
@@ -528,17 +523,6 @@
       function isBoy(s){ return (s.clothing === 'Suit' || s.clothing === 'Costume'); }
       function isGirl(s){ return s.clothing === 'Dress'; }
 
-
-
-      // Begin with the least popular program, sort companyRep by most specifik
-      // desired programme that includes this program. 
-      // programList.forEach();
-
-
-      // TODO: Get all companies by CompaniesService, create seats for 
-      // each gasqueTicket they have. This messes up a bit the code below. 
-
-
       // Calculate thingis.
       var countSS = vm.suitStudent.length; 
       var countDS = vm.dressStudent.length;  
@@ -548,7 +532,8 @@
       var countC = countSC + countDC;
       var countTotal = countS + countC;
 
-      var sextetsCount = Math.ceil((countTotal / 6));
+      console.log('Total: ' + vm.reservations.length);
+      var preName = vm.reservations.map(function(r){ return r.name; });
       
       // TODO:Even out the lists. 
       var lists = [
@@ -584,7 +569,8 @@
       // Sort students after program
       lists.forEach(function(l){
         if(l.student)
-          l.list.sort(afterProgram);
+          shuffle(l.list);
+          //l.list.sort(afterProgram);
       });
       function afterProgram(s1,s2){
         return s1.program > s2.program ? 1 : -1;
@@ -597,19 +583,22 @@
       var students = zip(studentLists);
       function zip(lists){
         var res = [];
-        for(var i = 0; i < lists[0].list.length; i++){
+        var size = lists.reduce(function(pre,curr){ return pre > curr.list.length ? pre : curr.list.length; },0);
+        for(var i = 0; i < size; i++){
           lists.forEach(addRes);
         }
-        function addRes(l){ res.push(l.list[0]); }
-        return res;
+        function addRes(l){ 
+          res.push(l.list.shift()); 
+        }
+        return res.filter(function(r){ return r;});
       }
+      shuffle(companyLists);
       var companies = companyLists.reduce(function(pre, curr){
         return pre.concat(curr.list);
       },[]); 
       var leftSide = students;
       var rightSide = [];
-
-      shuffle(companyLists);
+  
       leftSide.forEach(function(s, i){
         var pre = leftSide[i-1];
         var curr = leftSide[i];
@@ -619,295 +608,100 @@
         function toPrograms(pre, curr){
           return pre.concat(curr.program);
         }
-        var company = getMostMatchedCompany(companies, programs, i % 2);
-        rightSide.push(company);
+        var company = getMostMatchedCompany(programs, i % 2);
+        if(company){
+          rightSide.push(company);
+        }
       });
-      function getMostMatchedCompany(companies, programs, hasToBeBoy){
-        // TODO: implement
-        
-        // Get boy or girl depending on toggle-variable
-        var c = hasToBeBoy ? companies.filter(isBoy) : companies.filter(isGirl);
+      function getMostMatchedCompany(programs, hasToBeBoy){
+        companies.forEach(calculateRelationship);
+        function calculateRelationship(c){
+          if(!c.program){
+            c.matches = 0;
+            return;
+          }
+          c.matches = c.program.reduce(function(pre, curr){
+            var m = programs.filter(function(p){return p === curr; }).length;
+            return pre + m;
+          },0);
+        }
+        companies.sort(onMatches);
+        function onMatches(c1, c2){ return c1.matches < c2.matches ? 1 : -1; }
 
+
+        // Get boy or girl depending on toggle-variable
+        var comps = hasToBeBoy ? companies.filter(isBoy) : companies.filter(isGirl);
+        comps = !comps ? companies : comps;
+        var c = comps.shift();
+        if(!c){
+          return null;
+        }
         // Remove company from list
         companies = companies.filter(isNotSame);
+        return c; // Mockup
         function isNotSame(r){ return r._id !== c._id; }
-
-        return c[0]; // Mockup
+        
       }
 
+      Array.prototype.swap = function (index_this, other, index_other) {
+        var b = this[index_this];
+        if(this[index_this] && other[index_other]){
+          this[index_this] = other[index_other];
+          other[index_other] = b;
+        }
+        return this;
+      };
 
 
       // Swap every two seats (as an inverse)
       var temp1, temp2;
       for(var i = 0; i < leftSide.length; i = i + 4){
-        temp1 = leftSide[i];
-        temp2 = leftSide[i + 1];
-        leftSide[i] = rightSide[i + 1];
-        leftSide[i + 1] = rightSide[i];
-        rightSide[i + 1] = temp1;
-        rightSide[i] =  temp2;
+        leftSide = leftSide.swap(i, rightSide, i + 1);
+        leftSide = leftSide.swap(i + 1, rightSide, i);
       }
 
       vm.tableplanning.tables.forEach(function(t){
         t.rows = [];
       });
+      console.log('Left:' + leftSide.length);
+      console.log('right:' + rightSide.length);
+      console.log('Sum:' + (leftSide.length + rightSide.length));
+
+      leftSide = leftSide.filter(exists);
+      rightSide = rightSide.filter(exists);
+      function exists(i){ return i; }
+
+      console.log('Total: ' + vm.reservations.length);
+      var postLeft = leftSide.map(function(r){ return r.name; });
+      var postRight = rightSide.map(function(r){ return r.name; });
+      var postName = postLeft.concat(postRight);
+
 
       vm.tableplanning.tables.forEach(function(t){
         for(var i = 0; i < (t.nbrSeats / 2); i++){
-          t.rows.push({ left: leftSide.shift(), right: rightSide.shift() });
+          var l = leftSide.shift();
+          var r = rightSide.shift();
+          r = !r ? { name: 'Empty seat' } : r;
+          l = !l ? { name: 'Empty seat' } : l;
+
+          r.nbr = (i) + 1;
+          l.nbr = t.nbrSeats - i;
+
+          t.rows.push({ left: r, right: l });
         }
       });
 
 
-
-
-
-
-      console.log('aoeu');
-
-      
-      
-      
-     /* 
-      
-      // Create all sextets
-      vm.sextets = [];
-      for(var i = 0; i < sextetsCount; i++) {
-        vm.sextets[i] = [];
-      }
-
-      // Fas 1
-      // ===============================================================
-      // For i < dc+sc
-      // - push least of girl or boy in sextet
-
-      divideCompanyRepresentatives();
-      function divideCompanyRepresentatives(){
-        for(i = 0; i < countC; i++){
-          var sextetPosition = i % sextetsCount;
-          var sextet = vm.sextets[sextetPosition];
-         
-          var c; 
-          if((mostBoys(sextet) && vm.dressCompany.length > 0) || vm.suitCompany.length === 0){
-            c = vm.dressCompany.shift();
-          } else {
-            c = vm.suitCompany.shift();
-          }
-          c.matched = 0;
-          vm.sextets[sextetPosition].push(c);
-        }
-      }
-
-      // Fas 2
-      // ===============================================================
-      // For i < ds + ss
-      // - sort c in sextet efter matches
-      // - sort programs in c
-      // - foreach program
-      //    - filter students if length > 0 
-      //      TAKE student. c.matched++;
-  
-      divideStudents();
-      function divideStudents(){
-
-        iterateStudents(countC, countTotal);
-        function iterateStudents(start, stop){
-          if(start === stop){
-            return;
-          }
-          var pos = start % sextetsCount;
-          var sextet = vm.sextets[pos];
-          
-          sextet.sort(afterMatches);
-          var student = getStudent(sextet);
-          function getStudent(sextet){
-            vm.program = getProgramFromCompany(sextet);
-
-            // Get student
-            var guys = vm.suitStudent;
-            var girls = vm.dressStudent;
-            
-            girls = girls.filter(function(s){ return s.program[0] === vm.program; });
-            guys = guys.filter(function(s){ 
-              var p1 = vm.program;
-              var p2 = s.program[0];
-              return p1 === p2; 
-            });
-            
-            if(girls.length === 0 && guys.length === 0){
-              // Works without this?
-              var before = sextet.reduce(countP, 0);
-              sextet.forEach(removeProgram);
-              var newS = sextet.filter(hasNoProgram);
-              var after = newS.reduce(countP, 0);
-              //console.log('program: ' + program + ', Before: ' + before + ', After: ' + after);
-              if(newS.length > 0 && after !== before && after > 0){
-                return getStudent(newS);
-              }
-            }
-            function hasNoProgram(s){ return s.program && s.program.length > 0; }
-            function countP(pre, curr){ 
-              if(curr && curr.program){
-                return pre + curr.program.length; 
-              } else {
-                return pre;
-              }
-            }
-            function removeProgram(r){ 
-              if(!r || !r.program){
-                return;
-              }
-              r.program = r.program.filter(function(p){ 
-                return p !== program; 
-              }); 
-            }
-
-            if(mostBoys(sextet) || (guys.length === 0 && girls.length > 0) || (vm.suitStudent.length === 0 && vm.dressStudent.length > 0)){
-              var dress = vm.dressStudent.shift();
-              return dress;
-            } else {
-              var suit = vm.suitStudent.shift();
-              return suit;
-            }
-          }
-          if(student){
-            student.matched = 999; // Never match on students.
-            vm.sextets[pos].push(student);
-          }
-  
-          // Increment matched on those where this is true
-          vm.sextets[pos].forEach(function(s){
-            if(s.program && s.program.length > 0 && s.program.indexOf(vm.program) > -1){
-              s.matched++;
-            }
-          });
-          start++;
-          iterateStudents(start, stop);
-        }
-      }
-      function afterMatches(s1, s2){ return s1.matched > s2.matched ? 1 : -1; }
-      function getProgramFromCompany(sextet){
-        var programs = sextet[0].program;
-        programs = !programs ? [] : programs;
-        // Get least popular program from first company repre.
-        var program = getLeastPopularProgram(programs, programList);
-        if(!program && sextet.length > 1){
-          return getProgramFromCompany(sextet.slice(1));
-        } else {
-          return program;
-        }
-      }
-      function getLeastPopularProgram(programs, programScores){
-        if(!programScores.length || programScores.length === 0){
-          return undefined;
-        }
-        var match = programs.filter(function(p){ 
-          return p === programScores[0][0]; 
-        });
-        if(match.length > 0){
-          return match[0];
-        } else {
-          return getLeastPopularProgram(programs, programScores.slice(1));
-        }
-      }
-
-
-
-      // Fas 3
-      // ===============================================================
-      // filter first if tablelength % 6 === 0
-      // - sextet foreach add rows (with left and right)
-
-      function isCompany(r){ return r.company; }
-      function isStudent(r){ return !r.company; }
-
-      var toggle = true;
-      var sextetRows = vm.sextets.map(createRow);
-      sextetRows = sextetRows.reduce(flatten);
-      function createRow(s){
-        var rows = [{}, {}, {}];
-        var company = s.filter(isCompany);
-        var student = s.filter(isStudent);
-        company.sort(girlsFirst);
-        student.sort(girlsFirst);
-        student.reverse();
-      
-        var ziped = student.map(function (s, i) {
-          return [s, company[i]];
-        });
-        ziped = ziped.reduce(flatten);
-        ziped = ziped.filter(notNull);
-        
-        if(toggle){
-          ziped.reverse();
-        }
-        rows.forEach(function(r){
-          r.left = ziped.shift();
-          if(!r.left){
-            console.log('Student: ' + student);
-            console.log('Compnay: ' + company);
-            r.left = { name: 'Empty seat' };
-          }
-        }); 
-        rows.forEach(function(r){
-          r.right = ziped.shift();
-          if(!r.right){
-            console.log('Student: ' + student);
-            console.log('Compnay: ' + company);
-            r.right = { name: 'Empty seat' };
-          }
-        }); 
-        toggle = !toggle;
-        return rows;
-      }
-      sextetRows.forEach(rmMatched);
-      function rmMatched(r){
-        if(r && r.left && r.left.matched > 100){
-          r.left.matched = undefined;
-        }
-        if(r && r.right && r.right.matched > 100){
-          r.right.matched = undefined;
-        }
-      }
-      function flatten(pre, curr){ return pre.concat(curr); } 
-      function notNull(item){ return item; } 
-      function girlsFirst(c1, c2){
-        return isGirl(c1) > isGirl(c2) ? 1 : -1;
-      }
-
-      var tables = vm.tableplanning.tables;
-
-      function divisible(t){ return t.seats.length % 6 === 0; }
-      tables.sort(function(t1, t2){
-        return divisible(t1) > divisible(t2) ? 1 : -1;
+      vm.bMissing = preName.filter(function(i){
+        return postName.filter(function(j){ return j.toLowerCase() === i.toLowerCase(); }).length === 0;
+      });
+      vm.aMissing = postName.filter(function(i){
+        return preName.filter(function(j){ return j.toLowerCase() === i.toLowerCase(); }).length === 0;
       });
 
-      // Clean up tables
-      tables.forEach(function(t){
-        t.nbr = 0;
-        t.rows = [];
-        t.seats = [];
-      });
-
-      // Add rows
-      tables.forEach(function(t){
-        function addRow(t){
-          if(t.nbr >= t.nbrSeats){
-            return;
-          }
-          var row = sextetRows.shift();
-          if(row){
-            if(row.left){ row.left.nbr = (t.nbr / 2) + 1; }
-            if(row.right){ row.right.nbr = t.nbrSeats - (t.nbr / 2); }
-            t.rows.push(row);
-          }
-          t.nbr = t.nbr + 2;
-          addRow(t);
-        }
-        addRow(t);
-      });
-      vm.remainingRows = sextetRows;
-      */
+      console.log('Missing A: ' + vm.aMissing);
+      console.log('Missing B: ' + vm.bMissing);
+      
     };
 
 

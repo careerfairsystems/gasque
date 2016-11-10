@@ -1,0 +1,44 @@
+<section>
+  <div class="page-header">
+    <h1>Seats at {{ vm.tp.name }}</h1>
+  </div>
+  <div class="my-message" ng-show="message">
+    <div style="padding: 5px;">
+      <div class="my-inner-message text-center alert alert-info">
+        <button type="button" class="close" ng-click="message = undefined" data-dismiss="alert">&times;</button>
+        {{ message }}
+      </div>
+    </div>
+  </div>
+  <div class="jumbotron">
+    <div class="row">
+      <hr>
+      <table id="reservationsList" class="table table-striped compact table-bordered nowrap" >
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Table</th>
+            <th>SeatNbr</th>
+            <th>Clothing</th>
+            <th>Foodpref</th>
+            <th>Drinkpackage</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Name</th>
+            <th>Table</th>
+            <th>SeatNbr</th>
+            <th>Clothing</th>
+            <th>Foodpref</th>
+            <th>Drinkpackage</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <div class="alert alert-warning text-center" ng-show="vm.reservations.$resolved && !vm.reservations.length">
+    No Reservations yet, dont you worry, they will come!
+    <img src="https://mailewindsong.files.wordpress.com/2015/05/15871.jpg" style="display: block; margin: auto;" />
+  </div>
+</section>

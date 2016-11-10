@@ -455,6 +455,8 @@
       vm.suitStudent = [];
       vm.suitCompany = [];
       vm.companyRep = [];
+      
+      shuffle(vm.reservations);
   
       // Filter out honary
       vm.reservations = vm.reservations.filter(function(r){ return !r.honorary; });
@@ -518,16 +520,13 @@
       // Calculates if sextet contains mostly men.
       //  (those with suit or costume as clothing)
       function mostBoys(sextet){
-        var s = sextet.filter(hasClothing);
-        var guyCount = s.filter(isBoy).length;
-        var girlCount = s.filter(isGirl).length;
+        var guyCount = sextet.filter(isBoy).length;
+        var girlCount = sextet.filter(isGirl).length;
         function isBoy(s){ return (s.clothing === 'Suite' || s.clothing === 'Costume'); }
         function isGirl(s){ return s.clothing === 'Dress'; }
-        function hasClothing(s){ return s.clothing !== 'None'; }
+        console.log('MostBoys: ' + guyCount > girlCount);
         return guyCount > girlCount;
       }
-
-
 
 
 

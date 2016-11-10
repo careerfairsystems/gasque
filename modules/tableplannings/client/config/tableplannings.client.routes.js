@@ -23,6 +23,15 @@
           pageTitle: 'Tableplannings List'
         }
       })
+      .state('tableplannings.export', {
+        url: '/:tableplanningId/export',
+        templateUrl: 'modules/tableplannings/client/views/export-tableplanning.client.view.html',
+        controller: 'ExportTableplanningsController',
+        resolve: {
+          tableplanningResolve: getTableplanning
+        },
+        controllerAs: 'vm',
+      })
       .state('tableplannings.create', {
         url: '/create',
         templateUrl: 'modules/tableplannings/client/views/form-tableplanning.client.view.html',

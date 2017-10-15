@@ -26,6 +26,7 @@
     vm.seats.forEach(function(s){
       s.foodpref = !s.foodpref ? '' : s.foodpref;
       s.drinkpackage = !s.drinkpackage ? '' : s.drinkpackage;
+      s.other = !s.other ? '' : s.other;
     });
 
 
@@ -41,6 +42,7 @@
           if(r._id === s.id){
             s.foodpref = [r.foodpref, r.other].join(',');
             s.drinkpackage = r.drinkpackage;
+            s.other = r.other;
             a = false;
           }
         });
@@ -73,6 +75,7 @@
           { data: 'nbr' },
           { data: 'clothing' },
           { data: 'foodpref' },
+          { data: 'other' },
           { data: 'drinkpackage' },
         ]
       });

@@ -45,9 +45,9 @@ var ReservationSchema = new Schema({
   other: {
     type: String
   },
-  clothing: {
+  gender: {
     type: String,
-    required: 'Please fill in your clothing'
+    required: 'Please fill in your gender'
   },
   desiredPrograms: [{
     type: String

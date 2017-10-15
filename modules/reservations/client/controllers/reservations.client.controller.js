@@ -48,16 +48,18 @@
       vm.pescotarian = false;
       vm.vegan = false;
       vm.gluten = false;
+      vm.meat = false;
     }
 
-    vm.clothings = [
-      'Suit',
-      'Dress'
+    vm.genders = [
+      'Man',
+      'Woman',
+      'Other'
     ];
 
     vm.memberdrinkpackages = [
       ['Non Alcoholic beverages', 0],
-      ['Alcoholic beverages', 135]
+      ['Alcoholic beverages', 150]
     ];
 
     vm.nonmemberdrinkpackages = [
@@ -75,12 +77,12 @@
     } else {
       vm.titles= [
         ['Student member of TLTH', 500, true],
-        ['Not member of TLTH', 790, false]
+        ['Not member of TLTH', 805, false]
       ];
     }
 
     // Get all programs
-    var programsSet = new Set(ProgramsService);
+    var programsSet = new Set(ProgramsService.sort());
     vm.programs = [];
     programsSet.forEach(function (v){ vm.programs.push(v); });
   
@@ -114,6 +116,8 @@
           food_arr.push('Vegan');
         if(vm.gluten)
           food_arr.push('Gluten');
+	if(vm.meat)
+	  foor_arr.push('Meat');
         vm.reservation.foodpref = food_arr;
         vm.reservation.other = vm.other;
         vm.reservation.membership = vm.chosenMembership[0];
@@ -144,6 +148,8 @@
         food_arr.push('Vegan');
       if(vm.gluten)
         food_arr.push('Gluten');
+      if(vm.meat)
+	foor_arr.push('Meat');
       vm.reservation.foodpref = food_arr;
       vm.reservation.other = vm.other;
       $scope.moduleState = 'overview';
@@ -180,6 +186,13 @@
 
       console.log(vm.reservation);
 
+      if(vm.reservation.gender === 'Other') {
+	if(Math.random() >= 0.5)
+	  vm.reservation.gender = 'Man';
+	else {
+          vm.reservation.gender = 'Woman';
+        }
+      }
       vm.reservation.membership = vm.chosenMembership[0];
       vm.reservation.ocr = (new Date()).getTime();
       vm.reservation.drinkpackage = vm.chosenDrinkPackage[0];

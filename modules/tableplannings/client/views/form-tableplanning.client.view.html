@@ -20,10 +20,10 @@
           <table class="tabletable table">
             <tr ng-repeat="row in table.rows">
               <td class="reservation left" 
-                ng-class="{student: !row.left.company, company: row.left.company, girl: row.left.clothing === 'Dress', guy: (row.left.clothing === 'Suit' || row.left.clothing === 'Costume'), other: row.left.clothing === 'None', selected: row.left.selected }" ng-click="selectSeat(table, row.left)"> {{ row.left.name + ', '+( row.left.company.substring(0,15) || row.left.program[0].substring(0,15))  }} <span class="pull-right">{{ row.left.matched }}</span> </td>
+                ng-class="{student: !row.left.company, company: row.left.company, girl: row.left.gender === 'Woman', guy: row.left.gender === 'Man', other: row.left.gender === 'None', selected: row.left.selected }" ng-click="selectSeat(table, row.left)"> {{ row.left.name + ', '+( row.left.company.substring(0,15) || row.left.program[0].substring(0,15))  }} <span class="pull-right">{{ row.left.matched }}</span> </td>
               <td class="middle"> {{ row.left.nbr }}   |   {{ row.right.nbr }} </td>
               <td class="reservation right" 
-                ng-class="{student: !row.right.company, company: row.right.company, girl: row.right.clothing === 'Dress', guy: (row.right.clothing === 'Suit' || row.right.clothing === 'Costume'), other: row.right.clothing === 'None' }" ng-click="selectSeat(table, row.right)"> <span class="pull-right">{{ row.right.matched }}</span> {{ row.right.name+','+(row.right.company.substring(0,15) || row.right.program[0].substring(0,15)) }} </td>
+                ng-class="{student: !row.right.company, company: row.right.company, girl: row.right.gender === 'Woman', guy: row.right.gender === 'Man', other: row.right.gender === 'None' }" ng-click="selectSeat(table, row.right)"> <span class="pull-right">{{ row.right.matched }}</span> {{ row.right.name+','+(row.right.company.substring(0,15) || row.right.program[0].substring(0,15)) }} </td>
             </tr>
           </table>
         </div>
@@ -34,10 +34,10 @@
           <table class="tabletable table">
             <tr ng-repeat="row in vm.remainingRows">
               <td class="reservation left" 
-                ng-class="{student: !row.left.company, company: row.left.company, girl: row.left.clothing === 'Dress', guy: (row.left.clothing === 'Suit' || row.left.clothing === 'Costume'), other: row.left.clothing === 'None' }" ng-click="selectSeat(table, row.left)"> {{ row.left.name }} <span class="pull-right">{{ row.left.matched }}</span> </td>
+                ng-class="{student: !row.left.company, company: row.left.company, girl: row.left.gender === 'Woman', guy: row.left.gender === 'Man', other: row.left.gender === 'None' }" ng-click="selectSeat(table, row.left)"> {{ row.left.name }} <span class="pull-right">{{ row.left.matched }}</span> </td>
               <td class="middle"> {{ row.left.nbr }}   |   {{ row.right.nbr }} </td>
               <td class="reservation right" 
-                ng-class="{student: !row.right.company, company: row.right.company, girl: row.right.clothing === 'Dress', guy: (row.right.clothing === 'Suit' || row.right.clothing === 'Costume'), other: row.right.clothing === 'None' }" ng-click="selectSeat(table, row.right)"> <span class="pull-right">{{ row.right.matched }}</span> {{ row.right.name }} </td>
+                ng-class="{student: !row.right.company, company: row.right.company, girl: row.right.gender === 'Woman', guy: row.right.gender === 'Man', other: row.right.gender === 'None' }" ng-click="selectSeat(table, row.right)"> <span class="pull-right">{{ row.right.matched }}</span> {{ row.right.name }} </td>
             </tr>
           </table>
         </div>

@@ -185,11 +185,11 @@
                 tempSeat.name = s.name;
                 tempSeat._id = s._id;
                 tempSeat.company = s.company;
-                tempSeat.clothing = s.clothing;
+                tempSeat.gender = s.gender;
                 s.name = vm.currSeat.name;
                 s._id = vm.currSeat._id;
                 s.company = vm.currSeat.company;
-                s.clothing = vm.currSeat.clothing;
+                s.gender = vm.currSeat.gender;
               }
             });
           }
@@ -233,7 +233,7 @@
           nbr: s.nbr,
           name: s.name,
           company: s.company,
-          clothing: s.clothing,
+          gender: s.gender,
           matched: s.matched,
           id: s._id
         };
@@ -464,11 +464,11 @@
       // Divide and calculate
       vm.reservations.forEach(divide);
       function divide(r){
-        if(!r.company && (r.clothing === 'Suit' || r.clothing === 'Costume')){
+        if(!r.company && r.gender === 'Man'){
           vm.suitStudent.push(r);
-        } else if(!r.company && r.clothing === 'Dress'){
+        } else if(!r.company && r.gender === 'Woman'){
           vm.dressStudent.push(r);
-        } else if(r.company && r.clothing === 'Dress'){
+        } else if(r.company && r.gender === 'Woman'){
           vm.dressCompany.push(r);
         } else {
           vm.suitCompany.push(r);
@@ -513,15 +513,15 @@
       programList = sortable;
 
       // Calculates if sextet contains mostly men.
-      //  (those with suit or costume as clothing)
+      //  (those with suit or costume as gender)
       function mostBoys(sextet){
         var guyCount = sextet.filter(isBoy).length;
         var girlCount = sextet.filter(isGirl).length;
         console.log('MostBoys: ' + guyCount > girlCount);
         return guyCount > girlCount;
       }
-      function isBoy(s){ return (s.clothing === 'Suit' || s.clothing === 'Costume'); }
-      function isGirl(s){ return s.clothing === 'Dress'; }
+      function isBoy(s){ return s.gender === 'Man'; }
+      function isGirl(s){ return s.gender === 'Woman'; }
 
       // Calculate thingis.
       var countSS = vm.suitStudent.length; 

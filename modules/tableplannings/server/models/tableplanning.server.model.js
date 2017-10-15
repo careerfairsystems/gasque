@@ -30,7 +30,7 @@ var TableplanningSchema = new Schema({
       name: String,
       company: String,
       matched: Number,
-      clothing: String,
+      gender: String,
       id: {
         type: Schema.ObjectId,
         ref: 'Reservation'

@@ -129,7 +129,7 @@
           var reservationsLeft = vm.companyGasqueList[company];
           for(var i = 0; i < reservationsLeft; i++){
             var newR = {};
-            var clothing = 'None';
+            var gender = 'None';
             
             var program = vm.companyPrograms[company];
             // Set beverage
@@ -140,7 +140,7 @@
             newR.program = program;
             newR.name = company + ' ' + (i + 1);
             newR.drinkpackage = beverage;
-            newR.clothing = clothing;
+            newR.gender = gender;
             newR.membership = 'Company Representative';
             vm.reservations.push(newR);
           } 
@@ -159,11 +159,19 @@
         if(!exists){
           var newR = new ReservationsService();
           
-          // Set clothing
-          var clothing = r.sex === 'man' ? 'Suit' : 'Dress';
-          if(r.clothing === 'None'){
-            clothing = 'None';
-          }
+          // Set gender
+          var gender = 'None';
+	  if(r.sex.toLowerCase() === 'man') {
+	    gender = 'Man';
+	  } else if(r.sex.toLowerCase() === 'kvinna' || r.sex.toLowerCase() === 'woman') {
+	    gender = 'Woman';
+	  } else {
+	    if(Math.random() >= 0.5) {
+	      gender = 'Man';
+	    } else {
+	      gender = 'Woman';
+	    }
+	  }
           
           // Set beverage
           var beverage = r.beverage === 'alkoholfritt' ? 'Alcoholic beverages' : 'Non Alcoholic beverages';
@@ -173,7 +181,7 @@
           newR.name = r.name;
           newR.foodpref = r.foodpref;
           newR.program = r.program;
-          newR.clothing = clothing;
+          newR.gender = gender;
           newR.drinkpackage = beverage;
           newR.membership = 'Company Representative';
           //newR.$save(successCallback, errorCallback);

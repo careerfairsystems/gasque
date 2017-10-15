@@ -73,7 +73,7 @@
           { data: 'name' },
           { data: 'table' },
           { data: 'nbr' },
-          { data: 'clothing' },
+          { data: 'gender' },
           { data: 'foodpref' },
           { data: 'other' },
           { data: 'drinkpackage' },

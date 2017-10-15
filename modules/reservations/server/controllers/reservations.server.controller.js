@@ -37,7 +37,7 @@ exports.create = function(req, res) {
   ];
 
   var othertitles = [
-    ['Not member of TLTH', 790],
+    ['Not member of TLTH', 805],
     ['Student member of TLTH', 500]
   ];
 
@@ -51,7 +51,7 @@ exports.create = function(req, res) {
   ];
 
   var payingtitles = [
-    ['Not member of TLTH', 790]
+    ['Not member of TLTH', 805]
   ];
 
   var payingdrinkpackages = [
@@ -62,7 +62,7 @@ exports.create = function(req, res) {
 
   var nonpayingdrinkpackages = [
     ['Non Alcoholic beverages', 0],
-    ['Alcoholic beverages', 135]
+    ['Alcoholic beverages', 150]
   ];
 
   var title = req.body.membership;
@@ -430,7 +430,6 @@ function thankyoumail(req,res) {
     str += 'Email:\n\t' + reservation.email + '\n';
     str += 'Phone:\n\t' + reservation.phone + '\n';
     str += 'Program:\n\t' + reservation.program + '\n';
-    str += 'Clothing:\n\t' + reservation.clothing + '\n';
     str += 'Title:\n\t' + reservation.title + '\n';
     str += 'Membership:\n\t' + reservation.membership + '\n';
     str += 'Beverage package:\n\t' + reservation.drinkpackage + '\n';

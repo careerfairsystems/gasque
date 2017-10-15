@@ -86,7 +86,7 @@
           { data: 'foodpref' },
           { data: 'drinkpackage' },
           { data: 'other' },
-          { data: 'clothing' },
+          { data: 'gender' },
           { data: 'price' },
           { data: 'honorary',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {

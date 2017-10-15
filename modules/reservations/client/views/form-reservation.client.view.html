@@ -58,15 +58,15 @@
                 </div>
               </div>
 
-              <!-- Clothing -->
+              <!-- Gender -->
               <div class="form-group" show-errors>
-                <label class="control-label" for="clothing">Clothing</label>
+                <label class="control-label" for="gender">Gender</label>
                 <div>
-                    <select class="form-control" name="clothing" ng-model="vm.reservation.clothing" ng-options="clothing for clothing in vm.clothings" required>
+                    <select class="form-control" name="gender" ng-model="vm.reservation.gender" ng-options="gender for gender in vm.genders" required>
                     </select>
                 </div>
-                <div ng-messages="vm.form.reservationForm.clothing.$error" role="alert">
-                  <p class="help-block error-text" ng-message="required">Clothing choice is required.</p>
+                <div ng-messages="vm.form.reservationForm.gender.$error" role="alert">
+                  <p class="help-block error-text" ng-message="required">Gender choice is required.</p>
                 </div>
               </div>
 
@@ -115,19 +115,14 @@
                   <p class="help-block error-text" ng-message="required">Beverage package is required.</p>
                 </div>
               </div>
-
               <!-- Foodpref -->
               <div class="form-group" show-errors>
-                <label class="control-label" for="foodpref">Matpreferens / Food preference</label>
+                <label class="control-label" for="foodpref">Matpreferens / Food preferences</label>
+		<br>
+		<small>The banquet menu is vegetarian and free from gluten, lactose and nuts. Please specify any other allergies or preferences below.</small>
                 <br />
-                <!-- Choices -->
-                <input type="checkbox" ng-model="vm.laktos" /> Lactos free
-                <input type="checkbox" ng-model="vm.vegetarian" /> Vegetarian
-                <input type="checkbox" ng-model="vm.pescotarian" /> Vegetarian (Eat fish and seafood)
-                <input type="checkbox" ng-model="vm.vegan" /> Vegan
-                <input type="checkbox" ng-model="vm.gluten" /> Gluten free
                 <!-- Other -->
-                <input name="foodpref" type="text" ng-model="vm.other" id="other" placeholder="Other foodpreferences..." class="form-control">
+                <input name="foodpref" type="text" ng-model="vm.other" id="other" placeholder="Food preferences" class="form-control">
               </div>
 
               <div class="form-group">
@@ -189,17 +184,7 @@
 
           <div class="row">
             <div class="col-md-5"><strong>Food preferences:</strong></div>
-            <div class="col-md-6" ng-bind="vm.reservation.foodpref"></div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-5"><strong>Other food preferences:</strong></div>
             <div class="col-md-6" ng-bind="vm.reservation.other"></div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-5"><strong>Clothing:</strong></div>
-            <div class="col-md-6" ng-bind="vm.reservation.clothing"></div>
           </div>
 
         </div>

@@ -64,7 +64,7 @@ section.container {
   min-height: 400px; }
 
 .navbar-nav > li.open > a.dropdown-toggle {
-  color: #FFFFFF; }
+  color: #333; }
 
 .navbar-nav > li > a {
   color: #333;

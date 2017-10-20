@@ -63,8 +63,8 @@
     ];
 
     vm.nonmemberdrinkpackages = [
-      ['Non Alcoholic beverages', 0],
-      ['Alcoholic beverages', 0]
+      ['Non Alcoholic beverages', 125],
+      ['Alcoholic beverages', 150]
     ];
 
     if(!vm.isPaying) {
@@ -77,7 +77,7 @@
     } else {
       vm.titles= [
         ['Student member of TLTH', 500, true],
-        ['Not member of TLTH', 805, false]
+        ['Not member of TLTH', 655, false]
       ];
     }
 
@@ -85,7 +85,7 @@
     var programsSet = new Set(ProgramsService.sort());
     vm.programs = [];
     programsSet.forEach(function (v){ vm.programs.push(v); });
-  
+
     vm.programs.unshift('Non-Student', 'Other');
 
     $scope.checkValidity = function(resForm) {

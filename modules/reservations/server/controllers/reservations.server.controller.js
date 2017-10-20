@@ -37,7 +37,7 @@ exports.create = function(req, res) {
   ];
 
   var othertitles = [
-    ['Not member of TLTH', 805],
+    ['Not member of TLTH', 655],
     ['Student member of TLTH', 500]
   ];
 
@@ -51,12 +51,12 @@ exports.create = function(req, res) {
   ];
 
   var payingtitles = [
-    ['Not member of TLTH', 805]
+    ['Not member of TLTH', 655]
   ];
 
   var payingdrinkpackages = [
-    ['Non Alcoholic beverages', 0],
-    ['Alcoholic beverages', 0]
+    ['Non Alcoholic beverages', 125],
+    ['Alcoholic beverages', 150]
   ];
 
 

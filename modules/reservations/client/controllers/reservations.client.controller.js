@@ -1,16 +1,18 @@
 (function () {
   'use strict';
-
   // Reservations controller
   angular
-    .module('reservations')
-    .controller('ReservationsController', ReservationsController);
-
-  ReservationsController.$inject = ['$http','$scope', '$state', 'Authentication', 'reservationResolve', 'ProgramsService', 'BanquetsService', '$sce'];
-
-  function ReservationsController ($http, $scope, $state, Authentication, reservation, ProgramsService, BanquetsService, $sce) {
+  .module('reservations')
+  .controller('ReservationsController', ReservationsController);
+  
+  ReservationsController.$inject = ['$location', '$http','$scope', '$state', 'Authentication', 'reservationResolve', 'ProgramsService', 'BanquetsService', '$sce'];
+  
+  function ReservationsController ($location, $http, $scope, $state, Authentication, reservation, ProgramsService, BanquetsService, $sce) {
     var vm = this;
-
+    
+    if ($state.current.name  === 'reservations.nonpaying' || $state.current.name === 'reservations.paying') {
+      $location.path('./../');
+    }
     vm.authentication = Authentication;
     vm.reservation = reservation;
     vm.error = null;

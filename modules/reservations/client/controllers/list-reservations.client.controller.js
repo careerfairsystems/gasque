@@ -55,6 +55,22 @@
       $state.go('reservations.view', { reservationId: current._id });
     };
 
+    
+    vm.setHonorary = function(index){
+      var imSure = window.confirm('Are you sure you want to confirm this reservation to the banquet?');
+      if(imSure){
+        vm.reservations[index].honorary = !vm.reservations[index].honorary;
+        var reservation = vm.reservations[index];
+        var res = ReservationsService.get({ reservationId: reservation._id }, function() {
+          res.honorary = reservation.honorary;
+          res.$save(function(r){
+            vm.showMessage('Succesfully changed honorary.');
+          });
+        });
+      }
+    };
+    
+    
     // Init datatable
     vm.createDatatable = function(data){
       vm.table = $('#reservationsList').DataTable({
@@ -90,7 +106,7 @@
           { data: 'price' },
           { data: 'honorary',
             'fnCreatedCell': function (nTd, sData, oData, iRow, iCol) {
-              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' ng-disabled="true" />');
+              $(nTd).html('<input type="checkbox" ' + (sData ? 'checked' : '') + ' data-ng-click="vm.setHonorary('+ iRow+')" />');
               $compile(nTd)($scope);
             }
           },

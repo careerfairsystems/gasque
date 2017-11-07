@@ -598,42 +598,12 @@
       },[]); 
       var leftSide = students;
       var rightSide = [];
-      
-      function fetchStudents(list, idx){
-        var student_index_1 = 0;
-        var student_index_2 = 0;
-        var student_index_3 = 0;
-        switch(idx % 4) {
-          case 0:
-            student_index_1 = idx ;
-            student_index_2 = idx + 1;
-            student_index_3 = idx + 2;
-            break;
-          case 1:
-            student_index_1 = idx;
-            student_index_2 = idx - 1;
-            student_index_3 = idx - 2;
-            break;
-          case 2:
-            student_index_1 = idx;
-            student_index_2 = idx + 1;
-            student_index_3 = idx - 2;
-            break;
-          case 3:
-            student_index_1 = idx;
-            student_index_2 = idx - 1;
-            student_index_3 = idx + 2;
-            break;
-        }
-        return [
-          list[student_index_1], 
-          list[student_index_2], 
-          list[student_index_3], 
-        ];
-      }
   
       leftSide.forEach(function(s, i){
-        var arr = fetchStudents(leftSide, i).filter(function(a){ return a; });
+        var pre = leftSide[i-1];
+        var curr = leftSide[i];
+        var next = leftSide[i+1];
+        var arr = [pre, curr, next].filter(function(a){ return a; });
         var programs = arr.reduce(toPrograms, []);
         function toPrograms(pre, curr){
           return pre.concat(curr.program);

@@ -8,6 +8,45 @@ https://docs.google.com/document/d/1Ar0729IQRg6hSZ8zWHOKdplD9ZTpVoIj3T_gQHDztSg/
 
 Finns mer info på wikisidan om bordsplaceringsalgoritm och flowchart: https://github.com/careerfairsystems/gasque/wiki
 
+## Important installation notes, for atleast Linux!!
+
+This MeanJs application do not work with the current version of node. Instead use node version 6.11. To do this follow the steps bellow, atleast for 
+
+```bash
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+```
+
+Nvm is the Node Version Manager and enables you to choose different versions of node.
+
+To list installed versions of node do the following
+
+```bash
+nvm ls
+```
+
+If you dont have 6.11 install it by 
+
+```bash
+nvm install 6.11
+```
+
+and then use it by 
+
+```bash
+nvm use 6.11
+```
+
+Now you can either go through the entire guide and maybe get it running with npm start, otherwise you can use grunt. 
+
+```bash
+npm install -g grunt-cli
+```
+
+and then run the application by 
+
+```bash
+grunt --force
+```
 
 ## Meanstack
 
